@@ -5,14 +5,14 @@ import { RouterLink } from 'vue-router';
 <template>
   <header class="w-full bg-white shadow-md">
     <nav class="max-w-screen-xl px-6 py-4 mx-auto">
-      <ul class="flex justify-between space-x-8 text-lg font-semibold">
+      <ul class="flex justify-between text-lg font-semibold">
         <RouterLink
           to="/"
           class="transition-colors cursor-pointer hover:text-blue-500"
         >
           FinPoint
         </RouterLink>
-        <li class="flex space-x-8">
+        <li class="flex justify-center flex-grow ml-24 space-x-8">
           <RouterLink
             to="/deposit"
             class="transition-colors cursor-pointer hover:text-blue-500"
@@ -25,7 +25,7 @@ import { RouterLink } from 'vue-router';
           >
             적금
           </RouterLink>
-          <RouterLink
+          <!-- <RouterLink
             to="/annuity-savings"
             class="transition-colors cursor-pointer hover:text-blue-500"
           >
@@ -48,7 +48,7 @@ import { RouterLink } from 'vue-router';
             class="transition-colors cursor-pointer hover:text-blue-500"
           >
             개인신용대출
-          </RouterLink>
+          </RouterLink> -->
         </li>
         <li class="flex gap-3">
           <RouterLink
@@ -58,16 +58,16 @@ import { RouterLink } from 'vue-router';
             게시판
           </RouterLink>
           <RouterLink
-            to="/logout"
-            class="transition-colors cursor-pointer hover:text-blue-500"
-          >
-            로그아웃
-          </RouterLink>
-          <RouterLink
             to="/login"
             class="transition-colors cursor-pointer hover:text-blue-500"
           >
             로그인
+          </RouterLink>
+          <RouterLink
+            to="/logout"
+            class="transition-colors cursor-pointer hover:text-blue-500"
+          >
+            로그아웃
           </RouterLink>
         </li>
       </ul>
