@@ -1,21 +1,14 @@
 import { ref } from 'vue';
-import ky from 'ky';
-
-const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}login/`;
+import { authServices } from '@services/authServices';
 
 export const useLogin = () => {
+  const { login, logout } = authServices;
   const isLoggedIn = ref(false);
   const error = ref(null);
 
-  const login = async (username, password) => {
+  const handleLogin = async (username, password) => {
     try {
-      const response = await ky.post(API_URL, {
-        json: {
-          username,
-          password,
-        },
-        credentials: 'include', // 쿠키 포함 요청
-      });
+      const response = await login(username, password);
 
       const contentType = response.headers.get('content-type');
 
@@ -48,15 +41,16 @@ export const useLogin = () => {
   };
 
   // 로그아웃 기능이 필요한 경우를 위한 함수
-  const logout = () => {
+  const handleLogout = async () => {
+    await logout();
     isLoggedIn.value = false;
     error.value = null;
   };
 
   return {
-    login,
+    handleLogin,
     handleLoginClick,
-    logout,
+    handleLogout,
     isLoggedIn,
     error,
   };

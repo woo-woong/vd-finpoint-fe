@@ -1,16 +1,14 @@
 <script setup>
 import { onMounted } from 'vue';
-import ky from 'ky';
 import { useRouter } from 'vue-router';
+import useAuth from '@hooks/auth/useAuth';
 
-const FINANCIAL_API_URL = import.meta.env.VITE_FINANCIAL_API_URL;
 const router = useRouter();
+const { handleLogout } = useAuth();
 
 onMounted(async () => {
   try {
-    await ky.get(`${FINANCIAL_API_URL}logout`, {
-      credentials: 'include',
-    });
+    await handleLogout();
     router.push('/');
   } catch (e) {
     console.error('요청 실패', e);
