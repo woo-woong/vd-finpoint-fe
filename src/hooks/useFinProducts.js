@@ -1,4 +1,4 @@
-import { ref, computed, watchEffect, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import ky from 'ky';
 
 export default function useFinProducts({
@@ -7,7 +7,6 @@ export default function useFinProducts({
   defaultVisibleCount = 3,
 }) {
   const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}finance/${path}`;
-  const memoizedSearchParams = computed(() => searchParams);
 
   const finProducts = ref(null);
   const error = ref(null);
@@ -23,7 +22,7 @@ export default function useFinProducts({
       isLoading.value = true;
       const response = await ky
         .get(API_URL, {
-          searchParams: memoizedSearchParams.value,
+          searchParams: searchParams,
         })
         .json();
       finProducts.value = response;
@@ -35,12 +34,17 @@ export default function useFinProducts({
     }
   };
 
-  onMounted(() => {
-    fetchData();
-  });
+  // path나 searchParams가 변경될 때만 데이터를 다시 가져옵니다
+  watch(
+    [() => path, () => searchParams],
+    () => {
+      fetchData();
+    },
+    { deep: true }
+  );
 
-  watchEffect(() => {
-    // When `path` or `memoizedSearchParams` changes, refetch data
+  // 컴포넌트가 마운트될 때 초기 데이터를 가져옵니다
+  onMounted(() => {
     fetchData();
   });
 

@@ -1,23 +1,23 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import DefaultLayout from '@routes/layouts/Default';
-import Home from '@routes/pages/Home';
-import Deposit from '@routes/pages/Deposit';
-import Savings from '@routes/pages/Savings';
-import AnnunitySavings from '@routes/pages/AnnuitySavings';
-import MortgageLoan from '@routes/pages/MortgageLoan';
-import RentHouseLoan from '@routes/pages/RentHouseLoan';
-import CreditLoan from '@routes/pages/CreditLoan';
-import Login from '@routes/pages/Login';
-import Logout from '@routes/pages/Logout';
-import SignUp from '@routes/pages/SignUp';
-import KakaoOauth from '@routes/pages/KakaoOauth';
+import Default from '@routes/layouts/Default.vue';
+import Home from '@routes/pages/Home.vue';
+import Deposit from '@routes/pages/finance/Deposit.vue';
+import Savings from '@routes/pages/finance/Savings.vue';
+import AnnunitySavings from '@routes/pages/finance/AnnuitySavings.vue';
+import MortgageLoan from '@routes/pages/finance/MortgageLoan.vue';
+import RentHouseLoan from '@routes/pages/finance/RentHouseLoan.vue';
+import CreditLoan from '@routes/pages/finance/CreditLoan.vue';
+import Login from '@routes/pages/auth/Login.vue';
+import Logout from '@routes/pages/auth/Logout.vue';
+import SignUp from '@routes/pages/auth/SignUp.vue';
+import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 
 // 라우터 설정
 const routes = [
   {
     path: '/',
-    component: DefaultLayout,
+    component: Default,
     children: [
       { path: '', component: Home },
       { path: '/deposit', component: Deposit },

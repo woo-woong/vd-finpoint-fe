@@ -1,7 +1,7 @@
 import { ref } from 'vue';
-import axios from 'axios';
+import ky from 'ky';
 
-const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}login`;
+const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}login/`;
 
 export const useLogin = () => {
   const isLoggedIn = ref(false);
@@ -9,25 +9,22 @@ export const useLogin = () => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post(
-        API_URL,
-        {
+      const response = await ky.post(API_URL, {
+        json: {
           username,
           password,
         },
-        {
-          withCredentials: true, // 쿠키 포함 요청
-        }
-      );
+        credentials: 'include', // 쿠키 포함 요청
+      });
 
-      const contentType = response.headers['content-type'];
+      const contentType = response.headers.get('content-type');
 
       let token;
-      if (contentType.includes('application/json')) {
-        const data = response.data;
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
         token = data.token;
       } else {
-        token = response.data;
+        token = await response.text();
       }
 
       isLoggedIn.value = true;
