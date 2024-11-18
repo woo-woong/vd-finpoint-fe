@@ -1,0 +1,39 @@
+{
+  "globals": { "React": true },
+  "extends": ["airbnb", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "jest": true,
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "react/jsx-filename-extension": [0, { "extensions": [".tsx"] }],
+    "react/react-in-jsx-scope": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+        "json": "never",
+      },
+    ],
+    "import/no-unresolved": "error",
+  },
+  "settings": {
+    "import/resolver": {
+      // ESLint에게 TypeScript의 경로 별칭을 이해시키는 설정
+      "typescript": {
+        // TypeScript 설정 파일 위치 지정
+        "project": "./tsconfig.json",
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"],
+      },
+    },
+  },
+}
