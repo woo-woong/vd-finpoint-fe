@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import FinProductsService from '@/services/finProductsService';
 
 const props = defineProps({
   mode: {
@@ -21,9 +22,44 @@ const submitButtonText = computed(() => {
   return props.mode === 'create' ? '등록' : '수정 완료';
 });
 
+const selectedType = ref('deposit');
+
 const formData = ref({
   title: '',
+  product_code: '',
+  type: selectedType.value,
   content: '',
+});
+
+const products = ref([]);
+
+const productTypes = [
+  { value: 'deposit', label: '예금' },
+  { value: 'savings', label: '적금' },
+];
+
+const fetchProducts = async () => {
+  try {
+    const response = await FinProductsService(selectedType.value, {
+      topFinGrpNo: '020000',
+      pageNo: '1',
+    });
+    products.value = response.map((product) => ({
+      code: product.fin_prdt_cd,
+      name: product.fin_prdt_nm,
+    }));
+  } catch (error) {
+    console.error('상품 목록 조회 실패:', error);
+    alert('상품 목록을 불러오는데 실패했습니다.');
+  }
+};
+
+watch(selectedType, () => {
+  fetchProducts();
+});
+
+onMounted(() => {
+  fetchProducts();
 });
 
 const handleSubmit = () => {
@@ -72,6 +108,52 @@ const goBack = () => {
           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           placeholder="제목을 입력하세요"
         />
+      </div>
+
+      <div class="mb-6">
+        <label
+          for="type"
+          class="block mb-2 text-sm font-semibold text-gray-700"
+        >
+          상품 유형
+        </label>
+        <select
+          id="type"
+          v-model="selectedType"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          <option value="">상품 유형을 선택하세요</option>
+          <option
+            v-for="type in productTypes"
+            :key="type.value"
+            :value="type.value"
+          >
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-8">
+        <label
+          for="product_code"
+          class="block mb-2 text-sm font-semibold text-gray-700"
+        >
+          추천할 상품
+        </label>
+        <select
+          id="product_code"
+          v-model="formData.product_code"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          <option value="">상품을 선택하세요</option>
+          <option
+            v-for="product in products"
+            :key="product.code"
+            :value="product.code"
+          >
+            {{ product.name }}
+          </option>
+        </select>
       </div>
 
       <div class="mb-8">
