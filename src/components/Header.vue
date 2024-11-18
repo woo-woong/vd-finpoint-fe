@@ -52,6 +52,12 @@ import { RouterLink } from 'vue-router';
         </li>
         <li class="flex gap-3">
           <RouterLink
+            to="/board"
+            class="transition-colors cursor-pointer hover:text-blue-500"
+          >
+            게시판
+          </RouterLink>
+          <RouterLink
             to="/logout"
             class="transition-colors cursor-pointer hover:text-blue-500"
           >
