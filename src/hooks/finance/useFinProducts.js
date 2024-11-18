@@ -1,13 +1,11 @@
 import { ref, watch, onMounted } from 'vue';
-import ky from 'ky';
+import FinProductsService from '@services/FinProductsService';
 
 export default function useFinProducts({
   path,
   searchParams = {},
   defaultVisibleCount = 3,
 }) {
-  const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}finance/${path}`;
-
   const finProducts = ref(null);
   const error = ref(null);
   const isLoading = ref(true);
@@ -20,15 +18,12 @@ export default function useFinProducts({
   const fetchData = async () => {
     try {
       isLoading.value = true;
-      const response = await ky
-        .get(API_URL, {
-          searchParams: searchParams,
-        })
-        .json();
+      const response = await FinProductsService(path, searchParams);
       finProducts.value = response;
     } catch (err) {
-      console.error('Failed to fetch data:', err);
-      error.value = err instanceof Error ? err : new Error('Unknown error');
+      console.error('데이터 로딩 실패:', err);
+      error.value =
+        '금융 상품 데이터를 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.';
     } finally {
       isLoading.value = false;
     }
