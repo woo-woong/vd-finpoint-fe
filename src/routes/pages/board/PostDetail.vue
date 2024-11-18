@@ -6,6 +6,10 @@ const router = useRouter();
 function goBack() {
   router.push('/board'); // 게시판 홈으로 돌아가기
 }
+
+function goEdit() {
+  router.push(`/board/1/edit`);
+}
 </script>
 
 <template>
@@ -40,6 +44,7 @@ function goBack() {
         <button
           type="button"
           class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow hover:bg-green-600"
+          @click="goEdit"
         >
           수정
         </button>
