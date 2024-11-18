@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import KakaoMap from '@/components/KakaoMap.vue';
+import KakaoMap from '@/components/external/KakaoMap.vue';
 import CurrencyConverter from '@/components/currency/CurrencyCalculation.vue';
 
 const isOpen = ref(false);

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
-import useFinProducts from '@hooks/useFinProducts';
+import useFinProducts from '@hooks/finance/useFinProducts';
 import FinanceCard from '@components/finance/FinanceCard.vue';
-import Loading from '../Loading.vue';
+import Loading from '../common/Loading.vue';
 
 // Props 정의
 const props = defineProps({

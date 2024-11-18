@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import Default from '@routes/layouts/Default.vue';
+import BaseLayout from '@routes/layouts/BaseLayout.vue';
 import Home from '@routes/pages/Home.vue';
 import BoardHome from '@routes/pages/board/BoardHome.vue';
 import PostDetail from '@routes/pages/board/PostDetail.vue';
@@ -16,7 +16,7 @@ import Logout from '@routes/pages/auth/Logout.vue';
 import SignUp from '@routes/pages/auth/SignUp.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 import CurrencyCalculation from '@/components/currency/CurrencyCalculation.vue';
-import KakaoMap from '@/components/KakaoMap.vue';
+import KakaoMap from '@/components/external/KakaoMap.vue';
 import ProfileHome from './pages/profile/ProfileHome.vue';
 import ProfileEdit from './pages/profile/ProfileEdit.vue';
 
@@ -24,7 +24,7 @@ import ProfileEdit from './pages/profile/ProfileEdit.vue';
 const routes = [
   {
     path: '/',
-    component: Default,
+    component: BaseLayout,
     children: [
       { path: '', component: Home },
       { path: '/board', component: BoardHome },

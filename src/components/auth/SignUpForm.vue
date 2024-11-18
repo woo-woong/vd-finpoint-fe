@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import ky from 'ky';
-import DaumAddress from '@components/DaumAddress.vue';
-import SignUpFormInput from '@components/SignUpFormInput.vue';
+import DaumAddress from '@components/external/DaumAddress.vue';
+import SignUpFormInput from '@components/auth/SignUpFormInput.vue';
 
 const formData = ref({
   username: '',
