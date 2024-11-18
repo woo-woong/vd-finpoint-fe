@@ -1,4 +1,3 @@
-<!-- SignUpFormInput.vue -->
 <script setup>
 defineProps({
   label: {

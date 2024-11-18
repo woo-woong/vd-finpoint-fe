@@ -1,3 +1,27 @@
+<script setup>
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
+import kakaoLogo from '@assets/images/kakao-login.png';
+import useLogin from '@/hooks/useLogin';
+
+const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
+const KAKAO_REDIRECT_URL = import.meta.env.VITE_KAKAO_REDIRECT_URL;
+const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URL}&response_type=code`;
+
+const username = ref('');
+const password = ref('');
+const { handleLoginClick, error } = useLogin();
+
+const handleSocialLoginClick = () => {
+  window.location.href = KAKAO_AUTH_URI;
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  handleLoginClick(username.value, password.value);
+};
+</script>
+
 <template>
   <div class="flex flex-col items-center p-20 rounded-md shadow-md">
     <h1 class="text-xl font-bold mb-7">로그인</h1>
@@ -54,26 +78,3 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import kakaoLogo from '@assets/images/kakao-login.png';
-import useLogin from '@/hooks/useLogin';
-
-const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const KAKAO_REDIRECT_URL = import.meta.env.VITE_KAKAO_REDIRECT_URL;
-const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URL}&response_type=code`;
-
-const username = ref('');
-const password = ref('');
-const { handleLoginClick, error } = useLogin();
-
-const handleSocialLoginClick = () => {
-  window.location.href = KAKAO_AUTH_URI;
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  handleLoginClick(username.value, password.value);
-};
-</script>

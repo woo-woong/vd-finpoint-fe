@@ -1,3 +1,30 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+// 폼 데이터
+const formData = ref({
+  title: '',
+  content: '',
+});
+
+// 폼 제출 처리
+const handleSubmit = () => {
+  if (!formData.value.title || !formData.value.content) {
+    alert('제목과 내용을 모두 입력해주세요.');
+    return;
+  }
+
+  // 예시: 데이터를 서버에 전송하는 로직
+  console.log('폼 데이터:', formData.value);
+
+  // 게시판 목록 페이지로 이동
+  router.push('/board');
+};
+</script>
+
 <template>
   <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
     <!-- 헤더 -->
@@ -57,29 +84,3 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-// 폼 데이터
-const formData = ref({
-  title: '',
-  content: '',
-});
-
-// 폼 제출 처리
-const handleSubmit = () => {
-  if (!formData.value.title || !formData.value.content) {
-    alert('제목과 내용을 모두 입력해주세요.');
-    return;
-  }
-
-  // 예시: 데이터를 서버에 전송하는 로직
-  console.log('폼 데이터:', formData.value);
-
-  // 게시판 목록 페이지로 이동
-  router.push('/board');
-};
-</script>

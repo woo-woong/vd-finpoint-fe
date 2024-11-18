@@ -1,4 +1,3 @@
-<!-- SignUpForm.vue -->
 <script setup>
 import { ref, watch } from 'vue';
 import ky from 'ky';

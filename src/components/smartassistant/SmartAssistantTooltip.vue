@@ -1,3 +1,71 @@
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import KakaoMap from '@/components/KakaoMap.vue';
+import CurrencyConverter from '@/components/currency/CurrencyCalculation.vue';
+
+const isOpen = ref(false);
+const buttonRef = ref(null);
+const tooltipRef = ref(null);
+
+const tooltipStyle = computed(() => {
+  if (!buttonRef.value) return {};
+
+  const buttonRect = buttonRef.value.getBoundingClientRect();
+  const tooltipBottom = buttonRect.top - 16;
+
+  return {
+    bottom: `${window.innerHeight - tooltipBottom}px`,
+    right: '2rem',
+  };
+});
+
+const toggleTooltip = () => {
+  isOpen.value = !isOpen.value;
+};
+
+const handleClickOutside = (event) => {
+  if (
+    isOpen.value &&
+    tooltipRef.value &&
+    !tooltipRef.value.contains(event.target) &&
+    !buttonRef.value.contains(event.target)
+  ) {
+    isOpen.value = false;
+  }
+};
+
+const handleEscKey = (event) => {
+  if (event.key === 'Escape' && isOpen.value) {
+    isOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener('keydown', handleEscKey);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('mousedown', handleClickOutside);
+  document.removeEventListener('keydown', handleEscKey);
+});
+</script>
+
+<style>
+@keyframes bounce-once {
+  0%,
+  100% {
+    transform: rotate(45deg) translateY(0);
+  }
+  50% {
+    transform: rotate(45deg) translateY(-5px);
+  }
+}
+
+.animate-bounce-once {
+  animation: bounce-once 1s ease-in-out;
+}
+</style>
 <!-- SmartAssistantTooltip.vue -->
 <template>
   <div class="relative">
@@ -89,71 +157,3 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import KakaoMap from '@/components/KakaoMap.vue';
-import CurrencyConverter from '@/components/currency/CurrencyCalculation.vue';
-
-const isOpen = ref(false);
-const buttonRef = ref(null);
-const tooltipRef = ref(null);
-
-const tooltipStyle = computed(() => {
-  if (!buttonRef.value) return {};
-
-  const buttonRect = buttonRef.value.getBoundingClientRect();
-  const tooltipBottom = buttonRect.top - 16;
-
-  return {
-    bottom: `${window.innerHeight - tooltipBottom}px`,
-    right: '2rem',
-  };
-});
-
-const toggleTooltip = () => {
-  isOpen.value = !isOpen.value;
-};
-
-const handleClickOutside = (event) => {
-  if (
-    isOpen.value &&
-    tooltipRef.value &&
-    !tooltipRef.value.contains(event.target) &&
-    !buttonRef.value.contains(event.target)
-  ) {
-    isOpen.value = false;
-  }
-};
-
-const handleEscKey = (event) => {
-  if (event.key === 'Escape' && isOpen.value) {
-    isOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside);
-  document.addEventListener('keydown', handleEscKey);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('mousedown', handleClickOutside);
-  document.removeEventListener('keydown', handleEscKey);
-});
-</script>
-
-<style>
-@keyframes bounce-once {
-  0%,
-  100% {
-    transform: rotate(45deg) translateY(0);
-  }
-  50% {
-    transform: rotate(45deg) translateY(-5px);
-  }
-}
-
-.animate-bounce-once {
-  animation: bounce-once 1s ease-in-out;
-}
-</style>

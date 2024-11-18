@@ -1,3 +1,18 @@
+<script setup>
+import { ref } from 'vue';
+
+// 사용자 정보
+const email = ref('hong@example.com');
+const password = ref('');
+const birthdate = ref('2000-01-01');
+
+// 폼 제출 처리 함수
+const submitForm = () => {
+  // 여기에 수정된 데이터를 서버로 전송하는 로직 추가
+  alert('수정 완료!');
+};
+</script>
+
 <template>
   <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
     <!-- 헤더 -->
@@ -66,18 +81,3 @@
     </main>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-// 사용자 정보
-const email = ref('hong@example.com');
-const password = ref('');
-const birthdate = ref('2000-01-01');
-
-// 폼 제출 처리 함수
-const submitForm = () => {
-  // 여기에 수정된 데이터를 서버로 전송하는 로직 추가
-  alert('수정 완료!');
-};
-</script>

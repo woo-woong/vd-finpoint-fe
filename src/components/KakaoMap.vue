@@ -1,31 +1,3 @@
-<template>
-  <div class="w-full h-full">
-    <KakaoMap
-      :lat="coordinate.lat"
-      :lng="coordinate.lng"
-      :level="3"
-      :draggable="true"
-      style="width: 100%; height: 100%"
-      @click="handleMapClick"
-    >
-      <KakaoMapMarker
-        :lat="coordinate.lat"
-        :lng="coordinate.lng"
-        :draggable="true"
-        @drag-end="handleMarkerDragEnd"
-      >
-        <!-- Optional: 마커 클릭시 보여줄 인포윈도우 -->
-        <template v-slot:infoWindow>
-          <div class="p-2">
-            위도: {{ coordinate.lat.toFixed(6) }}<br />
-            경도: {{ coordinate.lng.toFixed(6) }}
-          </div>
-        </template>
-      </KakaoMapMarker>
-    </KakaoMap>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
@@ -60,3 +32,32 @@ const handleMarkerDragEnd = (marker) => {
   height: 100%;
 }
 </style>
+    
+<template>
+  <div class="w-full h-full">
+    <KakaoMap
+      :lat="coordinate.lat"
+      :lng="coordinate.lng"
+      :level="3"
+      :draggable="true"
+      style="width: 100%; height: 100%"
+      @click="handleMapClick"
+    >
+      <KakaoMapMarker
+        :lat="coordinate.lat"
+        :lng="coordinate.lng"
+        :draggable="true"
+        @drag-end="handleMarkerDragEnd"
+      >
+        <!-- Optional: 마커 클릭시 보여줄 인포윈도우 -->
+        <template v-slot:infoWindow>
+          <div class="p-2">
+            위도: {{ coordinate.lat.toFixed(6) }}<br />
+            경도: {{ coordinate.lng.toFixed(6) }}
+          </div>
+        </template>
+      </KakaoMapMarker>
+    </KakaoMap>
+  </div>
+</template>
+

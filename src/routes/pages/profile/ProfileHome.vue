@@ -1,3 +1,7 @@
+<script setup>
+// 여기에 필요한 로직이나 데이터 바인딩을 추가할 수 있습니다.
+</script>
+
 <template>
   <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
     <!-- 헤더 -->
@@ -49,7 +53,3 @@
     </main>
   </div>
 </template>
-
-<script setup>
-// 여기에 필요한 로직이나 데이터 바인딩을 추가할 수 있습니다.
-</script>

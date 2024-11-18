@@ -1,3 +1,18 @@
+<script setup>
+import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
+
+defineComponent({
+  name: 'BoardHome',
+});
+
+const router = useRouter();
+
+const goToNewPost = () => {
+  router.push('/board/new'); // 글쓰기 페이지로 이동
+};
+</script>
+
 <template>
   <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
     <!-- 헤더 -->
@@ -105,18 +120,3 @@
     </main>
   </div>
 </template>
-
-<script setup>
-import { defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
-
-defineComponent({
-  name: 'BoardHome',
-});
-
-const router = useRouter();
-
-const goToNewPost = () => {
-  router.push('/board/new'); // 글쓰기 페이지로 이동
-};
-</script>

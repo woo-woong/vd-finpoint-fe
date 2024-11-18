@@ -1,3 +1,13 @@
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goBack() {
+  router.push('/board'); // 게시판 홈으로 돌아가기
+}
+</script>
+
 <template>
   <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
     <!-- 헤더 -->
@@ -50,13 +60,3 @@
     </main>
   </div>
 </template>
-
-<script setup>
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-function goBack() {
-  router.push('/board'); // 게시판 홈으로 돌아가기
-}
-</script>
