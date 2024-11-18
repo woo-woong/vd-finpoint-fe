@@ -15,7 +15,7 @@ import Login from '@routes/pages/auth/Login.vue';
 import Logout from '@routes/pages/auth/Logout.vue';
 import SignUp from '@routes/pages/auth/SignUp.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
-import CurrencyCalculation from '@/components/curreny/CurrencyCalculation.vue';
+import CurrencyCalculation from '@/components/currency/CurrencyCalculation.vue';
 import KakaoMap from '@/components/KakaoMap.vue';
 
 // 라우터 설정
