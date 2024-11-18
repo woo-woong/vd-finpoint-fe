@@ -10,5 +10,5 @@
 
 <script setup>
 import Header from '@/components/common/Header.vue';
-import SmartAssistantTooltip from '@/components/smartassistant/SmartAssistantTooltip.vue';
+import SmartAssistantTooltip from '@/components/smartassistant/SmartAssistantButton.vue';
 </script>
