@@ -54,9 +54,6 @@ const goToNewPost = () => {
               <th class="p-4 text-sm font-semibold text-gray-700 border-b">
                 작성일
               </th>
-              <th class="p-4 text-sm font-semibold text-gray-700 border-b">
-                관리
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -72,20 +69,6 @@ const goToNewPost = () => {
               </td>
               <td class="p-4 border-b">관리자</td>
               <td class="p-4 border-b">2024-11-18</td>
-              <td class="p-4 border-b">
-                <button
-                  type="button"
-                  class="px-3 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600"
-                >
-                  수정
-                </button>
-                <button
-                  type="button"
-                  class="px-3 py-1 ml-2 text-xs text-white bg-red-500 rounded hover:bg-red-600"
-                >
-                  삭제
-                </button>
-              </td>
             </tr>
             <tr class="hover:bg-gray-100">
               <td class="p-4 border-b">2</td>
@@ -99,20 +82,6 @@ const goToNewPost = () => {
               </td>
               <td class="p-4 border-b">사용자</td>
               <td class="p-4 border-b">2024-11-17</td>
-              <td class="p-4 border-b">
-                <button
-                  type="button"
-                  class="px-3 py-1 text-xs text-white bg-green-500 rounded hover:bg-green-600"
-                >
-                  수정
-                </button>
-                <button
-                  type="button"
-                  class="px-3 py-1 ml-2 text-xs text-white bg-red-500 rounded hover:bg-red-600"
-                >
-                  삭제
-                </button>
-              </td>
             </tr>
           </tbody>
         </table>
