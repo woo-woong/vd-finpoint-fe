@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue';
 import useFinProducts from '@hooks/useFinProducts';
 import FinanceCard from '@components/finance/FinanceCard.vue';
+import Loading from '../Loading.vue';
 
 // Props 정의
 const props = defineProps({
@@ -32,7 +33,7 @@ const { finProducts, error, visibleCount, isLoading, loadMoreProducts } =
       <p>Failed to load data: {{ error.message }}</p>
     </div>
     <div v-else-if="isLoading">
-      <p>Loading...</p>
+      <Loading />
     </div>
 
     <!-- 제품 목록 렌더링 -->
