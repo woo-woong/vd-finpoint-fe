@@ -49,6 +49,28 @@ onUnmounted(() => {
   document.removeEventListener('mousedown', handleClickOutside);
   document.removeEventListener('keydown', handleEscKey);
 });
+
+const showKakaoMap = ref(false);
+const showConverter = ref(false);
+const showButtons = ref(true);
+
+const toggleKakaoMap = () => {
+  showKakaoMap.value = true;
+  showConverter.value = false;
+  showButtons.value = false;
+};
+
+const toggleConverter = () => {
+  showConverter.value = true;
+  showKakaoMap.value = false;
+  showButtons.value = false;
+};
+
+const goBack = () => {
+  showKakaoMap.value = false;
+  showConverter.value = false;
+  showButtons.value = true;
+};
 </script>
 
 <style>
@@ -101,12 +123,12 @@ onUnmounted(() => {
       >
         <!-- Arrow -->
         <div
-          class="absolute w-4 h-4 transform rotate-45 bg-white bottom-[-8px] right-8 animate-bounce-once"
+          class="absolute w-4 h-4 transform rotate-45 bg-white bottom-[-8px] right-8"
         ></div>
 
         <!-- Content -->
         <div
-          class="relative z-10 flex w-[800px] h-[500px] bg-white rounded-lg overflow-hidden"
+          class="relative z-10 flex w-[300px] h-[300px] p-4 bg-white rounded-lg overflow-hidden"
         >
           <div class="absolute flex justify-end top-2 right-2">
             <button
@@ -118,21 +140,64 @@ onUnmounted(() => {
           </div>
 
           <!-- Animated Content Sections -->
-          <div class="flex w-full pt-8">
+          <div class="flex flex-col gap-2 items-center w-full pt-8">
+            <!-- 버튼 그룹 -->
             <Transition
-              enter-active-class="transition-all duration-500 delay-200"
-              enter-from-class="opacity-0 translate-x-[-50px]"
-              enter-to-class="translate-x-0 opacity-100"
+              enter-active-class="transition-all duration-500"
+              leave-active-class="transition-all duration-500"
+              enter-from-class="opacity-0"
+              leave-to-class="opacity-0"
             >
-              <KakaoMap v-show="isOpen" class="w-1/2" />
+              <div v-if="showButtons" class="w-full space-y-2">
+                <button
+                  @click="toggleKakaoMap"
+                  class="px-4 py-2 w-full text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                >
+                  카카오맵
+                </button>
+                <button
+                  @click="toggleConverter"
+                  class="px-4 py-2 w-full text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                >
+                  환율 계산기
+                </button>
+              </div>
             </Transition>
 
+            <!-- 카카오맵 -->
             <Transition
-              enter-active-class="transition-all duration-500 delay-400"
-              enter-from-class="opacity-0 translate-x-[50px]"
-              enter-to-class="translate-x-0 opacity-100"
+              enter-active-class="transition-all duration-500"
+              leave-active-class="transition-all duration-500"
+              enter-from-class="opacity-0 translate-x-[-20px]"
+              leave-to-class="opacity-0 translate-x-[-20px]"
             >
-              <CurrencyConverter v-show="isOpen" class="w-1/2" />
+              <div v-if="showKakaoMap" class="w-full">
+                <KakaoMap class="w-full" />
+                <button
+                  @click="goBack"
+                  class="mt-4 px-4 py-2 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                >
+                  돌아가기
+                </button>
+              </div>
+            </Transition>
+
+            <!-- 환율 계산기 -->
+            <Transition
+              enter-active-class="transition-all duration-500"
+              leave-active-class="transition-all duration-500"
+              enter-from-class="opacity-0 translate-x-[-20px]"
+              leave-to-class="opacity-0 translate-x-[-20px]"
+            >
+              <div v-if="showConverter" class="w-full">
+                <CurrencyConverter class="w-full" />
+                <button
+                  @click="goBack"
+                  class="mt-4 px-4 py-2 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                >
+                  돌아가기
+                </button>
+              </div>
             </Transition>
           </div>
         </div>
