@@ -12,7 +12,7 @@ import { RouterLink } from 'vue-router';
         >
           FinPoint
         </RouterLink>
-        <li class="flex justify-center flex-grow ml-24 space-x-8">
+        <li class="flex justify-center flex-grow space-x-8 ml-44">
           <RouterLink
             to="/deposit"
             class="transition-colors cursor-pointer hover:text-blue-500"
@@ -51,6 +51,12 @@ import { RouterLink } from 'vue-router';
           </RouterLink> -->
         </li>
         <li class="flex gap-3">
+          <RouterLink
+            to="/profile"
+            class="transition-colors cursor-pointer hover:text-blue-500"
+          >
+            프로필
+          </RouterLink>
           <RouterLink
             to="/board"
             class="transition-colors cursor-pointer hover:text-blue-500"

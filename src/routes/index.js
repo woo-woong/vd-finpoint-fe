@@ -17,6 +17,8 @@ import SignUp from '@routes/pages/auth/SignUp.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 import CurrencyCalculation from '@/components/currency/CurrencyCalculation.vue';
 import KakaoMap from '@/components/KakaoMap.vue';
+import ProfileHome from './pages/profile/ProfileHome.vue';
+import ProfileEdit from './pages/profile/ProfileEdit.vue';
 
 // 라우터 설정
 const routes = [
@@ -48,6 +50,8 @@ const routes = [
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
       { path: '/currency-calculation', component: CurrencyCalculation },
       { path: '/kakao-map', component: KakaoMap },
+      { path: '/profile', component: ProfileHome },
+      { path: '/profile/edit', component: ProfileEdit },
     ],
   },
 ];
