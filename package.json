@@ -20,7 +20,8 @@
     "universal-cookie": "^7.2.2",
     "vue": "^3.5.12",
     "vue-daum-postcode": "^1.2.1",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-kakao-maps": "^2.3.10"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
