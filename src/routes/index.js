@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import BaseLayout from '@routes/layouts/BaseLayout.vue';
 import Home from '@routes/pages/Home.vue';
 import BoardHome from '@routes/pages/board/BoardHome.vue';
 import PostDetail from '@routes/pages/board/PostDetail.vue';
-import PostWrite from './pages/board/PostWrite.vue';
+import PostWrite from '@routes/pages/board/PostWrite.vue';
+import PostEdit from '@routes/pages/board/PostEdit.vue';
 import Deposit from '@routes/pages/finance/Deposit.vue';
 import Savings from '@routes/pages/finance/Savings.vue';
 import AnnunitySavings from '@routes/pages/finance/AnnuitySavings.vue';
@@ -37,6 +37,11 @@ const routes = [
         path: '/board/new',
         name: 'PostWrite',
         component: PostWrite,
+      },
+      {
+        path: '/board/1/edit',
+        name: 'PostEdit',
+        component: PostEdit,
       },
       { path: '/deposit', component: Deposit },
       { path: '/savings', component: Savings },
