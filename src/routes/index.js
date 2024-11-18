@@ -2,6 +2,9 @@ import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Default from '@routes/layouts/Default.vue';
 import Home from '@routes/pages/Home.vue';
+import BoardHome from '@routes/pages/board/BoardHome.vue';
+import PostDetail from '@routes/pages/board/PostDetail.vue';
+import PostWrite from './pages/board/PostWrite.vue';
 import Deposit from '@routes/pages/finance/Deposit.vue';
 import Savings from '@routes/pages/finance/Savings.vue';
 import AnnunitySavings from '@routes/pages/finance/AnnuitySavings.vue';
@@ -20,6 +23,17 @@ const routes = [
     component: Default,
     children: [
       { path: '', component: Home },
+      { path: '/board', component: BoardHome },
+      {
+        path: '/board/:id',
+        name: 'PostDetail',
+        component: PostDetail,
+      },
+      {
+        path: '/board/new',
+        name: 'PostWrite',
+        component: PostWrite,
+      },
       { path: '/deposit', component: Deposit },
       { path: '/savings', component: Savings },
       { path: '/annuity-savings', component: AnnunitySavings },

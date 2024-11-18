@@ -1,7 +1,7 @@
 <template>
   <div class="App">
-    <main class="flex flex-col items-center gap-5">
-      <Header></Header>
+    <Header></Header>
+    <main class="flex flex-col items-center w-[1000px] mx-auto">
       <router-view />
     </main>
   </div>
