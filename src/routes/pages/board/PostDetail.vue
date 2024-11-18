@@ -36,7 +36,7 @@ function goBack() {
       </div>
 
       <!-- 버튼 그룹 -->
-      <div class="flex justify-between">
+      <div class="flex justify-end gap-2">
         <button
           type="button"
           class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow hover:bg-green-600"
