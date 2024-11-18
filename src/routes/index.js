@@ -47,6 +47,7 @@ const routes = [
       { path: '/signup', component: SignUp },
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
       { path: '/currency-calculation', component: CurrencyCalculation },
+      { path: '/kakao-map', component: KakaoMap },
     ],
   },
 ];
