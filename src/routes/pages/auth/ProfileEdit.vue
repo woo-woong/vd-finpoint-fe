@@ -13,6 +13,7 @@ const address = ref(userData.address);
 const detail_address = ref(userData.detail_address);
 
 // 폼 제출 처리 함수
+// 새로고침 시 데이터 유지가 안되는 현상 해결 필요
 const submitForm = () => {
   const updatedData = {
     birth_date: birth_date.value,
