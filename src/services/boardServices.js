@@ -1,8 +1,8 @@
 import ky from 'ky';
 import { useCookie } from '@/hooks/auth/useCookie';
 
-const BOARD_API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}board/`;
-const FINANCE_API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}finance/`;
+const BOARD_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}board/`;
+const FINANCE_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}finance/`;
 
 export default function BoardService() {
   const csrfToken = useCookie('csrftoken').value._value;

@@ -1,7 +1,7 @@
 import ky from 'ky';
 
 export default async function FinProductsService(path, searchParams = {}) {
-  const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}finance/${path}`;
+  const API_URL = `${import.meta.env.VITE_BACKEND_API_URL}finance/${path}`;
   try {
     const response = await ky.get(API_URL, { searchParams });
     return response.json();

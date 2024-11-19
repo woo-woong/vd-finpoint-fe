@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}`;
+const API_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
 // CSRF 토큰을 가져오는 함수
 const getCsrfToken = () => {

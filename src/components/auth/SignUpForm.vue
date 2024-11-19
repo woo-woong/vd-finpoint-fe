@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
   console.log('전송할 데이터:', formData.value);
   try {
     const response = await ky.post(
-      `${import.meta.env.VITE_FINANCIAL_API_URL}signup/`,
+      `${import.meta.env.VITE_BACKEND_API_URL}signup/`,
       {
         json: formData.value,
       }
