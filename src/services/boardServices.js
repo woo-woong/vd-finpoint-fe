@@ -67,9 +67,14 @@ export default function BoardService() {
         throw new Error('게시글 수정에 실패했습니다.');
       }
     },
-    delete: async (id) => {
+    remove: async (board_id) => {
       try {
-        const response = await ky.delete(`${BOARD_API_URL}delete/${id}`);
+        const response = await ky.delete(`${BOARD_API_URL}${board_id}/`, {
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+          credentials: 'include',
+        });
         return response.json();
       } catch (error) {
         console.error('API 요청 실패:', error);
