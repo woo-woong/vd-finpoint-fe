@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
-import CurrencyConverter from '@/components/currency/CurrencyCalculation.vue';
+import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
 
 const isOpen = ref(false);
 const buttonRef = ref(null);
@@ -140,7 +140,7 @@ const goBack = () => {
           </div>
 
           <!-- Animated Content Sections -->
-          <div class="flex flex-col gap-2 items-center w-full pt-8">
+          <div class="flex flex-col items-center w-full gap-2 pt-8">
             <!-- 버튼 그룹 -->
             <Transition
               enter-active-class="transition-all duration-500"
@@ -151,13 +151,13 @@ const goBack = () => {
               <div v-if="showButtons" class="w-full space-y-2">
                 <button
                   @click="toggleKakaoMap"
-                  class="px-4 py-2 w-full text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
                 >
                   카카오맵
                 </button>
                 <button
                   @click="toggleConverter"
-                  class="px-4 py-2 w-full text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
                 >
                   환율 계산기
                 </button>
@@ -175,7 +175,7 @@ const goBack = () => {
                 <KakaoMap class="w-full" />
                 <button
                   @click="goBack"
-                  class="mt-4 px-4 py-2 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                  class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
                 >
                   돌아가기
                 </button>
@@ -190,10 +190,10 @@ const goBack = () => {
               leave-to-class="opacity-0 translate-x-[-20px]"
             >
               <div v-if="showConverter" class="w-full">
-                <CurrencyConverter class="w-full" />
+                <exchangeRateCalculation class="w-full" />
                 <button
                   @click="goBack"
-                  class="mt-4 px-4 py-2 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                  class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
                 >
                   돌아가기
                 </button>

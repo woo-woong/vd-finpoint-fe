@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted } from 'vue';
-import currencyServices from '@/services/currencyServices';
+import exchangeService from '@/services/exchangeService';
 
-const fetchCurrencyData = async () => {
+const fetchExchangeRateData = async () => {
   try {
-    const response = await currencyServices();
+    const response = await exchangeService();
     console.log(response);
   } catch (err) {
     console.error(err);
@@ -12,7 +12,7 @@ const fetchCurrencyData = async () => {
 };
 
 onMounted(() => {
-  fetchCurrencyData();
+  fetchExchangeRateData();
 });
 </script>
 
