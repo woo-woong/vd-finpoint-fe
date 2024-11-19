@@ -26,6 +26,18 @@ export default function BoardService() {
         throw new Error('게시글 생성에 실패했습니다.');
       }
     },
+    read: async (board_id) => {
+      try {
+        const response = await ky.get(
+          `${FINANCE_API_URL}board-product/${board_id}/`
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('API 요청 실패:', error);
+        throw new Error('게시글 상세조회에 실패했습니다.');
+      }
+    },
     list: async () => {
       try {
         const response = await ky.get(BOARD_API_URL);

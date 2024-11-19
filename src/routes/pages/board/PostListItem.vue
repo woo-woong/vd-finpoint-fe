@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import useDate from '@/hooks/useDate';
 
 const props = defineProps({
   id: Number,
@@ -7,20 +7,7 @@ const props = defineProps({
   author: String,
   created_at: String,
 });
-const formattedDate = computed(() => {
-  if (!props.created_at) return '';
-
-  const date = new Date(props.created_at);
-
-  return date.toLocaleString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false, // 24시간 형식 사용
-  });
-});
+const formattedDate = useDate(props.created_at);
 </script>
 
 <template>
@@ -29,7 +16,7 @@ const formattedDate = computed(() => {
     <td class="p-4 border-b">
       <router-link
         :to="`/board/${id}`"
-        class="text-blue-600 underline hover:text-blue-800"
+        class="text-blue-600 hover:text-blue-800"
       >
         {{ title }}
       </router-link>
