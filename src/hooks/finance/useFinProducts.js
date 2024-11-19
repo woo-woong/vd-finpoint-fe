@@ -1,5 +1,5 @@
 import { ref, watch, onMounted } from 'vue';
-import FinProductsService from '@services/FinProductsService';
+import FinProductsService from '@/services/finProductsService';
 
 export default function useFinProducts({
   path,
