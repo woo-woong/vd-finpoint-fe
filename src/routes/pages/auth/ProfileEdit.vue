@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useCounterStore } from '@/stores/counter';
+import profileService from '@/services/profileService';
 
 // 사용자 정보 초기값 설정
 const userData = useCounterStore().userData;
@@ -19,6 +20,7 @@ const submitForm = () => {
     address: address.value,
     detail_address: detail_address.value,
   };
+  profileService().editProfile(updatedData);
   console.log('수정된 데이터:', updatedData);
   alert('수정이 완료되었습니다!');
 };
