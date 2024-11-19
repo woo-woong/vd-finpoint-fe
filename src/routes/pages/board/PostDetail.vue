@@ -2,7 +2,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import BoardService from '@/services/boardService';
 import { ref, onMounted } from 'vue';
-import useDate from '@/hooks/useDate';
+import useDate from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
 
 const router = useRouter();

@@ -1,5 +1,5 @@
 <script setup>
-import useDate from '@/hooks/useDate';
+import useDate from '@/hooks/common/useDate';
 
 const props = defineProps({
   id: Number,
