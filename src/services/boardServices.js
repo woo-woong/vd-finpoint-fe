@@ -1,12 +1,24 @@
 import ky from 'ky';
+import { useCookie } from '@/hooks/auth/useCookie';
 
 const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}board/`;
 
 export default function BoardService() {
+  const csrfToken = useCookie('csrftoken').value._value;
   return {
-    create: async () => {
+    create: async (formData) => {
       try {
-        const response = await ky.post(`${API_URL}create/`);
+        // CSRF 토큰이 존재하는지 먼저 확인
+        if (!csrfToken) {
+          throw new Error('CSRF 토큰이 없습니다.');
+        }
+        const response = await ky.post(`${API_URL}create/`, {
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+          credentials: 'include',
+          json: formData,
+        });
         return response.json();
       } catch (error) {
         console.error('API 요청 실패:', error);
