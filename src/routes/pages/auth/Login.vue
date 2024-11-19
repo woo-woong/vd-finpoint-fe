@@ -10,7 +10,7 @@ const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKA
 
 const username = ref('');
 const password = ref('');
-const { handleLoginClick, error } = useLogin();
+const { handleLogin } = useLogin();
 
 const handleSocialLoginClick = () => {
   window.location.href = KAKAO_AUTH_URI;
@@ -18,7 +18,7 @@ const handleSocialLoginClick = () => {
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  handleLoginClick(username.value, password.value);
+  handleLogin(username.value, password.value);
 };
 </script>
 

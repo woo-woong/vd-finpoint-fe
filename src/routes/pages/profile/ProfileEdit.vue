@@ -1,16 +1,9 @@
 <script setup>
 import { ref } from 'vue';
+import { useCounterStore } from '@/stores/counter';
 
 // 사용자 정보 초기값 설정
-const userData = {
-  username: 'testuser2',
-  email: 'test123452@example.com',
-  name: '홍길동2',
-  birth_date: '1990-01-01',
-  phone: '010-1234-5678',
-  address: '서울시 강남구',
-  detail_address: '123동 456호',
-};
+const userData = useCounterStore().userData;
 
 // 수정 가능한 필드만 ref로 설정
 const birth_date = ref(userData.birth_date);
