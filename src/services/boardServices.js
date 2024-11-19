@@ -26,7 +26,7 @@ export default function BoardService() {
         throw new Error('게시글 생성에 실패했습니다.');
       }
     },
-    read: async () => {
+    list: async () => {
       try {
         const response = await ky.get(BOARD_API_URL);
         const data = await response.json();

@@ -8,7 +8,7 @@ defineComponent({
   name: 'BoardHome',
 });
 
-const { read } = BoardService();
+const { list } = BoardService();
 
 const router = useRouter();
 
@@ -16,7 +16,7 @@ const Posts = ref([]);
 
 const fetchPosts = async () => {
   try {
-    const response = await read();
+    const response = await list();
     Posts.value = response;
   } catch (error) {
     console.error('게시물 목록 조회 실패:', error);
