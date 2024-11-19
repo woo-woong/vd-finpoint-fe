@@ -1,7 +1,9 @@
+import { ref } from 'vue';
 import { authService } from '@services/authService';
 import { useCounterStore } from '@/stores/counter';
 
 export default function useAuth() {
+  const error = ref(null);
   const { login, logout } = authService;
 
   const handleLogin = async (username, password) => {
@@ -12,6 +14,7 @@ export default function useAuth() {
       return response;
     } catch (err) {
       console.error('로그인 실패:', err);
+      error.value = '로그인 실패. 아이디와 비밀번호를 확인해주세요.';
       throw err;
     }
   };
@@ -27,6 +30,7 @@ export default function useAuth() {
   };
 
   return {
+    error,
     handleLogin,
     handleLogout,
   };
