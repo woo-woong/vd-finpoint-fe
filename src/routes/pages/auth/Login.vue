@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import kakaoLogo from '@assets/images/kakao-login.png';
-import useLogin from '@/hooks/auth/useAuth';
+import useAuth from '@/hooks/auth/useAuth';
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
 const KAKAO_REDIRECT_URL = import.meta.env.VITE_KAKAO_REDIRECT_URL;
@@ -10,7 +10,7 @@ const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKA
 
 const username = ref('');
 const password = ref('');
-const { handleLogin } = useLogin();
+const { handleLogin } = useAuth();
 
 const handleSocialLoginClick = () => {
   window.location.href = KAKAO_AUTH_URI;

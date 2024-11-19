@@ -1,7 +1,7 @@
 import { authService } from '@services/authService';
 import { useCounterStore } from '@/stores/counter';
 
-export const useLogin = () => {
+export default function useAuth() {
   const { login, logout } = authService;
 
   const handleLogin = async (username, password) => {
@@ -30,6 +30,4 @@ export const useLogin = () => {
     handleLogin,
     handleLogout,
   };
-};
-
-export default useLogin;
+}
