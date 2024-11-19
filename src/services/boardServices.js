@@ -69,13 +69,13 @@ export default function BoardService() {
     },
     remove: async (board_id) => {
       try {
-        const response = await ky.delete(`${BOARD_API_URL}${board_id}/`, {
+        await ky.delete(`${BOARD_API_URL}${board_id}/`, {
           headers: {
             'X-CSRFToken': csrfToken,
           },
           credentials: 'include',
         });
-        return response.json();
+        return true;
       } catch (error) {
         console.error('API 요청 실패:', error);
         throw new Error('게시글 삭제에 실패했습니다.');

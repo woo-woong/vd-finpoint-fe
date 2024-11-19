@@ -11,7 +11,7 @@ const postData = ref(null);
 const productData = ref(null);
 
 const boardId = route.params.id;
-const { read } = BoardService();
+const { read, remove } = BoardService();
 
 let formattedDate;
 
@@ -23,6 +23,15 @@ const fetchBoardData = async () => {
     formattedDate = useDate(postData.value.created_at);
   } catch (error) {
     console.error('게시글 조회 실패:', error);
+  }
+};
+
+const handleDelete = async () => {
+  try {
+    await remove(route.params.id);
+    router.push('/board');
+  } catch (error) {
+    console.error('게시글 삭제 실패:', error);
   }
 };
 
@@ -81,6 +90,7 @@ function goEdit() {
         <button
           type="button"
           class="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg shadow hover:bg-red-600"
+          @click="handleDelete"
         >
           삭제
         </button>
