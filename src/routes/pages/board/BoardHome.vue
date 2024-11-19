@@ -1,12 +1,31 @@
 <script setup>
-import { defineComponent } from 'vue';
+import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import BoardService from '@/services/boardServices';
+import PostListItem from './PostListItem.vue';
 
 defineComponent({
   name: 'BoardHome',
 });
 
+const { read } = BoardService();
+
 const router = useRouter();
+
+const Posts = ref([]);
+
+const fetchPosts = async () => {
+  try {
+    const response = await read();
+    Posts.value = response;
+  } catch (error) {
+    console.error('게시물 목록 조회 실패:', error);
+  }
+};
+
+onMounted(() => {
+  fetchPosts();
+});
 
 const goToNewPost = () => {
   router.push('/board/new'); // 글쓰기 페이지로 이동
@@ -57,32 +76,14 @@ const goToNewPost = () => {
             </tr>
           </thead>
           <tbody>
-            <tr class="hover:bg-gray-100">
-              <td class="p-4 border-b">1</td>
-              <td class="p-4 border-b">
-                <router-link
-                  to="/board/1"
-                  class="text-blue-600 underline hover:text-blue-800"
-                >
-                  첫 번째 게시글
-                </router-link>
-              </td>
-              <td class="p-4 border-b">관리자</td>
-              <td class="p-4 border-b">2024-11-18</td>
-            </tr>
-            <tr class="hover:bg-gray-100">
-              <td class="p-4 border-b">2</td>
-              <td class="p-4 border-b">
-                <router-link
-                  to="/board/2"
-                  class="text-blue-600 underline hover:text-blue-800"
-                >
-                  두 번째 게시글
-                </router-link>
-              </td>
-              <td class="p-4 border-b">사용자</td>
-              <td class="p-4 border-b">2024-11-17</td>
-            </tr>
+            <PostListItem
+              v-for="post in Posts"
+              :key="post.id"
+              :id="post.id"
+              :title="post.title"
+              :author="post.user.name"
+              :created_at="post.created_at"
+            />
           </tbody>
         </table>
       </div>
