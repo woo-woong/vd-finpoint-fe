@@ -1,5 +1,19 @@
 <script setup>
-// 여기에 필요한 로직이나 데이터 바인딩을 추가할 수 있습니다.
+import { ref } from 'vue';
+
+// 사용자 정보 데이터
+const userData = {
+  username: 'testuser2',
+  email: 'test123452@example.com',
+  name: '홍길동2',
+  birth_date: '1990-01-01',
+  phone: '010-1234-5678',
+  address: '서울시 강남구',
+  detail_address: '123동 456호',
+};
+
+// 프로필 이미지 URL (기본 이미지 사용)
+const profileImageUrl = 'https://via.placeholder.com/150';
 </script>
 
 <template>
@@ -17,24 +31,46 @@
       <!-- 프로필 사진 -->
       <div class="flex justify-center mb-6">
         <img
-          src="https://via.placeholder.com/150"
+          :src="profileImageUrl"
           alt="프로필 사진"
-          class="object-cover w-32 h-32 rounded-full"
+          class="object-cover w-32 h-32 border-4 border-gray-200 rounded-full"
         />
       </div>
 
       <!-- 프로필 정보 -->
       <div class="w-full mb-8">
-        <h2 class="text-xl font-semibold">사용자 정보</h2>
-        <div class="mt-4">
-          <p class="text-sm text-gray-700">
-            이름: <span class="font-semibold">홍길동</span>
+        <h2 class="mb-4 text-xl font-semibold">사용자 정보</h2>
+
+        <!-- 기본 정보 -->
+        <div class="p-4 mb-4 rounded-lg bg-gray-50">
+          <h3 class="mb-2 font-semibold text-blue-600 text-md">기본 정보</h3>
+          <p class="py-1 text-sm text-gray-700">
+            아이디: <span class="font-semibold">{{ userData.username }}</span>
           </p>
-          <p class="text-sm text-gray-700">
-            이메일: <span class="font-semibold">hong@example.com</span>
+          <p class="py-1 text-sm text-gray-700">
+            이름: <span class="font-semibold">{{ userData.name }}</span>
           </p>
-          <p class="text-sm text-gray-700">
-            가입일: <span class="font-semibold">2024-01-01</span>
+          <p class="py-1 text-sm text-gray-700">
+            이메일: <span class="font-semibold">{{ userData.email }}</span>
+          </p>
+        </div>
+
+        <!-- 추가 정보 -->
+        <div class="p-4 rounded-lg bg-gray-50">
+          <h3 class="mb-2 font-semibold text-blue-600 text-md">추가 정보</h3>
+          <p class="py-1 text-sm text-gray-700">
+            생년월일:
+            <span class="font-semibold">{{ userData.birth_date }}</span>
+          </p>
+          <p class="py-1 text-sm text-gray-700">
+            전화번호: <span class="font-semibold">{{ userData.phone }}</span>
+          </p>
+          <p class="py-1 text-sm text-gray-700">
+            주소: <span class="font-semibold">{{ userData.address }}</span>
+          </p>
+          <p class="py-1 text-sm text-gray-700">
+            상세주소:
+            <span class="font-semibold">{{ userData.detail_address }}</span>
           </p>
         </div>
       </div>
@@ -44,7 +80,7 @@
         <router-link to="/profile/edit">
           <button
             type="button"
-            class="px-6 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow hover:bg-green-600"
+            class="px-6 py-2 text-sm font-semibold text-white transition duration-200 bg-green-500 rounded-lg shadow hover:bg-green-600"
           >
             프로필 수정
           </button>
