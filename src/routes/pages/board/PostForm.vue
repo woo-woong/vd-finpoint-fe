@@ -54,6 +54,17 @@ const fetchProducts = async () => {
     alert('상품 목록을 불러오는데 실패했습니다.');
   }
 };
+const fetchPost = async (postId) => {
+  try {
+    const post = await BoardService().read(postId); // 게시글 조회 API 호출
+    formData.value.title = post.board.title;
+    formData.value.product_code = post.product.fin_prdt_cd;
+    formData.value.content = post.board.content;
+  } catch (error) {
+    console.error('게시글 불러오기 실패:', error);
+    alert('게시글을 불러오는데 실패했습니다.');
+  }
+};
 
 watch(selectedType, () => {
   fetchProducts();
@@ -61,9 +72,12 @@ watch(selectedType, () => {
 
 onMounted(() => {
   fetchProducts();
+  if (props.mode === 'edit') {
+    fetchPost(route.params.id); // edit 모드일 때 게시글 데이터 가져오기
+  }
 });
 
-const { create } = BoardService();
+const { create, update } = BoardService();
 
 const handleSubmit = async () => {
   if (!formData.value.title || !formData.value.content) {
@@ -78,9 +92,13 @@ const handleSubmit = async () => {
     } catch (error) {
       console.error('게시글 생성 실패:', error);
     }
-  } else {
-    // 수정 API 호출
-    console.log('글 수정:', formData.value);
+  } else if (props.mode === 'edit') {
+    try {
+      await update(route.params.id, formData.value);
+      router.push('/board');
+    } catch (error) {
+      console.log('글 수정:', formData.value);
+    }
   }
 
   router.push('/board');

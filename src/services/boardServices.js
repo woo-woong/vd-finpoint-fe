@@ -48,9 +48,19 @@ export default function BoardService() {
         throw new Error('게시글 조회에 실패했습니다.');
       }
     },
-    update: async (id) => {
+    update: async (board_id, formData) => {
       try {
-        const response = await ky.put(`${BOARD_API_URL}update/${id}`);
+        if (!csrfToken) {
+          throw new Error('CSRF 토큰이 없습니다.');
+        }
+        // CSRF 토큰이 존재하는지 먼저 확인
+        const response = await ky.put(`${BOARD_API_URL}${board_id}/`, {
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+          credentials: 'include',
+          json: formData,
+        });
         return response.json();
       } catch (error) {
         console.error('API 요청 실패:', error);
