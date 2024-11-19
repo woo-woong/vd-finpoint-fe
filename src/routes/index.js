@@ -15,8 +15,8 @@ import Logout from '@routes/pages/auth/Logout.vue';
 import SignUp from '@routes/pages/auth/SignUp.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
-import ProfileHome from './pages/profile/ProfileHome.vue';
-import ProfileEdit from './pages/profile/ProfileEdit.vue';
+import ProfileHome from '@routes/pages/auth/ProfileHome.vue';
+import ProfileEdit from '@routes/pages/auth/ProfileEdit.vue';
 
 // 라우터 설정
 const routes = [
