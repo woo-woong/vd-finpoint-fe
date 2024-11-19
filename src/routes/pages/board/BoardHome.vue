@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import BoardService from '@/services/boardServices';
+import BoardService from '@/services/boardService';
 import PostListItem from './PostListItem.vue';
 
 defineComponent({

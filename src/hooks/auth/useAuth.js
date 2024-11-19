@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { authServices } from '@services/authServices';
+import { authService } from '@services/authService';
 
 export const useLogin = () => {
   const { login, logout } = authServices;

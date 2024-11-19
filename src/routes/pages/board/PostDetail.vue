@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import BoardService from '@/services/boardServices';
+import BoardService from '@/services/boardService';
 import { ref, onMounted } from 'vue';
 import useDate from '@/hooks/useDate';
 import Loading from '@/components/common/Loading.vue';

@@ -10,7 +10,7 @@ const getCsrfToken = () => {
     ?.split('=')[1];
 };
 
-export const authServices = {
+export const authService = {
   login: async (username, password) => {
     try {
       const response = await ky.post(`${API_URL}login/`, {

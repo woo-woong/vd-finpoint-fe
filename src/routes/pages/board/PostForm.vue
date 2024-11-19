@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import FinProductsService from '@/services/finProductsService';
-import BoardService from '@/services/boardServices';
+import BoardService from '@/services/boardService';
 
 const props = defineProps({
   mode: {

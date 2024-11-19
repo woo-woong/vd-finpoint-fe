@@ -2,7 +2,7 @@ import ky from 'ky';
 
 const EXCHANGE_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}exchange/rates/`;
 
-export default async function currencyServices() {
+export default async function exchangeService() {
   try {
     const response = await ky.get(`${EXCHANGE_API_URL}`);
     return response.json();
