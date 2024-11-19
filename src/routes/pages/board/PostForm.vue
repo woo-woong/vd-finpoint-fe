@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import FinProductsService from '@/services/finProductsService';
+import BoardService from '@/services/boardServices';
 
 const props = defineProps({
   mode: {
@@ -62,15 +63,21 @@ onMounted(() => {
   fetchProducts();
 });
 
-const handleSubmit = () => {
+const { create } = BoardService();
+
+const handleSubmit = async () => {
   if (!formData.value.title || !formData.value.content) {
     alert('제목과 내용을 모두 입력해주세요.');
     return;
   }
 
   if (props.mode === 'create') {
-    // 생성 API 호출
-    console.log('새 글 작성:', formData.value);
+    try {
+      await create(formData.value);
+      router.push('/board');
+    } catch (error) {
+      console.error('게시글 생성 실패:', error);
+    }
   } else {
     // 수정 API 호출
     console.log('글 수정:', formData.value);
