@@ -14,7 +14,6 @@ import Login from '@routes/pages/auth/Login.vue';
 import Logout from '@routes/pages/auth/Logout.vue';
 import SignUp from '@routes/pages/auth/SignUp.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
-import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import ProfileHome from './pages/profile/ProfileHome.vue';
 import ProfileEdit from './pages/profile/ProfileEdit.vue';
@@ -54,7 +53,6 @@ const routes = [
       { path: '/logout', component: Logout },
       { path: '/signup', component: SignUp },
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
-      { path: '/exchange-calculation', component: exchangeRateCalculation },
       { path: '/kakao-map', component: KakaoMap },
       { path: '/profile', component: ProfileHome },
       { path: '/profile/edit', component: ProfileEdit },
