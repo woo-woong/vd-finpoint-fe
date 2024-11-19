@@ -53,7 +53,7 @@ function goEdit() {
       <div class="mb-8" v-if="postData">
         <h2 class="text-2xl font-bold">{{ postData.title }}</h2>
         <p class="mt-2 text-sm text-gray-500">
-          작성자: {{ postData.user }} | 작성일: {{ formattedDate }}
+          작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
         </p>
       </div>
 
