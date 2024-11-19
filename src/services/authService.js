@@ -1,14 +1,6 @@
 import ky from 'ky';
-
+import getCsrfToken from '@/hooks/auth/useCsrfToken';
 const API_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
-
-// CSRF 토큰을 가져오는 함수
-export const getCsrfToken = () => {
-  return document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('csrftoken='))
-    ?.split('=')[1];
-};
 
 export const authService = {
   login: async (username, password) => {

@@ -1,4 +1,4 @@
-import { getCsrfToken } from '@/services/authService';
+import getCsrfToken from '@/hooks/auth/useCsrfToken';
 import { useCounterStore } from '@/stores/counter';
 import ky from 'ky';
 
