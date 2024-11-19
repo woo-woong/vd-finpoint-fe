@@ -11,9 +11,6 @@ const userData = {
   address: '서울시 강남구',
   detail_address: '123동 456호',
 };
-
-// 프로필 이미지 URL (기본 이미지 사용)
-const profileImageUrl = 'https://via.placeholder.com/150';
 </script>
 
 <template>
@@ -28,15 +25,6 @@ const profileImageUrl = 'https://via.placeholder.com/150';
     <main
       class="flex flex-col items-center w-full max-w-4xl px-6 py-10 mt-8 bg-white rounded-lg shadow-lg"
     >
-      <!-- 프로필 사진 -->
-      <div class="flex justify-center mb-6">
-        <img
-          :src="profileImageUrl"
-          alt="프로필 사진"
-          class="object-cover w-32 h-32 border-4 border-gray-200 rounded-full"
-        />
-      </div>
-
       <!-- 프로필 정보 -->
       <div class="w-full mb-8">
         <h2 class="mb-4 text-xl font-semibold">사용자 정보</h2>
