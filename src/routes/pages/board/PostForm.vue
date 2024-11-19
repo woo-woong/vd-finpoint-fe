@@ -27,7 +27,7 @@ const selectedType = ref('deposit');
 const formData = ref({
   title: '',
   product_code: '',
-  type: selectedType.value,
+  type: selectedType.value.toUpperCase(), // 백엔드 요구 사항: type 대문자로
   content: '',
 });
 
