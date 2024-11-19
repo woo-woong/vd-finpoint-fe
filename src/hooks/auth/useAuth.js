@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { authService } from '@services/authService';
 
 export const useLogin = () => {
-  const { login, logout } = authServices;
+  const { login, logout } = authService;
   const isLoggedIn = ref(false);
   const error = ref(null);
 
