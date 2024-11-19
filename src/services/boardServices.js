@@ -28,7 +28,8 @@ export default function BoardService() {
     read: async () => {
       try {
         const response = await ky.get(`${API_URL}`);
-        return response.json();
+        const data = await response.json();
+        return data;
       } catch (error) {
         console.error('API 요청 실패:', error);
         throw new Error('게시글 조회에 실패했습니다.');
