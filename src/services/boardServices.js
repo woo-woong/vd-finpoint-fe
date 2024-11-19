@@ -1,7 +1,8 @@
 import ky from 'ky';
 import { useCookie } from '@/hooks/auth/useCookie';
 
-const API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}board/`;
+const BOARD_API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}board/`;
+const FINANCE_API_URL = `${import.meta.env.VITE_FINANCIAL_API_URL}finance/`;
 
 export default function BoardService() {
   const csrfToken = useCookie('csrftoken').value._value;
@@ -12,7 +13,7 @@ export default function BoardService() {
         if (!csrfToken) {
           throw new Error('CSRF 토큰이 없습니다.');
         }
-        const response = await ky.post(`${API_URL}create/`, {
+        const response = await ky.post(`${BOARD_API_URL}create/`, {
           headers: {
             'X-CSRFToken': csrfToken,
           },
@@ -27,7 +28,7 @@ export default function BoardService() {
     },
     read: async () => {
       try {
-        const response = await ky.get(`${API_URL}`);
+        const response = await ky.get(BOARD_API_URL);
         const data = await response.json();
         return data;
       } catch (error) {
@@ -37,7 +38,7 @@ export default function BoardService() {
     },
     update: async (id) => {
       try {
-        const response = await ky.put(`${API_URL}update/${id}`);
+        const response = await ky.put(`${BOARD_API_URL}update/${id}`);
         return response.json();
       } catch (error) {
         console.error('API 요청 실패:', error);
@@ -46,7 +47,7 @@ export default function BoardService() {
     },
     delete: async (id) => {
       try {
-        const response = await ky.delete(`${API_URL}delete/${id}`);
+        const response = await ky.delete(`${BOARD_API_URL}delete/${id}`);
         return response.json();
       } catch (error) {
         console.error('API 요청 실패:', error);
