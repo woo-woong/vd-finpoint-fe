@@ -61,16 +61,24 @@ const goToNewPost = () => {
         <table class="w-full text-left border-collapse border-spacing-0">
           <thead class="bg-gray-200">
             <tr>
-              <th class="p-4 text-sm font-semibold text-gray-700 border-b">
+              <th
+                class="w-[8%] p-4 text-sm font-semibold text-gray-700 border-b"
+              >
                 번호
               </th>
-              <th class="p-4 text-sm font-semibold text-gray-700 border-b">
+              <th
+                class="w-[50%] p-4 text-sm font-semibold text-gray-700 border-b"
+              >
                 제목
               </th>
-              <th class="p-4 text-sm font-semibold text-gray-700 border-b">
+              <th
+                class="w-[15%] p-4 text-sm font-semibold text-gray-700 border-b"
+              >
                 작성자
               </th>
-              <th class="p-4 text-sm font-semibold text-gray-700 border-b">
+              <th
+                class="w-[27%] p-4 text-sm font-semibold text-gray-700 border-b"
+              >
                 작성일
               </th>
             </tr>
