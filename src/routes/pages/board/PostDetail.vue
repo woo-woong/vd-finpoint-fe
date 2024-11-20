@@ -66,7 +66,11 @@ function goEdit() {
           <p class="mt-2 text-base text-gray-500">
             작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
           </p>
-          <PostLikeButton :boardId="Number(boardId)" />
+          <PostLikeButton
+            :boardId="Number(boardId)"
+            :initialLiked="postData.is_liked"
+            @update:initialLiked="(newValue) => (postData.is_liked = newValue)"
+          />
         </div>
       </div>
 
