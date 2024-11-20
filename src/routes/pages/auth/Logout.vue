@@ -1,14 +1,14 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuth } from '@hooks/auth/useAuth';
+import { authService } from '@/services/authService';
 
 const router = useRouter();
-const { handleLogout } = useAuth();
+const { logout } = authService;
 
 onMounted(async () => {
   try {
-    await handleLogout();
+    await logout();
     router.push('/');
   } catch (e) {
     console.error('요청 실패', e);
