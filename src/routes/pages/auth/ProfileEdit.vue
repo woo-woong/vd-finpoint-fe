@@ -2,9 +2,11 @@
 import { ref } from 'vue';
 import profileService from '@/services/profileService';
 import { useUserStore } from '@/stores/userStore';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 // 사용자 정보 초기값 설정
-
 const store = useUserStore();
 const userData = store.userData;
 
@@ -30,6 +32,7 @@ const submitForm = () => {
       store.userData = { ...store.userData, ...updatedData };
       console.log('수정된 데이터:', updatedData);
       alert('수정이 완료되었습니다!');
+      router.push('/profile');
     })
     .catch((error) => {
       console.error('프로필 수정 중 오류 발생:', error);
