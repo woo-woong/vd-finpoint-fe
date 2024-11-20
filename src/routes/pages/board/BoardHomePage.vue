@@ -2,7 +2,7 @@
 import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { boardService } from '@/services/boardService';
-import PostListItem from './PostListPage.vue';
+import PostList from '@/components/board/PostList.vue';
 import Loading from '@/components/common/Loading.vue';
 
 defineComponent({
@@ -94,7 +94,7 @@ const goToNewPost = () => {
             </tr>
           </thead>
           <tbody>
-            <PostListItem
+            <PostList
               v-for="post in Posts"
               :key="post.id"
               :id="post.id"
