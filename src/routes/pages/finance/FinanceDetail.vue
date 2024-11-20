@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { finProductService } from '@/services/finProductService';
+import FinanceSubScriptionBtn from '@/components/finance/FinanceSubScriptionBtn.vue';
 import Loading from '@/components/common/Loading.vue';
 
 const route = useRoute();
@@ -41,12 +42,15 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div class="max-w-3xl mx-auto p-6">
+  <div class="w-full mx-auto p-6">
     <Loading v-if="isLoading" />
     <div v-else>
       <!-- 상품 헤더 -->
       <div class="mb-2">
-        <h1 class="text-2xl font-bold mb-2">{{ product?.fin_prdt_nm }}</h1>
+        <div class="flex justify-between items-center">
+          <h1 class="text-2xl font-bold mb-2">{{ product?.fin_prdt_nm }}</h1>
+          <FinanceSubScriptionBtn />
+        </div>
         <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
       </div>
 
