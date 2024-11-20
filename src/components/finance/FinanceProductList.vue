@@ -1,7 +1,10 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { finProductService } from '@/services/finProductService';
 import Loading from '../common/Loading.vue';
+
+const router = useRouter();
 
 const props = defineProps({
   path: {
@@ -116,6 +119,10 @@ const filteredProducts = computed(() => {
 // 검색 실행
 const handleSearch = () => {
   // 검색 로직 구현
+};
+
+const navigateToProductDetail = (finPrdtCd) => {
+  router.push({ path: `/${props.path}/detail`, query: { finPrdtCd } });
 };
 </script>
 
@@ -268,7 +275,11 @@ const handleSearch = () => {
               </td>
               <td class="p-4">
                 <div class="truncate">
-                  <span class="text-blue-600">{{ product.fin_prdt_nm }}</span>
+                  <span
+                    class="text-blue-600 cursor-pointer"
+                    @click="navigateToProductDetail(product.fin_prdt_cd)"
+                    >{{ product.fin_prdt_nm }}</span
+                  >
                 </div>
               </td>
               <td class="p-4 text-center">
