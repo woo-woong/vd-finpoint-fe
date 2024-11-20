@@ -30,5 +30,31 @@ export const finProductService = () => {
     }
   };
 
-  return { getAllFinProducts, getFinProduct };
+  // 금융 상품 가입
+  const subscribeFinProduct = async (
+    product_code,
+    bank_name,
+    product_name,
+    maturity_term,
+    type
+  ) => {
+    const API_URL = `${BACKEND_API_URL}wishlist`;
+    try {
+      const response = await ky.post(API_URL, {
+        json: {
+          product_code,
+          bank_name,
+          product_name,
+          maturity_term,
+          type,
+        },
+      });
+      return response.json();
+    } catch (error) {
+      console.error('API 요청 실패:', error);
+      throw new Error('금융 상품 가입에 실패했습니다.');
+    }
+  };
+
+  return { getAllFinProducts, getFinProduct, subscribeFinProduct };
 };
