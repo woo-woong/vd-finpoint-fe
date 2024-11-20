@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import kakaoLogo from '@assets/images/kakao-login.png';
-import useAuth from '@/hooks/auth/useAuth';
+import { useAuth } from '@/hooks/auth/useAuth';
 
 const router = useRouter();
 

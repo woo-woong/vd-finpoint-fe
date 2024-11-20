@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import BoardService from '@/services/boardService';
+import { boardService } from '@/services/boardService';
 import PostListItem from './PostListItem.vue';
 import Loading from '@/components/common/Loading.vue';
 
@@ -9,7 +9,7 @@ defineComponent({
   name: 'BoardHome',
 });
 
-const { list } = BoardService();
+const { list } = boardService();
 
 const router = useRouter();
 

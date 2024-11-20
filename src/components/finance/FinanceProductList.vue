@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import useFinProducts from '@hooks/finance/useFinProducts';
+import { useFinProducts } from '@hooks/finance/useFinProducts';
 import FinanceCard from '@components/finance/FinanceCard.vue';
 import Loading from '../common/Loading.vue';
 

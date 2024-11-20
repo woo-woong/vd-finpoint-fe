@@ -1,11 +1,11 @@
 import { ref, watch, onMounted } from 'vue';
-import FinProductsService from '@/services/finProductsService';
+import { finProductsService } from '@/services/finProductsService';
 
-export default function useFinProducts({
+export const useFinProducts = ({
   path,
   searchParams = {},
   defaultVisibleCount = 3,
-}) {
+}) => {
   const finProducts = ref(null);
   const error = ref(null);
   const isLoading = ref(true);
@@ -18,7 +18,7 @@ export default function useFinProducts({
   const fetchData = async () => {
     try {
       isLoading.value = true;
-      const response = await FinProductsService(path, searchParams);
+      const response = await finProductsService(path, searchParams);
       finProducts.value = response;
     } catch (err) {
       console.error('데이터 로딩 실패:', err);
@@ -50,4 +50,4 @@ export default function useFinProducts({
     isLoading,
     loadMoreProducts,
   };
-}
+};

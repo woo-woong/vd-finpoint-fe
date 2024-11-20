@@ -3,8 +3,9 @@ import { useCookie } from '@/hooks/auth/useCookie';
 
 const BOARD_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}board/`;
 
-export default function BoardService() {
+export const boardService = () => {
   const csrfToken = useCookie('csrftoken').value._value;
+
   return {
     create: async (formData) => {
       try {
@@ -119,4 +120,4 @@ export default function BoardService() {
       }
     },
   };
-}
+};

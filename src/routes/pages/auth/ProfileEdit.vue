@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import profileService from '@/services/profileService';
+import { profileService } from '@/services/profileService';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';
 

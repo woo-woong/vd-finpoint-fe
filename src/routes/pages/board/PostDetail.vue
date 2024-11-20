@@ -1,8 +1,8 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import BoardService from '@/services/boardService';
+import { boardService } from '@/services/boardService';
 import { ref, onMounted } from 'vue';
-import useDate from '@/hooks/common/useDate';
+import { useDate } from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
 import PostLikeButton from '@/components/board/PostLikeButton.vue';
 
@@ -12,7 +12,7 @@ const postData = ref(null);
 const productData = ref(null);
 
 const boardId = route.params.id;
-const { read, remove } = BoardService();
+const { read, remove } = boardService();
 
 let formattedDate;
 

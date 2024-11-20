@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { authService } from '@services/authService';
 import { useUserStore } from '@/stores/userStore';
 
-export default function useAuth() {
+export const useAuth = () => {
   const error = ref(null);
   const { login, logout } = authService;
   const userStore = useUserStore();
@@ -34,4 +34,4 @@ export default function useAuth() {
     handleLogin,
     handleLogout,
   };
-}
+};

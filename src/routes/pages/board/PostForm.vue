@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import FinProductsService from '@/services/finProductsService';
-import BoardService from '@/services/boardService';
+import { finProductsService } from '@/services/finProductsService';
+import { boardService } from '@/services/boardService';
 
 const props = defineProps({
   mode: {
@@ -11,6 +11,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const { create, update, read } = boardService();
 
 const router = useRouter();
 const route = useRoute();
@@ -41,7 +43,7 @@ const productTypes = [
 
 const fetchProducts = async () => {
   try {
-    const response = await FinProductsService(selectedType.value, {
+    const response = await finProductsService(selectedType.value, {
       topFinGrpNo: '020000',
       pageNo: '1',
     });
@@ -56,7 +58,7 @@ const fetchProducts = async () => {
 };
 const fetchPost = async (postId) => {
   try {
-    const post = await BoardService().read(postId); // 게시글 조회 API 호출
+    const post = await read(postId); // 게시글 조회 API 호출
     formData.value.title = post.board.title;
     formData.value.product_code = post.product.fin_prdt_cd;
     formData.value.content = post.board.content;
@@ -76,8 +78,6 @@ onMounted(() => {
     fetchPost(route.params.id); // edit 모드일 때 게시글 데이터 가져오기
   }
 });
-
-const { create, update } = BoardService();
 
 const handleSubmit = async () => {
   if (!formData.value.title || !formData.value.content) {

@@ -1,6 +1,6 @@
 import { ref, watchEffect } from 'vue';
 
-export function useCookie(cookieName) {
+export const useCookie = (cookieName) => {
   // cookieName에 해당하는 쿠키 값을 저장할 ref 변수
   const cookieValue = ref(null);
 
@@ -75,4 +75,4 @@ export function useCookie(cookieName) {
     setCookie, // 쿠키를 설정하는 함수
     removeCookie, // 쿠키를 삭제하는 함수
   };
-}
+};

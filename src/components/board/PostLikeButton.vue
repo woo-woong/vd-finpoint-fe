@@ -1,9 +1,9 @@
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue';
 
-import BoardService from '@/services/boardService';
+import { boardService } from '@/services/boardService';
 
-const { like, unlike } = BoardService();
+const { like, unlike } = boardService();
 
 const props = defineProps({
   boardId: {

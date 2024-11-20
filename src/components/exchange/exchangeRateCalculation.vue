@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import exchangeService from '@/services/exchangeService';
+import { exchangeService } from '@/services/exchangeService';
 const API_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
 const exchangeRates = ref([]);
