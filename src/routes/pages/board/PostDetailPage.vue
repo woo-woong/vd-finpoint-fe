@@ -58,7 +58,7 @@ function goEdit() {
 
     <!-- 상세 내용 -->
     <main
-      class="flex flex-col w-full max-w-2xl px-6 py-10 mt-10 bg-white rounded-lg shadow-lg"
+      class="flex flex-col w-full max-w-6xl px-6 py-10 mt-10 bg-white rounded-lg shadow-lg min-h-[70vh]"
     >
       <!-- 제목 -->
       <div class="mb-8" v-if="postData">
@@ -90,7 +90,7 @@ function goEdit() {
       </div>
 
       <!-- 버튼 그룹 -->
-      <div class="flex justify-end gap-2" v-if="postData">
+      <div class="flex justify-end gap-2 mt-auto" v-if="postData">
         <button
           type="button"
           class="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow hover:bg-green-600"
