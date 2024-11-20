@@ -41,7 +41,10 @@ const productTypes = [
   { value: 'savings', label: '적금' },
 ];
 
+const isLoading = ref(false);
+
 const fetchProducts = async () => {
+  isLoading.value = true;
   try {
     const response = await finProductsService(selectedType.value, {
       topFinGrpNo: '020000',
@@ -54,6 +57,8 @@ const fetchProducts = async () => {
   } catch (error) {
     console.error('상품 목록 조회 실패:', error);
     alert('상품 목록을 불러오는데 실패했습니다.');
+  } finally {
+    isLoading.value = false;
   }
 };
 const fetchPost = async (postId) => {
@@ -145,6 +150,7 @@ const goBack = () => {
         <select
           id="type"
           v-model="selectedType"
+          @change="formData.product_code = ''"
           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
         >
           <option value="">상품 유형을 선택하세요</option>
@@ -158,27 +164,38 @@ const goBack = () => {
         </select>
       </div>
 
-      <div class="mb-8">
+      <div class="mb-8 w-full">
         <label
           for="product_code"
           class="block mb-2 text-sm font-semibold text-gray-700"
         >
           추천할 상품
         </label>
-        <select
-          id="product_code"
-          v-model="formData.product_code"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          <option value="">상품을 선택하세요</option>
-          <option
-            v-for="product in products"
-            :key="product.code"
-            :value="product.code"
+        <div class="relative w-full">
+          <select
+            id="product_code"
+            v-model="formData.product_code"
+            :disabled="isLoading"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           >
-            {{ product.name }}
-          </option>
-        </select>
+            <option value="">상품을 선택하세요</option>
+            <option
+              v-for="product in products"
+              :key="product.code"
+              :value="product.code"
+            >
+              {{ product.name }}
+            </option>
+          </select>
+          <div
+            v-if="isLoading"
+            class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75"
+          >
+            <div
+              class="w-6 h-6 border-2 border-blue-600 rounded-full border-t-transparent animate-spin"
+            ></div>
+          </div>
+        </div>
       </div>
 
       <div class="mb-8">
