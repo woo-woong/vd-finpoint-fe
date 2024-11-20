@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import kakaoLogo from '@assets/images/kakao-login.png';
 import useAuth from '@/hooks/auth/useAuth';
+
+const router = useRouter();
 
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
 const KAKAO_REDIRECT_URL = import.meta.env.VITE_KAKAO_REDIRECT_URL;
@@ -16,9 +18,11 @@ const handleSocialLoginClick = () => {
   window.location.href = KAKAO_AUTH_URI;
 };
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
-  handleLogin(username.value, password.value);
+
+  await handleLogin(username.value, password.value);
+  router.push('/');
 };
 </script>
 
