@@ -1,7 +1,9 @@
 <template>
-  <div class="App">
+  <div class="flex flex-col items-center min-h-screen App">
     <Header></Header>
-    <main class="flex flex-col items-center w-[1000px] mx-auto">
+    <main
+      class="flex flex-col items-center justify-center w-full px-4 max-w-[1000px]"
+    >
       <router-view />
       <SmartAssistantTooltip />
     </main>
