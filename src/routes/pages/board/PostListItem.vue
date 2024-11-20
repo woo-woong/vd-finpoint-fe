@@ -6,12 +6,14 @@ const props = defineProps({
   title: String,
   author: String,
   created_at: String,
+  likeCount: Number,
 });
 const formattedDate = useDate(props.created_at);
 </script>
 
 <template>
   <tr class="hover:bg-gray-100">
+    <td class="p-4 border-b">{{ likeCount }}</td>
     <td class="p-4 border-b">{{ id }}</td>
     <td class="p-4 border-b">
       <router-link

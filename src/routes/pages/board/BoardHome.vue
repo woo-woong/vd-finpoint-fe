@@ -69,6 +69,11 @@ const goToNewPost = () => {
               <th
                 class="w-[8%] p-4 text-sm font-semibold text-gray-700 border-b"
               >
+                추천
+              </th>
+              <th
+                class="w-[8%] p-4 text-sm font-semibold text-gray-700 border-b"
+              >
                 번호
               </th>
               <th
@@ -96,6 +101,7 @@ const goToNewPost = () => {
               :title="post.title"
               :author="post.user.name"
               :created_at="post.created_at"
+              :likeCount="post.like_count"
             />
           </tbody>
         </table>
