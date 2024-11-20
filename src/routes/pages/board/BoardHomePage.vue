@@ -46,7 +46,7 @@ const goToNewPost = () => {
 
     <!-- 메인 콘텐츠 -->
     <main
-      class="flex flex-col items-center w-full max-w-4xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
+      class="flex flex-col items-center w-full max-w-6xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
       v-if="!loading"
     >
       <!-- 게시판 헤더 -->
