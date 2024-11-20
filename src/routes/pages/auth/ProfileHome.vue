@@ -1,8 +1,8 @@
 <script setup>
-import { useCounterStore } from '@/stores/counter';
+import { useUserStore } from '@/stores/userStore';
 
 // 사용자 정보 데이터
-const userData = useCounterStore().userData;
+const userData = useUserStore().userData;
 </script>
 
 <template>

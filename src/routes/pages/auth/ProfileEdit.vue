@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import { useCounterStore } from '@/stores/counter';
 import profileService from '@/services/profileService';
+import { useUserStore } from '@/stores/userStore';
 
 // 사용자 정보 초기값 설정
-const userData = useCounterStore().userData;
+
+const store = useUserStore();
+const userData = store.userData;
 
 // 수정 가능한 필드만 ref로 설정
 const birth_date = ref(userData.birth_date);
@@ -21,9 +23,18 @@ const submitForm = () => {
     address: address.value,
     detail_address: detail_address.value,
   };
-  profileService().editProfile(updatedData);
-  console.log('수정된 데이터:', updatedData);
-  alert('수정이 완료되었습니다!');
+  profileService()
+    .editProfile(updatedData)
+    .then(() => {
+      // 스토어의 userData도 업데이트
+      store.userData = { ...store.userData, ...updatedData };
+      console.log('수정된 데이터:', updatedData);
+      alert('수정이 완료되었습니다!');
+    })
+    .catch((error) => {
+      console.error('프로필 수정 중 오류 발생:', error);
+      alert('수정에 실패했습니다. 다시 시도해주세요.');
+    });
 };
 </script>
 
