@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useFinProducts } from '@hooks/finance/useFinProducts';
+import { ref, computed, watch, onMounted } from 'vue';
+import { finProductService } from '@/services/finProductService';
 import Loading from '../common/Loading.vue';
 
 const props = defineProps({
@@ -14,15 +14,54 @@ const props = defineProps({
   },
 });
 
+// 상태 초기화
+const finProducts = ref([]);
+const error = ref(null);
+const visibleCount = ref(10);
+const isLoading = ref(true);
+
+// finProductService에서 함수 가져오기
+const { getAllFinProducts } = finProductService();
+
+// getAllFinProducts 호출 및 데이터 설정 부분 수정
+const fetchProducts = async () => {
+  isLoading.value = true;
+  try {
+    const data = await getAllFinProducts(props.path, props.searchParams);
+    finProducts.value = data;
+    isLoading.value = false;
+  } catch (err) {
+    error.value = err;
+    isLoading.value = false;
+  }
+};
+
+// loadMoreProducts 함수 추가
+const loadMoreProducts = () => {
+  if (visibleCount.value < filteredProducts.value.length) {
+    visibleCount.value += 10;
+  }
+};
+
+// watch 추가
+watch(
+  [() => props.path, () => props.searchParams],
+  () => {
+    fetchProducts();
+  },
+  { immediate: true }
+);
+
+// onMounted 제거 (watch의 immediate: true로 대체)
+
 // 검색 조건을 위한 상태 관리
 const selectedBank = ref('전체');
 const selectedPeriod = ref('전체기간');
 const searchQuery = ref('');
 
+// computed 속성들도 null 체크 추가
 const bankOptions = computed(() => {
   if (!finProducts.value) return ['전체'];
-
-  // 중복 제거된 은행 목록 생성
   const banks = [
     ...new Set(finProducts.value.map((product) => product.kor_co_nm)),
   ];
@@ -32,24 +71,16 @@ const bankOptions = computed(() => {
 // 예치 기간 옵션
 const periodOptions = ['전체기간', '6개월', '12개월', '24개월', '36개월'];
 
-const { finProducts, error, visibleCount, isLoading, loadMoreProducts } =
-  useFinProducts({
-    path: props.path,
-    searchParams: props.searchParams,
-    defaultVisibleCount: 10,
-  });
-
-// 금리 정보를 가져오는 함수 수정
+// 금리 정보를 가져오는 함수
 const getInterestRate = (product, term) => {
   if (!product?.options) return '-';
   const option = product.options.find(
     (opt) => opt.save_trm === term.toString()
   );
-  // null 체크 추가
   return option?.intr_rate ? option.intr_rate.toFixed(2) : '-';
 };
 
-// 필터링된 상품 목록 computed 수정
+// 필터링된 상품 목록
 const filteredProducts = computed(() => {
   if (!finProducts.value) return [];
 
@@ -76,7 +107,6 @@ const filteredProducts = computed(() => {
       return bankMatch && nameMatch && periodMatch;
     })
     .sort((a, b) => {
-      // 12개월 금리 기준으로 정렬
       const rateA = Number(getInterestRate(a, '12').replace('-', '0')) || 0;
       const rateB = Number(getInterestRate(b, '12').replace('-', '0')) || 0;
       return rateB - rateA;
