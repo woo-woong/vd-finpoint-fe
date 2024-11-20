@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import { finProductsService } from '@/services/finProductsService';
+import { finProductService } from '@/services/finProductService';
 import FinanceCard from '@/components/finance/FinanceCard.vue';
 
 const props = defineProps({
@@ -22,23 +22,32 @@ const productTypes = [
   { value: 'savings', label: '적금' },
 ];
 
+const { getAllFinProducts } = finProductService();
+
 const fetchProducts = async () => {
   isLoading.value = true;
   try {
-    const response = await finProductsService(selectedType.value, {
-      topFinGrpNo: '020000',
-      pageNo: '1',
-    });
-    products.value = response.map((product) => ({
-      code: product.fin_prdt_cd,
-      name: product.fin_prdt_nm,
-      fin_prdt_cd: product.fin_prdt_cd,
-      fin_prdt_nm: product.fin_prdt_nm,
-      ...product,
-    }));
-  } catch (error) {
-    console.error('상품 목록 조회 실패:', error);
-    alert('상품 목록을 불러오는데 실패했습니다.');
+    getAllFinProducts(
+      selectedType.value,
+      {
+        topFinGrpNo: '020000',
+        pageNo: '1',
+      },
+      3,
+      (data) => {
+        products.value = data.map((product) => ({
+          code: product.fin_prdt_cd,
+          name: product.fin_prdt_nm,
+          fin_prdt_cd: product.fin_prdt_cd,
+          fin_prdt_nm: product.fin_prdt_nm,
+          ...product,
+        }));
+      },
+      (error) => {
+        console.error('상품 목록 조회 실패:', error);
+        alert('상품 목록을 불러오는데 실패했습니다.');
+      }
+    );
   } finally {
     isLoading.value = false;
   }
