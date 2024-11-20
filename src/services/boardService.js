@@ -92,7 +92,7 @@ export default function BoardService() {
             'X-CSRFToken': csrfToken,
           },
           credentials: 'include',
-          json: board_id,
+          json: { board_id },
         });
         return response.json();
       } catch (error) {
@@ -111,7 +111,7 @@ export default function BoardService() {
             'X-CSRFToken': csrfToken,
           },
           credentials: 'include',
-          json: board_id,
+          json: { board_id },
         });
         return response.json();
       } catch (error) {
