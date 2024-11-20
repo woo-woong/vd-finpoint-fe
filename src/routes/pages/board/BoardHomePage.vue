@@ -2,7 +2,7 @@
 import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { boardService } from '@/services/boardService';
-import PostListItem from './PostListItem.vue';
+import PostListItem from './PostListPage.vue';
 import Loading from '@/components/common/Loading.vue';
 
 defineComponent({

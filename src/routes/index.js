@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import BaseLayout from '@routes/layouts/BaseLayout.vue';
-import Home from '@routes/pages/Home.vue';
-import BoardHome from '@routes/pages/board/BoardHome.vue';
-import PostDetail from '@routes/pages/board/PostDetail.vue';
-import PostForm from '@routes/pages/board/PostForm.vue';
-import Deposit from '@routes/pages/finance/Deposit.vue';
-import Savings from '@routes/pages/finance/Savings.vue';
+import HomePage from '@routes/pages/HomePage.vue';
+import BoardHomePage from '@routes/pages/board/BoardHomePage.vue';
+import PostDetailPage from '@routes/pages/board/PostDetailPage.vue';
+import PostEditorPage from '@routes/pages/board/PostEditorPage.vue';
+import DepositPage from '@routes/pages/finance/DepositPage.vue';
+import SavingsPage from '@routes/pages/finance/SavingsPage.vue';
 import AnnunitySavings from '@routes/pages/finance/AnnuitySavings.vue';
 import MortgageLoan from '@routes/pages/finance/MortgageLoan.vue';
 import RentHouseLoan from '@routes/pages/finance/RentHouseLoan.vue';
 import CreditLoan from '@routes/pages/finance/CreditLoan.vue';
-import Login from '@routes/pages/auth/Login.vue';
-import Logout from '@routes/pages/auth/Logout.vue';
-import SignUp from '@routes/pages/auth/SignUp.vue';
+import LoginPage from '@routes/pages/auth/LoginPage.vue';
+import LogoutPage from '@routes/pages/auth/LogoutPage.vue';
+import SignUpPage from '@routes/pages/auth/SignUpPage.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
-import ProfileHome from '@routes/pages/auth/ProfileHome.vue';
-import ProfileEdit from '@routes/pages/auth/ProfileEdit.vue';
+import ProfileHomePage from '@routes/pages/auth/ProfileHomePage.vue';
+import ProfileEditPage from '@routes/pages/auth/ProfileEditPage.vue';
 
 // 라우터 설정
 const routes = [
@@ -24,38 +24,38 @@ const routes = [
     path: '/',
     component: BaseLayout,
     children: [
-      { path: '', component: Home },
-      { path: '/board', component: BoardHome },
+      { path: '', component: HomePage },
+      { path: '/board', component: BoardHomePage },
       {
         path: '/board/:id',
         name: 'PostDetail',
-        component: PostDetail,
+        component: PostDetailPage,
       },
       {
         path: '/board/new',
         name: 'PostWrite',
-        component: PostForm,
+        component: PostEditorPage,
         props: { mode: 'create' },
       },
       {
         path: '/board/:id/edit',
         name: 'PostEdit',
-        component: PostForm,
+        component: PostEditorPage,
         props: { mode: 'edit' },
       },
-      { path: '/deposit', component: Deposit },
-      { path: '/savings', component: Savings },
+      { path: '/deposit', component: DepositPage },
+      { path: '/savings', component: SavingsPage },
       { path: '/annuity-savings', component: AnnunitySavings },
       { path: '/mortgage-loan', component: MortgageLoan },
       { path: '/rent-house-loan', component: RentHouseLoan },
       { path: '/credit-loan', component: CreditLoan },
-      { path: '/login', component: Login },
-      { path: '/logout', component: Logout },
-      { path: '/signup', component: SignUp },
+      { path: '/login', component: LoginPage },
+      { path: '/logout', component: LogoutPage },
+      { path: '/signup', component: SignUpPage },
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
       { path: '/kakao-map', component: KakaoMap },
-      { path: '/profile', component: ProfileHome },
-      { path: '/profile/edit', component: ProfileEdit },
+      { path: '/profile', component: ProfileHomePage },
+      { path: '/profile/edit', component: ProfileEditPage },
     ],
   },
 ];
@@ -65,5 +65,4 @@ const router = createRouter({
   routes,
 });
 
-// router를 default로 내보냄
 export default router;
