@@ -4,6 +4,7 @@ import BoardService from '@/services/boardService';
 import { ref, onMounted } from 'vue';
 import useDate from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
+import PostLikeButton from '@/components/board/PostLikeButton.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -61,9 +62,12 @@ function goEdit() {
       <!-- 제목 -->
       <div class="mb-8" v-if="postData">
         <h2 class="text-2xl font-bold">{{ postData.title }}</h2>
-        <p class="mt-2 text-sm text-gray-500">
-          작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
-        </p>
+        <div class="flex items-center justify-between">
+          <p class="mt-2 text-base text-gray-500">
+            작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
+          </p>
+          <PostLikeButton :boardId="Number(boardId)" />
+        </div>
       </div>
 
       <!-- 로딩 중 -->
