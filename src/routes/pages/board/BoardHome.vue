@@ -3,6 +3,7 @@ import { ref, defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import BoardService from '@/services/boardService';
 import PostListItem from './PostListItem.vue';
+import Loading from '@/components/common/Loading.vue';
 
 defineComponent({
   name: 'BoardHome',
@@ -13,13 +14,16 @@ const { list } = BoardService();
 const router = useRouter();
 
 const Posts = ref([]);
+const loading = ref(true); // 로딩 상태를 관리할 변수 추가
 
 const fetchPosts = async () => {
   try {
     const response = await list();
     Posts.value = response;
+    loading.value = false; // 데이터 로드 완료 후 로딩 상태 false로 변경
   } catch (error) {
     console.error('게시물 목록 조회 실패:', error);
+    loading.value = false; // 오류 발생 시 로딩 상태 false로 변경
   }
 };
 
@@ -43,6 +47,7 @@ const goToNewPost = () => {
     <!-- 메인 콘텐츠 -->
     <main
       class="flex flex-col items-center w-full max-w-4xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
+      v-if="!loading"
     >
       <!-- 게시판 헤더 -->
       <div class="flex justify-between w-full mb-5">
@@ -96,5 +101,9 @@ const goToNewPost = () => {
         </table>
       </div>
     </main>
+
+    <!-- 로딩 중일 때 -->
+    <Loading v-else />
+    <!-- Posts가 없으면 Loading 컴포넌트 출력 -->
   </div>
 </template>
