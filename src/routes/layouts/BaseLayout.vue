@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center min-h-screen App">
     <Header></Header>
     <main
-      class="flex flex-col items-center justify-center w-full px-4 max-w-[1000px]"
+      class="flex flex-col items-center justify-center w-full px-4 max-w-[1200px]"
     >
       <router-view />
       <SmartAssistantTooltip />
