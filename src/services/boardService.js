@@ -2,7 +2,6 @@ import ky from 'ky';
 import { useCookie } from '@/hooks/auth/useCookie';
 
 const BOARD_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}board/`;
-const FINANCE_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}finance/`;
 
 export default function BoardService() {
   const csrfToken = useCookie('csrftoken').value._value;
@@ -13,7 +12,7 @@ export default function BoardService() {
         if (!csrfToken) {
           throw new Error('CSRF 토큰이 없습니다.');
         }
-        const response = await ky.post(`${BOARD_API_URL}create/`, {
+        const response = await ky.post(`${BOARD_API_URL}`, {
           headers: {
             'X-CSRFToken': csrfToken,
           },
@@ -28,9 +27,9 @@ export default function BoardService() {
     },
     read: async (board_id) => {
       try {
-        const response = await ky.get(
-          `${FINANCE_API_URL}board-product/${board_id}/`
-        );
+        const response = await ky.get(`${BOARD_API_URL}${board_id}/`, {
+          credentials: 'include', // user가 자기 자신의 liked 여부를 봐야하기 때문
+        });
         const data = await response.json();
         return data;
       } catch (error) {
