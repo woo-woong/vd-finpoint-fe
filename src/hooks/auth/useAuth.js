@@ -5,12 +5,12 @@ import { useUserStore } from '@/stores/userStore';
 export default function useAuth() {
   const error = ref(null);
   const { login, logout } = authService;
+  const userStore = useUserStore();
 
   const handleLogin = async (username, password) => {
     try {
       const response = await login(username, password);
-      useUserStore().userData = response.user;
-
+      userStore.setUserData(response.user);
       return response;
     } catch (err) {
       console.error('로그인 실패:', err);
@@ -22,7 +22,7 @@ export default function useAuth() {
   const handleLogout = async () => {
     try {
       await logout();
-      useUserStore().userData = {};
+      userStore.clearUserData();
     } catch (err) {
       console.error('로그아웃 실패:', err);
       throw err;
