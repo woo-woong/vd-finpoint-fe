@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue';
 import { useDate } from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
 import PostLikeButton from '@/components/board/PostLikeButton.vue';
+import FinanceRecommendCard from '@/components/finance/FinanceRecommendCard.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -78,6 +79,8 @@ function goEdit() {
       <div v-else>
         <Loading />
       </div>
+
+      <FinanceRecommendCard :productData="productData" />
 
       <!-- 내용 -->
       <div class="mb-8" v-if="postData">
