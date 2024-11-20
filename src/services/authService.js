@@ -23,7 +23,7 @@ export const authService = {
   },
   logout: async () => {
     try {
-      const response = await ky.get(`${API_URL}logout/`, {
+      const response = await ky.post(`${API_URL}logout/`, {
         credentials: 'include',
         headers: {
           'X-CSRFToken': getCsrfToken(),
