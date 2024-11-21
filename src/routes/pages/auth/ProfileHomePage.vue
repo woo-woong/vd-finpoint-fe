@@ -1,7 +1,24 @@
 <script setup>
 import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
-import UserSubscribedProducts from '@/components/profile/UserSubscribedProducts.vue';
+import UserSubscribedProductsList from '@/components/profile/UserSubscribedProductsList.vue';
+import { profileService } from '@/services/profileService';
+import { onMounted, ref } from 'vue';
+
+const { getProfile } = profileService();
+
+const subscribedProducts = ref(null);
+
+const fetchProfile = async () => {
+  try {
+    const data = await getProfile();
+    subscribedProducts.value = data.wishlist;
+  } catch (error) {
+    console.error('프로필 데이터를 가져오는 데 실패했습니다', error);
+  }
+};
+
+onMounted(fetchProfile);
 </script>
 
 <template>
@@ -38,7 +55,7 @@ import UserSubscribedProducts from '@/components/profile/UserSubscribedProducts.
         </router-link>
       </div>
 
-      <UserSubscribedProducts />
+      <UserSubscribedProductsList :subscribedProducts="subscribedProducts" />
     </main>
   </div>
 </template>
