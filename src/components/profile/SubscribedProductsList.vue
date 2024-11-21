@@ -163,11 +163,14 @@ const handleUnsubscribe = async (event, product) => {
         </div>
       </div>
 
-      <!-- 관리 버튼: 관리 모드 활성화 시 나타남 -->
+      <!-- 관리 버튼 -->
       <button
-        v-if="isManagingAll"
         type="button"
-        class="absolute p-2 text-white bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600 transition-all duration-300 transform hover:scale-105 animate-[fade-in_0.3s_ease-out]"
+        class="absolute p-2 text-white bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600 transition-all duration-300 ease-in-out"
+        :class="{
+          'opacity-0 pointer-events-none translate-y-1': !isManagingAll,
+          'opacity-100 pointer-events-auto translate-y-0': isManagingAll,
+        }"
         @click="(event) => handleUnsubscribe(event, product)"
       >
         <svg
@@ -192,10 +195,16 @@ const handleUnsubscribe = async (event, product) => {
   <div class="flex justify-end w-full">
     <button
       type="button"
-      class="px-6 py-2 text-sm font-semibold text-white transition duration-200 bg-green-500 rounded-lg shadow hover:bg-green-600"
+      class="px-6 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg shadow hover:bg-green-600"
       @click="toggleManageMode"
     >
       {{ isManagingAll ? '종료' : '상품 가입 관리' }}
     </button>
   </div>
 </template>
+
+<style scoped>
+button {
+  transition: all 0.3s ease-in-out;
+}
+</style>
