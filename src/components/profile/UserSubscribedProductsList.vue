@@ -1,54 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-
-// 사용자 정보와 가입한 상품 데이터
-const subscribedProducts = ref([
-  {
-    id: 1,
-    name: '삼성 적금 플랜',
-    product_type: '적금',
-    price: '월 30만원',
-    subscribed_date: '2024-01-01',
-    description: '1년 만기 고금리 적금 상품으로 연 3.5% 이자 제공.',
-    isManaging: false,
+const props = defineProps({
+  subscribedProducts: {
+    type: Array,
   },
-  {
-    id: 2,
-    name: 'KB 자유입출금 통장',
-    product_type: '입출금 통장',
-    price: '잔고 제한 없음',
-    subscribed_date: '2024-02-15',
-    description: '입출금이 자유로운 통장으로, 기본 금리 연 0.5% 제공.',
-    isManaging: false,
-  },
-  {
-    id: 3,
-    name: '미래에셋 글로벌 주식 펀드',
-    product_type: '펀드',
-    price: '투자금액 500만원',
-    subscribed_date: '2024-03-01',
-    description: '글로벌 우량 주식에 투자하여 연평균 7% 수익률 목표.',
-    isManaging: false,
-  },
-  {
-    id: 4,
-    name: '한화 연금저축보험',
-    product_type: '연금',
-    price: '월 20만원',
-    subscribed_date: '2024-04-10',
-    description: '노후 대비를 위한 세액공제 혜택 제공 연금 상품.',
-    isManaging: false,
-  },
-  {
-    id: 5,
-    name: 'NH 농협 금리연동 대출',
-    product_type: '대출',
-    price: '대출금액 1억원',
-    subscribed_date: '2024-05-20',
-    description: '금리연동형 주택담보대출로, 최저 연 3.2% 금리 제공.',
-    isManaging: false,
-  },
-]);
+});
 
 // 관리 모드 전체 토글
 const isManagingAll = ref(false);
@@ -73,20 +29,23 @@ const manageProduct = (id) => {
 
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         <div
-          v-for="product in subscribedProducts"
+          v-for="product in props.subscribedProducts"
           :key="product.id"
           class="relative p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
         >
           <!-- 상품 정보 -->
           <h3 class="mb-2 text-lg font-bold text-blue-600">
-            {{ product.name }}
+            {{ product.fin_prdt_nm }}
           </h3>
           <p class="text-sm text-gray-700">
-            가격: <span class="font-semibold">{{ product.price }}</span>
+            은행이름:
+            <span class="font-semibold">
+              {{ product.kor_co_nm }}
+            </span>
           </p>
           <p class="text-sm text-gray-700">
-            가입일:
-            <span class="font-semibold">{{ product.subscribed_date }}</span>
+            만기:
+            <span class="font-semibold">{{ product.mtrt_int }}</span>
           </p>
           <p class="mt-2 text-sm text-gray-600">
             {{ product.description }}
