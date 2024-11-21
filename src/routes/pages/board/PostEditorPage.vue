@@ -23,7 +23,7 @@ const { create, update, read } = boardService();
 const formData = ref({
   title: '',
   product_code: '',
-  type: '',
+  type: 'DEPOSIT', // 기본값으로 적금상품 선택
   content: '',
 });
 
@@ -65,6 +65,12 @@ const handleSubmit = async () => {
   }
 
   try {
+    // type이 빈 문자열이거나 'DEPOSIT' 또는 'SAVINGS' 중 하나인지 확인
+    if (!formData.value.product_code) {
+      alert('상품을 선택해주세요.');
+      return;
+    }
+
     if (props.mode === 'create') {
       await create(formData.value);
     } else {
