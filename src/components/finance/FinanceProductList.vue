@@ -143,7 +143,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
 <template>
   <div class="w-full p-4">
     <!-- 검색 필터 섹션 -->
-    <div class="mb-6 overflow-hidden bg-white rounded-lg shadow-sm">
+    <div class="mb-6 bg-white border border-gray-200 rounded-lg">
       <div class="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
         <!-- 은행 선택 -->
         <div>
@@ -193,7 +193,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
             />
             <button
               @click="handleSearch"
-              class="px-4 py-2 text-white bg-blue-600 rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              class="px-4 py-2 text-white bg-blue-600 rounded-r-md hover:bg-blue-700 focus:outline-none"
             >
               확인
             </button>
@@ -203,7 +203,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
     </div>
 
     <!-- 테이블 섹션 -->
-    <div class="overflow-hidden bg-white rounded-lg shadow-sm">
+    <div class="bg-white border border-gray-200 rounded-lg">
       <div v-if="error" class="p-4 text-red-600">
         <p>데이터를 불러오는데 실패했습니다: {{ error.message }}</p>
       </div>
@@ -286,7 +286,10 @@ const navigateToFinProductDetail = (finPrdtCd) => {
 
           <tbody class="bg-white divide-y divide-gray-200">
             <tr
-              v-for="product in filteredProducts.slice(0, visibleCount)"
+              v-for="(product, index) in filteredProducts.slice(
+                0,
+                visibleCount
+              )"
               :key="product.fin_prdt_cd"
               class="hover:bg-gray-50"
             >
@@ -299,7 +302,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
               <td class="p-4">
                 <div class="truncate">
                   <span
-                    class="text-blue-600 cursor-pointer"
+                    class="text-blue-600 cursor-pointer hover:underline"
                     @click="navigateToFinProductDetail(product.fin_prdt_cd)"
                     >{{ product.fin_prdt_nm }}</span
                   >
@@ -326,7 +329,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
           <button
             v-if="filteredProducts.length > visibleCount"
             @click="loadMoreProducts"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
           >
             더보기
           </button>
