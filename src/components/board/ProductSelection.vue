@@ -27,27 +27,21 @@ const { getAllFinProducts } = finProductService();
 const fetchProducts = async () => {
   isLoading.value = true;
   try {
-    getAllFinProducts(
-      selectedType.value,
-      {
-        topFinGrpNo: '020000',
-        pageNo: '1',
-      },
-      3,
-      (data) => {
-        products.value = data.map((product) => ({
-          code: product.fin_prdt_cd,
-          name: product.fin_prdt_nm,
-          fin_prdt_cd: product.fin_prdt_cd,
-          fin_prdt_nm: product.fin_prdt_nm,
-          ...product,
-        }));
-      },
-      (error) => {
-        console.error('상품 목록 조회 실패:', error);
-        alert('상품 목록을 불러오는데 실패했습니다.');
-      }
-    );
+    const data = await getAllFinProducts(selectedType.value, {
+      topFinGrpNo: '020000',
+      pageNo: '1',
+    });
+
+    products.value = data.map((product) => ({
+      code: product.fin_prdt_cd,
+      name: product.fin_prdt_nm,
+      fin_prdt_cd: product.fin_prdt_cd,
+      fin_prdt_nm: product.fin_prdt_nm,
+      ...product,
+    }));
+  } catch (error) {
+    console.error('상품 목록 조회 실패:', error);
+    alert('상품 목록을 불러오는데 실패했습니다.');
   } finally {
     isLoading.value = false;
   }
@@ -127,7 +121,7 @@ onMounted(() => {
 
         <div
           v-if="showProductList"
-          class="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          class="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded-lg shadow-lg max-h-60"
         >
           <div v-if="isLoading" class="p-4 text-center text-gray-500">
             로딩중...
