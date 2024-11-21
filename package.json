@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/motion": "^2.2.6",
     "axios": "^1.7.7",
     "chart.js": "^4.4.6",
     "eslint": "^9.15.0",

@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { useKakao } from 'vue3-kakao-maps/@utils';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import { MotionPlugin } from '@vueuse/motion';
 
 import App from './App.vue';
 import routes from './routes';
@@ -16,5 +17,6 @@ pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
 
 app.use(routes);
+app.use(MotionPlugin);
 
 app.mount('#app');
