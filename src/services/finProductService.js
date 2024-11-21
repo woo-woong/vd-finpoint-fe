@@ -23,7 +23,9 @@ export const finProductService = () => {
   const getFinProduct = async (service, finPrdtCd) => {
     const API_URL = `${BACKEND_API_URL}finance/${service}/${finPrdtCd}`;
     try {
-      const response = await ky.get(API_URL);
+      const response = await ky.get(API_URL, {
+        credentials: 'include',
+      });
       return response.json();
     } catch (error) {
       console.error('API 요청 실패:', error);
@@ -49,5 +51,33 @@ export const finProductService = () => {
     }
   };
 
-  return { getAllFinProducts, getFinProduct, subscribeFinProduct };
+  // 금융 상품 가입 해제
+  const unsubscribeFinProduct = async (productData, wishlistId) => {
+    const API_URL = `${BACKEND_API_URL}wishlist/${wishlistId}`;
+    try {
+      const response = await ky.delete(API_URL, {
+        json: productData,
+        headers: {
+          'X-CSRFToken': getCsrfToken(),
+        },
+        credentials: 'include',
+      });
+
+      // 응답 본문 확인
+      const responseText = await response.text();
+
+      // 응답 본문이 비어있으면 빈 객체 반환
+      return responseText.trim() === '' ? {} : await response.json();
+    } catch (error) {
+      console.error('API 요청 실패:', error);
+      throw new Error('금융 상품 가입 취소에 실패했습니다.');
+    }
+  };
+
+  return {
+    getAllFinProducts,
+    getFinProduct,
+    subscribeFinProduct,
+    unsubscribeFinProduct,
+  };
 };
