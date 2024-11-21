@@ -80,9 +80,7 @@ const handleUnsubscribe = async (event, product) => {
         <div class="flex items-start">
           <span
             class="w-20 px-2 py-1 text-xs font-medium text-white rounded-full text-center shrink-0"
-            :class="
-              product.type === 'DEPOSIT' ? 'bg-purple-500' : 'bg-amber-500'
-            "
+            :class="product.type === 'DEPOSIT' ? 'bg-blue-600' : 'bg-blue-900'"
             >{{ product.type === 'DEPOSIT' ? '적금상품' : '예금상품' }}</span
           >
           <h3 class="ml-2 text-lg font-bold text-gray-600 break-keep truncate">
