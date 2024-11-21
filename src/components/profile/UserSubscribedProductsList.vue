@@ -1,11 +1,25 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigateToProductDetail = (service, fin_prdt_cd) => {
+  if (service && fin_prdt_cd) {
+    router.push({
+      path: `/${service.toLowerCase()}/detail/`,
+      query: { finPrdtCd: fin_prdt_cd },
+    });
+  } else {
+    console.warn('상품 정보가 부족합니다.');
+  }
+};
 const props = defineProps({
   subscribedProducts: {
     type: Array,
+    default: () => [], // 빈 배열로 기본값 설정
   },
 });
-
 // 관리 모드 전체 토글
 const isManagingAll = ref(false);
 
@@ -32,6 +46,7 @@ const manageProduct = (id) => {
           v-for="product in props.subscribedProducts"
           :key="product.id"
           class="relative p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
+          @click="navigateToProductDetail(product.type, product.fin_prdt_cd)"
         >
           <!-- 상품 정보 -->
           <h3 class="mb-2 text-lg font-bold text-blue-600">

@@ -27,8 +27,6 @@ const productDetails = computed(() =>
     : null
 );
 
-console.log(productDetails.value);
-
 const subscribe = () => {
   // computed 값을 .value로 접근
   if (productDetails.value) {
