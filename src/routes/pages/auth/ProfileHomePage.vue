@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import Loading from '@/components/common/Loading.vue';
 import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
-import UserSubscribedProductsList from '@/components/profile/UserSubscribedProductsList.vue';
+import SubscribedProductsList from '@/components/profile/SubscribedProductsList.vue';
 import { profileService } from '@/services/profileService';
 
 const { getProfile } = profileService();
@@ -63,7 +63,7 @@ onMounted(fetchProfile);
         <div class="w-full">
           <h2 class="mb-4 text-xl font-semibold">가입 상품 목록</h2>
           <Loading v-if="isLoading" />
-          <UserSubscribedProductsList
+          <SubscribedProductsList
             v-else
             :subscribedProducts="subscribedProducts"
           />
