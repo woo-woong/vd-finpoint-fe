@@ -5,6 +5,7 @@ import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
 import SubscribedProductsList from '@/components/profile/SubscribedProductsList.vue';
 import { profileService } from '@/services/profileService';
+import SubscribedProductInterestGraph from '@/components/profile/SubscribedProductInterestGraph.vue';
 
 const { getProfile } = profileService();
 
@@ -15,6 +16,7 @@ const fetchProfile = async () => {
   try {
     const data = await getProfile();
     subscribedProducts.value = data.wishlist;
+    console.log(subscribedProducts);
   } catch (error) {
     console.error('프로필 데이터를 가져오는 데 실패했습니다', error);
   } finally {
@@ -67,6 +69,14 @@ onMounted(fetchProfile);
             v-else
             :subscribedProducts="subscribedProducts"
           />
+        </div>
+      </main>
+      <!-- 가입 상품 그래프 -->
+      <main class="flex flex-col items-center w-full max-w-4xl">
+        <div class="w-full">
+          <h2 class="mb-4 text-xl font-semibold">가입 상품 그래프</h2>
+          <Loading v-if="isLoading" />
+          <SubscribedProductInterestGraph />
         </div>
       </main>
     </main>
