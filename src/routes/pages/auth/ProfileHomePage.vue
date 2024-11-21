@@ -1,12 +1,14 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import Loading from '@/components/common/Loading.vue';
 import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
 import UserSubscribedProductsList from '@/components/profile/UserSubscribedProductsList.vue';
 import { profileService } from '@/services/profileService';
-import { onMounted, ref } from 'vue';
 
 const { getProfile } = profileService();
 
+const isLoading = ref(true);
 const subscribedProducts = ref(null);
 
 const fetchProfile = async () => {
@@ -15,6 +17,8 @@ const fetchProfile = async () => {
     subscribedProducts.value = data.wishlist;
   } catch (error) {
     console.error('프로필 데이터를 가져오는 데 실패했습니다', error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -54,8 +58,17 @@ onMounted(fetchProfile);
           </button>
         </router-link>
       </div>
-
-      <UserSubscribedProductsList :subscribedProducts="subscribedProducts" />
+      <!-- 가입 상품 목록 -->
+      <main class="flex flex-col items-center w-full max-w-4xl">
+        <div class="w-full">
+          <h2 class="mb-4 text-xl font-semibold">가입 상품 목록</h2>
+          <Loading v-if="isLoading" />
+          <UserSubscribedProductsList
+            v-else
+            :subscribedProducts="subscribedProducts"
+          />
+        </div>
+      </main>
     </main>
   </div>
 </template>

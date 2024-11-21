@@ -37,9 +37,7 @@ const manageProduct = (id) => {
 </script>
 
 <template>
-  <main class="flex flex-col items-center w-full max-w-4xl">
-    <div class="w-full">
-      <h2 class="mb-4 text-xl font-semibold">가입 상품 목록</h2>
+  
 
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         <div
@@ -101,6 +99,5 @@ const manageProduct = (id) => {
           {{ isManagingAll ? '종료' : '상품 가입 관리' }}
         </button>
       </div>
-    </div>
-  </main>
+
 </template>
