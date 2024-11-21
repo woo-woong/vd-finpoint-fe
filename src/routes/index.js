@@ -4,7 +4,7 @@ import HomePage from '@routes/pages/HomePage.vue';
 import BoardHomePage from '@routes/pages/board/BoardHomePage.vue';
 import PostDetailPage from '@routes/pages/board/PostDetailPage.vue';
 import PostEditorPage from '@routes/pages/board/PostEditorPage.vue';
-import FinanceDetail from '@routes/pages/finance/FinanceDetail.vue';
+import FinProductDetailPage from '@routes/pages/finance/FinProductDetailPage.vue';
 import DepositPage from '@routes/pages/finance/DepositPage.vue';
 import SavingsPage from '@routes/pages/finance/SavingsPage.vue';
 import AnnunitySavings from '@routes/pages/finance/AnnuitySavings.vue';
@@ -45,8 +45,8 @@ const routes = [
       },
       {
         path: '/:service/detail',
-        name: 'FinanceDetail',
-        component: FinanceDetail,
+        name: 'FinProductDetailPage',
+        component: FinProductDetailPage,
         props: true,
         beforeEnter: (to, from, next) => {
           const validServices = [
