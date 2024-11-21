@@ -71,6 +71,7 @@ function goEdit() {
             :boardId="Number(boardId)"
             :initialLiked="postData.is_liked"
             @update:initialLiked="(newValue) => (postData.is_liked = newValue)"
+            @update:likeCount="(newValue) => (postData.like_count = newValue)"
           />
         </div>
       </div>

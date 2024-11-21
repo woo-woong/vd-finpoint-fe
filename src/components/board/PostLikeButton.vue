@@ -16,7 +16,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:initialLiked']);
+const emit = defineEmits(['update:initialLiked', 'update:likeCount']);
 const isLoading = ref(false);
 
 const toggleLike = async () => {
