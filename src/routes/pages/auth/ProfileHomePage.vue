@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import Loading from '@/components/common/Loading.vue';
 import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
@@ -11,6 +11,18 @@ const { getProfile } = profileService();
 
 const isLoading = ref(true);
 const subscribedProducts = ref(null);
+const processedGraphData = computed(() => {
+  if (!subscribedProducts.value) return [];
+
+  return subscribedProducts.value.flatMap((product) =>
+    product.product_detail.options.map((option) => ({
+      fin_prdt_cd: product.fin_prdt_cd,
+      fin_prdt_nm: product.fin_prdt_nm,
+      save_trm: option.save_trm,
+      intr_rate: option.intr_rate,
+    }))
+  );
+});
 
 const fetchProfile = async () => {
   try {
@@ -76,7 +88,10 @@ onMounted(fetchProfile);
         <div class="w-full">
           <h2 class="mb-4 text-xl font-semibold">가입 상품 그래프</h2>
           <Loading v-if="isLoading" />
-          <SubscribedProductInterestGraph />
+          <SubscribedProductInterestGraph
+            v-else
+            :options="processedGraphData"
+          />
         </div>
       </main>
     </main>

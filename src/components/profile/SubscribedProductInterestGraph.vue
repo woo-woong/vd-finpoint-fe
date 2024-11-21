@@ -29,45 +29,86 @@ const props = defineProps({
 });
 
 const chartData = computed(() => {
-  // Only map if options exists and has items
   if (!props.options || props.options.length === 0) {
     return {
       labels: [],
-      datasets: [
-        {
-          label: '저축 금리',
-          backgroundColor: '#8884d8',
-          data: [],
-        },
-        {
-          label: '최고 우대 금리',
-          backgroundColor: '#82ca9d',
-          data: [],
-        },
-      ],
+      datasets: [],
     };
   }
 
+  // 상품별로 그룹화
+  const groupedByProduct = props.options.reduce((acc, curr) => {
+    const key = curr.fin_prdt_cd;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(curr);
+    return acc;
+  }, {});
+
+  // 모든 개월 수 추출 (중복 제거 및 정렬)
+  const allTerms = [...new Set(props.options.map((opt) => opt.save_trm))].sort(
+    (a, b) => parseInt(a) - parseInt(b)
+  );
+
+  // 각 상품별로 데이터셋 생성
+  const datasets = Object.entries(groupedByProduct).map(
+    ([productCode, options], index) => {
+      const colors = [
+        '#8884d8',
+        '#82ca9d',
+        '#ffc658',
+        '#ff8042',
+        '#a4de6c',
+        '#d0ed57',
+      ];
+      return {
+        label: options[0].fin_prdt_nm,
+        backgroundColor: colors[index % colors.length],
+        data: allTerms.map((term) => {
+          const option = options.find((opt) => opt.save_trm === term);
+          return option ? option.intr_rate : null;
+        }),
+      };
+    }
+  );
+
   return {
-    labels: props.options.map((option) => option.save_trm),
-    datasets: [
-      {
-        label: '저축 금리',
-        backgroundColor: '#8884d8',
-        data: props.options.map((option) => option.intr_rate),
-      },
-      {
-        label: '최고 우대 금리',
-        backgroundColor: '#82ca9d',
-        data: props.options.map((option) => option.intr_rate2),
-      },
-    ],
+    labels: allTerms.map((term) => `${term}개월`),
+    datasets,
   };
 });
 
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return `${context.dataset.label}: ${context.parsed.y}%`;
+        },
+      },
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: '금리 (%)',
+      },
+    },
+    x: {
+      title: {
+        display: true,
+        text: '저축 기간',
+      },
+    },
+  },
 };
 </script>
 
