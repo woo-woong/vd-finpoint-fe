@@ -76,7 +76,7 @@ onMounted(fetchProfile);
       <main class="flex flex-col items-center w-full max-w-4xl">
         <div class="w-full">
           <h2 class="mb-4 text-xl font-semibold">가입 상품 목록</h2>
-          <Loading v-if="isLoading" />
+          <Loading v-if="isLoading" message="목록을 불러오는 중입니다..." />
           <SubscribedProductsList
             v-else
             :subscribedProducts="subscribedProducts"
@@ -86,8 +86,8 @@ onMounted(fetchProfile);
       <!-- 가입 상품 그래프 -->
       <main class="flex flex-col items-center w-full max-w-4xl">
         <div class="w-full">
-          <h2 class="mb-4 text-xl font-semibold">가입 상품 그래프</h2>
-          <Loading v-if="isLoading" />
+          <h2 class="mb-4 text-xl font-semibold">가입 상품 금리 비교 그래프</h2>
+          <Loading v-if="isLoading" message="그래프를 불러오는 중입니다..." />
           <SubscribedProductInterestGraph
             v-else
             :options="processedGraphData"

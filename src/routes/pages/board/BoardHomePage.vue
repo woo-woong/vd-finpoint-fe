@@ -47,7 +47,6 @@ const goToNewPost = () => {
     <!-- 메인 콘텐츠 -->
     <main
       class="flex flex-col items-center w-full max-w-6xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
-      v-if="!loading"
     >
       <!-- 게시판 헤더 -->
       <div class="flex justify-between w-full mb-5">
@@ -62,7 +61,7 @@ const goToNewPost = () => {
       </div>
 
       <!-- 게시글 테이블 -->
-      <div class="w-full overflow-x-auto">
+      <div class="w-full overflow-x-auto" v-if="!loading">
         <table class="w-full text-left border-collapse border-spacing-0">
           <thead class="bg-gray-200">
             <tr>
@@ -106,10 +105,9 @@ const goToNewPost = () => {
           </tbody>
         </table>
       </div>
+      <!-- 로딩 중일 때 -->
+      <Loading v-else message="게시글 목록을 불러오는 중입니다..." />
+      <!-- Posts가 없으면 Loading 컴포넌트 출력 -->
     </main>
-
-    <!-- 로딩 중일 때 -->
-    <Loading v-else />
-    <!-- Posts가 없으면 Loading 컴포넌트 출력 -->
   </div>
 </template>

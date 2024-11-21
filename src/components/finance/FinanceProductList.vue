@@ -209,7 +209,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
       </div>
 
       <div v-else-if="isLoading" class="p-4">
-        <Loading />
+        <Loading message="상품 데이터를 불러오는 중입니다..." />
       </div>
 
       <div v-else-if="filteredProducts.length === 0" class="p-4">
