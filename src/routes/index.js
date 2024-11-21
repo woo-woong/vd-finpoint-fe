@@ -19,6 +19,25 @@ import ProfileHomePage from '@routes/pages/auth/ProfileHomePage.vue';
 import ProfileEditPage from '@routes/pages/auth/ProfileEditPage.vue';
 import NearestBankPage from './pages/external/NearestBankPage.vue';
 import ExchangeRateCalculatorPage from './pages/external/ExchangeRateCalculatorPage.vue';
+import { useCookie } from '@/hooks/auth/useCookie';
+
+const requireAuth = (to, from, next) => {
+  const { value: sessionId } = useCookie('sessionid');
+  if (sessionId) {
+    next();
+  } else {
+    next('/login');
+  }
+};
+// 로그인되지 않은 상태 체크
+const requireNonAuth = (to, from, next) => {
+  const { value: sessionId } = useCookie('sessionid');
+  if (sessionId) {
+    next('/'); // 이미 로그인된 경우 홈으로 리다이렉트
+  } else {
+    next();
+  }
+};
 
 // 라우터 설정
 const routes = [
@@ -38,12 +57,14 @@ const routes = [
         name: 'PostWrite',
         component: PostEditorPage,
         props: { mode: 'create' },
+        beforeEnter: requireAuth,
       },
       {
         path: '/board/:id/edit',
         name: 'PostEdit',
         component: PostEditorPage,
         props: { mode: 'edit' },
+        beforeEnter: requireAuth,
       },
       {
         path: '/:service/detail',
@@ -72,17 +93,25 @@ const routes = [
       { path: '/mortgage-loan', component: MortgageLoan },
       { path: '/rent-house-loan', component: RentHouseLoan },
       { path: '/credit-loan', component: CreditLoan },
-      { path: '/login', component: LoginPage },
+      { path: '/login', component: LoginPage, beforeEnter: requireNonAuth },
       { path: '/logout', component: LogoutPage },
-      { path: '/signup', component: SignUpPage },
+      { path: '/signup', component: SignUpPage, beforeEnter: requireNonAuth },
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
       { path: '/find-nearest-bank', component: NearestBankPage },
       {
         path: '/calculate-exchange-rate',
         component: ExchangeRateCalculatorPage,
       },
-      { path: '/profile', component: ProfileHomePage },
-      { path: '/profile/edit', component: ProfileEditPage },
+      {
+        path: '/profile',
+        component: ProfileHomePage,
+        beforeEnter: requireAuth,
+      },
+      {
+        path: '/profile/edit',
+        component: ProfileEditPage,
+        beforeEnter: requireAuth,
+      },
     ],
   },
 ];
