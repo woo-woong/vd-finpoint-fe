@@ -1,8 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { finProductService } from '@/services/finProductService';
 
 const router = useRouter();
+const { unsubscribeFinProduct } = finProductService();
 
 const navigateToProductDetail = (service, fin_prdt_cd) => {
   if (service && fin_prdt_cd) {
@@ -14,32 +16,57 @@ const navigateToProductDetail = (service, fin_prdt_cd) => {
     console.warn('상품 정보가 부족합니다.');
   }
 };
+
 const props = defineProps({
   subscribedProducts: {
     type: Array,
     default: () => [], // 빈 배열로 기본값 설정
   },
 });
+
 // 관리 모드 전체 토글
 const isManagingAll = ref(false);
 
 const toggleManageMode = () => {
   isManagingAll.value = !isManagingAll.value;
-  subscribedProducts.value.forEach((product) => {
-    product.isManaging = isManagingAll.value;
-  });
 };
 
-// 관리 버튼 클릭 이벤트 (예: 관리 로직 추가)
-const manageProduct = (id) => {
-  alert(`상품 ID ${id} 관리 중`);
+// 로컬 상태로 구독 상품 목록 관리
+const localSubscribedProducts = ref([...props.subscribedProducts]);
+
+// props가 변경될 때 로컬 상태 업데이트
+watch(
+  () => props.subscribedProducts,
+  (newProducts) => {
+    localSubscribedProducts.value = [...newProducts];
+  }
+);
+
+// 상품 가입 해제
+const handleUnsubscribe = async (event, product) => {
+  event.stopPropagation(); // 상세 페이지 이동 방지
+
+  try {
+    const productData = {
+      fin_prdt_cd: product.fin_prdt_cd,
+      type: product.type,
+    };
+    await unsubscribeFinProduct(productData, product.id);
+    // 성공적으로 해제되면 로컬 상태에서 해당 상품 제거
+    localSubscribedProducts.value = localSubscribedProducts.value.filter(
+      (p) => p.id !== product.id
+    );
+  } catch (error) {
+    console.error('상품 가입 해제 실패:', error);
+    alert('상품 가입 해제에 실패했습니다. 다시 시도해주세요.');
+  }
 };
 </script>
 
 <template>
   <div class="grid grid-cols-1 gap-6 mb-6 sm:grid-cols-2 md:grid-cols-3">
     <div
-      v-for="product in props.subscribedProducts"
+      v-for="product in localSubscribedProducts"
       :key="product.id"
       class="relative p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
       @click="navigateToProductDetail(product.type, product.fin_prdt_cd)"
@@ -138,10 +165,10 @@ const manageProduct = (id) => {
 
       <!-- 관리 버튼: 관리 모드 활성화 시 나타남 -->
       <button
-        v-if="product.isManaging"
+        v-if="isManagingAll"
         type="button"
-        class="absolute p-2 text-white bg-red-500 rounded-full shadow-md top-2 right-2 hover:bg-red-600"
-        @click="manageProduct(product.id)"
+        class="absolute p-2 text-white bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600 transition-all duration-300 transform hover:scale-105 animate-[fade-in_0.3s_ease-out]"
+        @click="(event) => handleUnsubscribe(event, product)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
