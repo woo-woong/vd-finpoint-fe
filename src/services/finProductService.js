@@ -1,3 +1,4 @@
+import { getCsrfToken } from '@/hooks/auth/useCsrfToken';
 import ky from 'ky';
 
 const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL;
@@ -31,23 +32,15 @@ export const finProductService = () => {
   };
 
   // 금융 상품 가입
-  const subscribeFinProduct = async (
-    product_code,
-    bank_name,
-    product_name,
-    maturity_term,
-    type
-  ) => {
-    const API_URL = `${BACKEND_API_URL}wishlist`;
+  const subscribeFinProduct = async (productData) => {
+    const API_URL = `${BACKEND_API_URL}wishlist/`;
     try {
       const response = await ky.post(API_URL, {
-        json: {
-          product_code,
-          bank_name,
-          product_name,
-          maturity_term,
-          type,
+        json: productData,
+        headers: {
+          'X-CSRFToken': getCsrfToken(),
         },
+        credentials: 'include',
       });
       return response.json();
     } catch (error) {
