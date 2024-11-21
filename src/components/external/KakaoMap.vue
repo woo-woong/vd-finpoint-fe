@@ -3,22 +3,6 @@
   <div class="w-full h-full min-h-[500px]">
     <!-- 실제 지도가 렌더링될 div. ref를 사용해 Vue에서 DOM 요소에 접근 -->
     <div ref="mapContainer" class="w-full h-full min-h-[500px]"></div>
-
-    <!-- 은행 목록 섹션. banks 배열에 데이터가 있을 때만 보임 -->
-    <div v-if="banks.length" class="mt-4">
-      <h2 class="mb-2 text-xl font-bold">근처 은행 목록</h2>
-      <ul>
-        <!-- 클릭 이벤트 추가하여 지도 이동 및 마커 강조 -->
-        <li
-          v-for="bank in banks"
-          :key="bank.id"
-          class="p-2 mb-2 border rounded cursor-pointer hover:bg-gray-100"
-          @click="navigateToBank(bank)"
-        >
-          {{ bank.place_name }} - 거리: {{ bank.distance }}m
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -30,7 +14,6 @@ import axios from 'axios';
 // Refs 및 반응형 변수 선언
 const mapContainer = ref(null); // 지도 컨테이너 DOM 요소
 const map = ref(null); // Kakao Map 인스턴스
-const banks = ref([]); // 근처 은행 목록
 const infoWindows = ref([]); // 열린 인포윈도우 관리
 const bankMarkers = ref([]); // 은행 마커들 저장
 const userLocationMarker = ref(null); // 사용자 위치 마커
@@ -41,71 +24,8 @@ const mapOptions = reactive({
   level: 5, // 지도 확대 레벨
 });
 
-// 지도 이동 및 마커 강조 함수
-const navigateToBank = (bank) => {
-  if (!map.value) return;
-
-  // 지도 중심을 선택한 은행 위치로 이동
-  const bankPosition = new window.kakao.maps.LatLng(bank.y, bank.x);
-  map.value.setCenter(bankPosition);
-  map.value.setLevel(3); // 더 가깝게 확대
-
-  // 모든 인포윈도우 닫기
-  infoWindows.value.forEach((iw) => iw.close());
-
-  // 선택한 은행의 마커 찾기
-  const selectedMarker = bankMarkers.value.find(
-    (marker) => marker.getTitle() === bank.place_name
-  );
-
-  if (selectedMarker) {
-    // 해당 마커의 인포윈도우 열기
-    const infoWindow = new window.kakao.maps.InfoWindow({
-      content: `
-        <div style="
-          padding: 10px; 
-          width: 200px; 
-          max-width: 200px; 
-          overflow: hidden; 
-          text-overflow: ellipsis; 
-          white-space: nowrap;
-        ">
-          <h3 style="
-            font-weight: bold; 
-            margin-bottom: 5px; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap;
-          ">${bank.place_name}</h3>
-          <p style="
-            margin: 3px 0; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap;
-          ">주소: ${bank.address_name}</p>
-          <p style="
-            margin: 3px 0; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap;
-          ">전화: ${bank.phone || '정보 없음'}</p>
-          <p style="
-            margin: 3px 0; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap;
-          ">거리: ${bank.distance}m</p>
-        </div>
-      `,
-      removable: true,
-    });
-
-    // 기존 인포윈도우 닫고 새 인포윈도우 열기
-    infoWindows.value.forEach((iw) => iw.close());
-    infoWindow.open(map.value, selectedMarker);
-    infoWindows.value = [infoWindow];
-  }
-};
+// 부모 컴포넌트로 은행 목록 전달을 위한 이벤트 정의
+const emit = defineEmits(['update:banks', 'bank-selected']);
 
 // 근처 은행 검색 함수 (비동기)
 const searchNearbyBanks = async (latitude, longitude) => {
@@ -128,15 +48,15 @@ const searchNearbyBanks = async (latitude, longitude) => {
       }
     );
 
-    // 검색 결과를 banks ref에 저장
-    banks.value = response.data.documents;
+    // 검색된 은행 목록을 부모 컴포넌트로 전달
+    emit('update:banks', response.data.documents);
 
     // 기존 마커들 모두 제거
     bankMarkers.value.forEach((marker) => marker.setMap(null));
     bankMarkers.value = [];
 
     // 각 은행에 대해 마커와 인포윈도우 생성
-    banks.value.forEach((bank) => {
+    response.data.documents.forEach((bank) => {
       // Kakao Maps LatLng 객체로 위치 변환
       const markerPosition = new window.kakao.maps.LatLng(bank.y, bank.x);
 
@@ -327,6 +247,13 @@ onMounted(async () => {
     // 지도 로딩 중 오류 발생 시 콘솔에 로그
     console.error('지도 로딩 중 오류:', error);
   }
+});
+
+// 외부에서 특정 은행으로 이동하는 메서드 추가
+defineExpose({
+  navigateToBank: (bank) => {
+    // navigateToBank 함수 내용
+  },
 });
 </script>
 
