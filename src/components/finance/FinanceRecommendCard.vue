@@ -1,12 +1,27 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import FinanceCard from './FinanceCard.vue';
+const router = useRouter();
 
 const props = defineProps({
+  service: {
+    type: String,
+    required: true,
+  },
   productData: {
     type: Object,
     required: true,
   },
 });
+
+const servicelowerCased = props.service.toLowerCase();
+
+const navigateToFinProductDetail = (finPrdtCd) => {
+  router.push({
+    path: `/${servicelowerCased}/detail`,
+    query: { finPrdtCd },
+  });
+};
 </script>
 <template>
   <div class="relative group" v-if="productData">
@@ -41,7 +56,10 @@ const props = defineProps({
       <div
         class="absolute z-[100] transition-all duration-300 transform scale-95 translate-y-2 opacity-0 top-full left-0 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100"
       >
-        <FinanceCard :product="productData" />
+        <FinanceCard
+          :product="productData"
+          @click="navigateToFinProductDetail(productData.fin_prdt_cd)"
+        />
       </div>
     </div>
   </div>

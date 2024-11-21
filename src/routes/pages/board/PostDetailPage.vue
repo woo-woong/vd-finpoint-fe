@@ -80,7 +80,11 @@ function goEdit() {
         <Loading />
       </div>
 
-      <FinanceRecommendCard :productData="productData" />
+      <FinanceRecommendCard
+        v-if="postData && productData"
+        :service="postData.type"
+        :productData="productData"
+      />
 
       <!-- 내용 -->
       <div class="mb-8" v-if="postData">

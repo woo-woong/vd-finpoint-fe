@@ -121,7 +121,7 @@ const handleSearch = () => {
   // 검색 로직 구현
 };
 
-const navigateToProductDetail = (finPrdtCd) => {
+const navigateToFinProductDetail = (finPrdtCd) => {
   router.push({ path: `/${props.path}/detail`, query: { finPrdtCd } });
 };
 </script>
@@ -129,7 +129,7 @@ const navigateToProductDetail = (finPrdtCd) => {
 <template>
   <div class="w-full p-4">
     <!-- 검색 필터 섹션 -->
-    <div class="mb-6 bg-white rounded-lg shadow-sm overflow-hidden">
+    <div class="mb-6 overflow-hidden bg-white rounded-lg shadow-sm">
       <div class="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
         <!-- 은행 선택 -->
         <div>
@@ -189,7 +189,7 @@ const navigateToProductDetail = (finPrdtCd) => {
     </div>
 
     <!-- 테이블 섹션 -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+    <div class="overflow-hidden bg-white rounded-lg shadow-sm">
       <div v-if="error" class="p-4 text-red-600">
         <p>데이터를 불러오는데 실패했습니다: {{ error.message }}</p>
       </div>
@@ -203,7 +203,7 @@ const navigateToProductDetail = (finPrdtCd) => {
       </div>
 
       <div v-else class="overflow-x-auto">
-        <table class="w-full table-fixed divide-y divide-gray-200">
+        <table class="w-full divide-y divide-gray-200 table-fixed">
           <colgroup>
             <col class="w-[12%]" />
             <!-- 공시 제출월 -->
@@ -277,7 +277,7 @@ const navigateToProductDetail = (finPrdtCd) => {
                 <div class="truncate">
                   <span
                     class="text-blue-600 cursor-pointer"
-                    @click="navigateToProductDetail(product.fin_prdt_cd)"
+                    @click="navigateToFinProductDetail(product.fin_prdt_cd)"
                     >{{ product.fin_prdt_nm }}</span
                   >
                 </div>
