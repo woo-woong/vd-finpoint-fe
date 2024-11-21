@@ -11,11 +11,9 @@ const isLoading = ref(false);
 const { getFinProduct } = finProductService();
 
 const formattedJoinDeny = ref('');
-
+// service 파라미터를 통해 상품 종류 구분 (예: deposit, savings 등)
+const service = route.params.service;
 onMounted(async () => {
-  // service 파라미터를 통해 상품 종류 구분 (예: deposit, savings 등)
-  const service = route.params.service;
-
   try {
     isLoading.value = true;
     // 상품 ID는 쿼리 파라미터로 전달받음
@@ -42,25 +40,25 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div class="w-full mx-auto p-6">
+  <div class="w-full p-6 mx-auto">
     <Loading v-if="isLoading" />
     <div v-else>
       <!-- 상품 헤더 -->
       <div class="mb-2">
-        <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-bold mb-2">{{ product?.fin_prdt_nm }}</h1>
-          <FinanceSubScriptionBtn />
+        <div class="flex items-center justify-between">
+          <h1 class="mb-2 text-2xl font-bold">{{ product?.fin_prdt_nm }}</h1>
+          <FinanceSubScriptionBtn :product="product" :service="service" />
         </div>
         <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
       </div>
 
       <!-- 상품 상세 정보 -->
-      <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="p-6 bg-white rounded-lg shadow-md">
         <!-- 기본 정보 테이블 -->
         <table class="w-full mb-8">
           <tbody>
             <tr class="border-b">
-              <td class="py-3 text-gray-600 w-1/3">공시 제출월</td>
+              <td class="w-1/3 py-3 text-gray-600">공시 제출월</td>
               <td class="py-3 font-medium">{{ product?.dcls_month }}</td>
             </tr>
             <tr class="border-b">
@@ -87,8 +85,8 @@ onMounted(async () => {
         </table>
 
         <!-- 이자율 정보 -->
-        <div class="bg-blue-50 rounded-lg p-6 mb-2">
-          <h2 class="text-lg font-bold text-blue-800 mb-4">만기 후 이자율</h2>
+        <div class="p-6 mb-2 rounded-lg bg-blue-50">
+          <h2 class="mb-4 text-lg font-bold text-blue-800">만기 후 이자율</h2>
           <div class="space-y-4">
             <p class="text-gray-600 whitespace-pre-line">
               {{ product?.mtrt_int }}
@@ -97,8 +95,8 @@ onMounted(async () => {
         </div>
 
         <!-- 기타 유의사항 -->
-        <div class="bg-gray-50 rounded-lg p-6">
-          <h2 class="text-lg font-bold text-gray-800 mb-4">유의사항</h2>
+        <div class="p-6 rounded-lg bg-gray-50">
+          <h2 class="mb-4 text-lg font-bold text-gray-800">유의사항</h2>
           <p class="text-gray-600 whitespace-pre-line">
             {{ product?.etc_note }}
           </p>
