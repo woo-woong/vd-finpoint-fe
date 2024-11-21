@@ -128,7 +128,7 @@ const goBack = () => {
 
         <!-- Content -->
         <div
-          class="relative z-10 flex w-[300px] h-[300px] p-4 bg-white rounded-lg overflow-hidden"
+          class="relative z-10 flex w-[500px] h-[500px] p-4 bg-white rounded-lg overflow-hidden"
         >
           <div class="absolute flex justify-end top-2 right-2">
             <button
