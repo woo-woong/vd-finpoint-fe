@@ -15,9 +15,11 @@ import LoginPage from '@routes/pages/auth/LoginPage.vue';
 import LogoutPage from '@routes/pages/auth/LogoutPage.vue';
 import SignUpPage from '@routes/pages/auth/SignUpPage.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
-import KakaoMap from '@/components/external/KakaoMap.vue';
 import ProfileHomePage from '@routes/pages/auth/ProfileHomePage.vue';
 import ProfileEditPage from '@routes/pages/auth/ProfileEditPage.vue';
+import NearestBankPage from './pages/external/NearestBankPage.vue';
+import ExchangeRateCalculatorPage from './pages/external/ExchangeRateCalculatorPage.vue';
+
 // 라우터 설정
 const routes = [
   {
@@ -74,7 +76,11 @@ const routes = [
       { path: '/logout', component: LogoutPage },
       { path: '/signup', component: SignUpPage },
       { path: '/login/oauth2/code/kakao/', component: KakaoOauth },
-      { path: '/kakao-map', component: KakaoMap },
+      { path: '/find-nearest-bank', component: NearestBankPage },
+      {
+        path: '/calculate-exchange-rate',
+        component: ExchangeRateCalculatorPage,
+      },
       { path: '/profile', component: ProfileHomePage },
       { path: '/profile/edit', component: ProfileEditPage },
     ],
