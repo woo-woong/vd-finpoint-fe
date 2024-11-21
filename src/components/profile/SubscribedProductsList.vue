@@ -85,7 +85,7 @@ const handleUnsubscribe = async (event, product) => {
             "
             >{{ product.type === 'DEPOSIT' ? '적금상품' : '예금상품' }}</span
           >
-          <h3 class="ml-2 text-lg font-bold text-gray-600 break-keep">
+          <h3 class="ml-2 text-lg font-bold text-gray-600 break-keep truncate">
             {{ product.fin_prdt_nm }}
           </h3>
         </div>
