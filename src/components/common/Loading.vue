@@ -1,5 +1,11 @@
 <script setup>
 // Vue 3 Composition API
+const props = defineProps({
+  message: {
+    type: String,
+    default: '로딩중...',
+  },
+});
 </script>
 
 <style scoped>
@@ -19,11 +25,11 @@
 
 <template>
   <div class="flex items-center justify-center">
-    <div class="flex items-center justify-center space-x-2">
+    <div v-motion-fade class="flex items-center justify-center space-x-2">
       <div
         class="w-8 h-8 border-4 border-blue-500 rounded-full border-t-transparent spinner"
       ></div>
-      <p class="text-lg font-semibold text-gray-700">Loading...</p>
+      <p class="text-lg font-semibold text-gray-700">{{ message }}</p>
     </div>
   </div>
 </template>
