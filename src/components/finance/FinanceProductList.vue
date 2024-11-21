@@ -23,6 +23,10 @@ const error = ref(null);
 const visibleCount = ref(10);
 const isLoading = ref(true);
 
+// 정렬 상태 추가
+const sortField = ref('12'); // 기본값 12개월
+const sortDirection = ref('desc'); // 기본값 내림차순
+
 // finProductService에서 함수 가져오기
 const { getAllFinProducts } = finProductService();
 
@@ -55,8 +59,6 @@ watch(
   { immediate: true }
 );
 
-// onMounted 제거 (watch의 immediate: true로 대체)
-
 // 검색 조건을 위한 상태 관리
 const selectedBank = ref('전체');
 const selectedPeriod = ref('전체기간');
@@ -81,6 +83,16 @@ const getInterestRate = (product, term) => {
     (opt) => opt.save_trm === term.toString()
   );
   return option?.intr_rate ? option.intr_rate.toFixed(2) : '-';
+};
+
+// 정렬 토글 함수 추가
+const toggleSort = (period) => {
+  if (sortField.value === period) {
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortField.value = period;
+    sortDirection.value = 'desc';
+  }
 };
 
 // 필터링된 상품 목록
@@ -110,9 +122,11 @@ const filteredProducts = computed(() => {
       return bankMatch && nameMatch && periodMatch;
     })
     .sort((a, b) => {
-      const rateA = Number(getInterestRate(a, '12').replace('-', '0')) || 0;
-      const rateB = Number(getInterestRate(b, '12').replace('-', '0')) || 0;
-      return rateB - rateA;
+      const rateA =
+        Number(getInterestRate(a, sortField.value).replace('-', '0')) || 0;
+      const rateB =
+        Number(getInterestRate(b, sortField.value).replace('-', '0')) || 0;
+      return sortDirection.value === 'asc' ? rateA - rateB : rateB - rateA;
     });
 });
 
@@ -206,19 +220,12 @@ const navigateToFinProductDetail = (finPrdtCd) => {
         <table class="w-full divide-y divide-gray-200 table-fixed">
           <colgroup>
             <col class="w-[12%]" />
-            <!-- 공시 제출월 -->
             <col class="w-[15%]" />
-            <!-- 금융회사명 -->
             <col class="w-[31%]" />
-            <!-- 상품명 -->
             <col class="w-[10.5%]" />
-            <!-- 6개월 -->
             <col class="w-[10.5%]" />
-            <!-- 12개월 -->
             <col class="w-[10.5%]" />
-            <!-- 24개월 -->
             <col class="w-[10.5%]" />
-            <!-- 36개월 -->
           </colgroup>
 
           <thead class="bg-gray-50">
@@ -239,24 +246,40 @@ const navigateToFinProductDetail = (finPrdtCd) => {
                 상품명
               </th>
               <th
-                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500"
+                @click="toggleSort('6')"
+                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500 cursor-pointer hover:bg-gray-100"
               >
                 6개월
+                <span v-if="sortField === '6'" class="ml-1">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
               <th
-                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500"
+                @click="toggleSort('12')"
+                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500 cursor-pointer hover:bg-gray-100"
               >
                 12개월
+                <span v-if="sortField === '12'" class="ml-1">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
               <th
-                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500"
+                @click="toggleSort('24')"
+                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500 cursor-pointer hover:bg-gray-100"
               >
                 24개월
+                <span v-if="sortField === '24'" class="ml-1">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
               <th
-                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500"
+                @click="toggleSort('36')"
+                class="p-4 text-sm font-medium tracking-wider text-center text-gray-500 cursor-pointer hover:bg-gray-100"
               >
                 36개월
+                <span v-if="sortField === '36'" class="ml-1">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
               </th>
             </tr>
           </thead>
