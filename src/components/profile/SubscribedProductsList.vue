@@ -69,7 +69,10 @@ const handleUnsubscribe = async (event, product) => {
       v-for="product in localSubscribedProducts"
       :key="product.id"
       class="relative p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
-      @click="navigateToProductDetail(product.type, product.fin_prdt_cd)"
+      @click="
+        !isManagingAll &&
+          navigateToProductDetail(product.type, product.fin_prdt_cd)
+      "
     >
       <!-- 상품 정보 -->
       <div class="flex flex-col space-y-3">
@@ -164,6 +167,10 @@ const handleUnsubscribe = async (event, product) => {
           <!-- 자세히 보기 오버레이 -->
           <div
             class="absolute inset-0 flex items-center justify-center opacity-0 bg-black bg-opacity-50 transition-opacity duration-300 hover:opacity-100 cursor-pointer rounded-lg"
+            :class="{
+              'opacity-0 pointer-events-none': isManagingAll,
+              'hover:opacity-100': !isManagingAll,
+            }"
           >
             <span class="text-white text-lg font-semibold">자세히 보기 →</span>
           </div>
