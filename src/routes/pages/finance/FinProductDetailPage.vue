@@ -8,11 +8,17 @@ import Loading from '@/components/common/Loading.vue';
 const route = useRoute();
 const product = ref(null);
 const isLoading = ref(false);
+const initialIsSubscribed = ref(false);
 const { getFinProduct } = finProductService();
 
 const formattedJoinDeny = ref('');
 // service 파라미터를 통해 상품 종류 구분 (예: deposit, savings 등)
 const service = route.params.service;
+
+const updateSubscribedStatus = (status) => {
+  initialIsSubscribed.value = status;
+};
+
 onMounted(async () => {
   try {
     isLoading.value = true;
@@ -22,6 +28,7 @@ onMounted(async () => {
     // API 호출 시 상품 코드를 path parameter로 전달
     const response = await getFinProduct(service, finPrdtCd);
     product.value = response;
+    initialIsSubscribed.value = response.is_subscribed;
 
     if (product.value?.join_deny) {
       if (product.value.join_deny === '1') {
@@ -47,7 +54,13 @@ onMounted(async () => {
       <div class="mb-2">
         <div class="flex items-center justify-between">
           <h1 class="mb-2 text-2xl font-bold">{{ product?.fin_prdt_nm }}</h1>
-          <FinanceSubScriptionBtn :product="product" :service="service" />
+          <FinanceSubScriptionBtn
+            :initialIsSubscribed="initialIsSubscribed"
+            :inititalWishlistId="product?.wishlist_id || null"
+            :product="product"
+            :service="service"
+            @update:subscribed="updateSubscribedStatus"
+          />
         </div>
         <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
       </div>
