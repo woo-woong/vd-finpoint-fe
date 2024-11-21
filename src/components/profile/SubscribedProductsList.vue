@@ -45,22 +45,96 @@ const manageProduct = (id) => {
       @click="navigateToProductDetail(product.type, product.fin_prdt_cd)"
     >
       <!-- 상품 정보 -->
-      <h3 class="mb-2 text-lg font-bold text-blue-600">
-        {{ product.fin_prdt_nm }}
-      </h3>
-      <p class="text-sm text-gray-700">
-        은행이름:
-        <span class="font-semibold">
-          {{ product.kor_co_nm }}
-        </span>
-      </p>
-      <p class="text-sm text-gray-700">
-        만기:
-        <span class="font-semibold">{{ product.mtrt_int }}</span>
-      </p>
-      <p class="mt-2 text-sm text-gray-600">
-        {{ product.description }}
-      </p>
+      <div class="flex flex-col space-y-3">
+        <!-- 상품명 -->
+        <div class="flex items-start">
+          <span
+            class="w-20 px-2 py-1 text-xs font-medium text-white rounded-full text-center shrink-0"
+            :class="
+              product.type === 'DEPOSIT' ? 'bg-purple-500' : 'bg-amber-500'
+            "
+            >{{ product.type === 'DEPOSIT' ? '적금상품' : '예금상품' }}</span
+          >
+          <h3 class="ml-2 text-lg font-bold text-gray-600 break-keep">
+            {{ product.fin_prdt_nm }}
+          </h3>
+        </div>
+        <!-- 은행명 -->
+        <div class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-gray-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+            <path
+              fillRule="evenodd"
+              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span class="ml-2 text-md font-semibold text-gray-500">{{
+            product.kor_co_nm
+          }}</span>
+        </div>
+
+        <!-- 상품 정보 -->
+        <div class="flex flex-col space-y-2">
+          <!-- 공시 정보 -->
+          <div class="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 text-gray-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span class="ml-2 text-sm text-gray-700"
+              >공시 제출월:
+              <span class="font-semibold"
+                >{{ product.product_detail?.dcls_month.slice(0, 4) }}년
+                {{ product.product_detail?.dcls_month.slice(4) }}월</span
+              >
+            </span>
+          </div>
+
+          <!-- 가입 정보 -->
+          <div
+            class="px-3 py-2 space-y-1 text-sm text-gray-600 bg-gray-100 rounded"
+          >
+            <p>
+              <span class="font-medium break-keep">가입방법:</span>
+              <span class="break-keep">
+                {{ product.product_detail?.join_way }}
+              </span>
+            </p>
+            <p>
+              <span class="font-medium break-keep">가입대상:</span>
+              <span class="break-keep">
+                {{ product.product_detail?.join_member }}
+              </span>
+            </p>
+            <p>
+              <span class="font-medium break-keep">가입제한:</span>
+              <span class="break-keep">
+                {{
+                  product.product_detail?.join_deny === '1'
+                    ? '제한없음'
+                    : product.product_detail?.join_deny === '2'
+                      ? '서민전용'
+                      : '일부제한'
+                }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
 
       <!-- 관리 버튼: 관리 모드 활성화 시 나타남 -->
       <button
