@@ -1,4 +1,5 @@
 <script setup>
+import UserSubscribedProducts from '@/components/profile/UserSubscribedProducts.vue';
 import { useUserStore } from '@/stores/userStore';
 
 // 사용자 정보 데이터
@@ -54,7 +55,6 @@ const userData = useUserStore().userData;
           </p>
         </div>
       </div>
-
       <!-- 수정 버튼 -->
       <div class="flex justify-end w-full">
         <router-link to="/profile/edit">
@@ -66,6 +66,8 @@ const userData = useUserStore().userData;
           </button>
         </router-link>
       </div>
+
+      <UserSubscribedProducts />
     </main>
   </div>
 </template>
