@@ -161,8 +161,14 @@ const goToNearestBankPage = () => {
                   <div
                     class="flex flex-col justify-between flex-1 gap-4 mt-2 h-80"
                   >
-                    <RequestAdvisorBubble message="예금 추천해줘" />
-                    <RequestAdvisorBubble message="적금 추천해줘" />
+                    <RequestAdvisorBubble
+                      message="예금 추천해줘"
+                      service="deposit"
+                    />
+                    <RequestAdvisorBubble
+                      message="적금 추천해줘"
+                      service="savings"
+                    />
                   </div>
                 </div>
               </Transition>
