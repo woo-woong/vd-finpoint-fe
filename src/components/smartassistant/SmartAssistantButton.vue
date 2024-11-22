@@ -24,6 +24,7 @@ const tooltipStyle = computed(() => {
 
 const toggleTooltip = () => {
   isOpen.value = !isOpen.value;
+  currentView.value = 'buttons';
 };
 
 const handleClickOutside = (event) => {
@@ -66,7 +67,6 @@ const goBack = () => {
 };
 
 const goToNearestBankPage = () => {
-  currentView.value = 'buttons';
   toggleTooltip();
   router.push('/find-nearest-bank');
 };
