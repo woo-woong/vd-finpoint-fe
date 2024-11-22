@@ -35,15 +35,14 @@ const searchNearbyBanks = async (latitude, longitude) => {
       'https://dapi.kakao.com/v2/local/search/category.json',
       {
         headers: {
-          // 환경변수에서 Kakao REST API 키 가져오기
           Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_KEY}`,
         },
         params: {
-          category_group_code: 'BK9', // 은행 카테고리 코드
-          x: longitude, // 경도
-          y: latitude, // 위도
-          radius: 1000, // 1km 반경 검색
-          sort: 'distance', // 거리순 정렬
+          category_group_code: 'BK9',
+          x: longitude,
+          y: latitude,
+          radius: 1000,
+          sort: 'distance',
         },
       }
     );
@@ -57,59 +56,17 @@ const searchNearbyBanks = async (latitude, longitude) => {
 
     // 각 은행에 대해 마커와 인포윈도우 생성
     response.data.documents.forEach((bank) => {
-      // Kakao Maps LatLng 객체로 위치 변환
       const markerPosition = new window.kakao.maps.LatLng(bank.y, bank.x);
 
-      // 마커 생성
       const marker = new window.kakao.maps.Marker({
-        map: map.value, // 지도 객체
-        position: markerPosition, // 위치
-        title: bank.place_name, // 마커 호버 시 보이는 이름
+        map: map.value,
+        position: markerPosition,
+        title: bank.place_name,
       });
 
-      // 마커 배열에 추가
       bankMarkers.value.push(marker);
 
-      // 인포윈도우 생성
-      const infoWindow = new window.kakao.maps.InfoWindow({
-        content: `
-          <div style="
-            padding: 10px; 
-            width: 200px; 
-            max-width: 200px; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            white-space: nowrap;
-          ">
-            <h3 style="
-              font-weight: bold; 
-              margin-bottom: 5px; 
-              overflow: hidden; 
-              text-overflow: ellipsis; 
-              white-space: nowrap;
-            ">${bank.place_name}</h3>
-            <p style="
-              margin: 3px 0; 
-              overflow: hidden; 
-              text-overflow: ellipsis; 
-              white-space: nowrap;
-            ">주소: ${bank.address_name}</p>
-            <p style="
-              margin: 3px 0; 
-              overflow: hidden; 
-              text-overflow: ellipsis; 
-              white-space: nowrap;
-            ">전화: ${bank.phone || '정보 없음'}</p>
-            <p style="
-              margin: 3px 0; 
-              overflow: hidden; 
-              text-overflow: ellipsis; 
-              white-space: nowrap;
-            ">거리: ${bank.distance}m</p>
-          </div>
-        `,
-        removable: true, // 닫기 버튼 활성화
-      });
+      const infoWindow = createInfoWindow(bank);
 
       // 마커 클릭 이벤트 리스너 추가
       window.kakao.maps.event.addListener(marker, 'click', () => {
@@ -121,10 +78,12 @@ const searchNearbyBanks = async (latitude, longitude) => {
 
         // 현재 인포윈도우 목록 업데이트
         infoWindows.value = [infoWindow];
+
+        // 선택된 은행 정보를 부모 컴포넌트로 전달
+        emit('bank-selected', bank);
       });
     });
   } catch (error) {
-    // 오류 발생 시 콘솔에 로그
     console.error(
       '은행 검색 중 오류:',
       error.response ? error.response.data : error
@@ -132,37 +91,94 @@ const searchNearbyBanks = async (latitude, longitude) => {
   }
 };
 
+// 인포윈도우 생성 헬퍼 함수
+const createInfoWindow = (bank) => {
+  return new window.kakao.maps.InfoWindow({
+    content: `
+      <div style="
+        padding: 10px; 
+        width: 200px; 
+        max-width: 200px; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        white-space: nowrap;
+      ">
+        <h3 style="
+          font-weight: bold; 
+          margin-bottom: 5px; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          white-space: nowrap;
+        ">${bank.place_name}</h3>
+        <p style="
+          margin: 3px 0; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          white-space: nowrap;
+        ">주소: ${bank.address_name}</p>
+        <p style="
+          margin: 3px 0; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          white-space: nowrap;
+        ">전화: ${bank.phone || '정보 없음'}</p>
+        <p style="
+          margin: 3px 0; 
+          overflow: hidden; 
+          text-overflow: ellipsis; 
+          white-space: nowrap;
+        ">거리: ${bank.distance}m</p>
+      </div>
+    `,
+    removable: true,
+  });
+};
+
 // 사용자 위치 가져오는 함수
 const getUserLocation = () => {
   return new Promise((resolve, reject) => {
-    // 브라우저 위치 서비스 지원 확인
     if ('geolocation' in navigator) {
-      // 현재 위치 요청
       navigator.geolocation.getCurrentPosition(
-        (position) => resolve(position.coords), // 성공 시 좌표 반환
-        (error) => reject(error) // 실패 시 오류 반환
+        (position) => resolve(position.coords),
+        (error) => reject(error)
       );
     } else {
-      // 위치 서비스 미지원 시 오류
       reject(new Error('Geolocation is not supported'));
     }
   });
 };
 
+// 특정 은행으로 이동하는 함수
+const navigateToBank = (bank) => {
+  const bankPosition = new window.kakao.maps.LatLng(bank.y, bank.x);
+  map.value.setCenter(bankPosition);
+  map.value.setLevel(3);
+
+  const targetMarker = bankMarkers.value.find(
+    (marker) =>
+      marker.getPosition().getLat() === parseFloat(bank.y) &&
+      marker.getPosition().getLng() === parseFloat(bank.x)
+  );
+
+  if (targetMarker) {
+    infoWindows.value.forEach((iw) => iw.close());
+    const infoWindow = createInfoWindow(bank);
+    infoWindow.open(map.value, targetMarker);
+    infoWindows.value = [infoWindow];
+    emit('bank-selected', bank);
+  }
+};
+
 // 컴포넌트 마운트 시 실행되는 로직
 onMounted(async () => {
   try {
-    // Kakao Maps 스크립트 동적 로드
     const script = document.createElement('script');
-    // 환경변수의 Kakao JavaScript API 키 사용
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}`;
     script.async = true;
     document.head.appendChild(script);
 
-    // 스크립트 로드 완료 후 실행
     script.onload = async () => {
       window.kakao.maps.load(() => {
-        // 지도 생성
         map.value = new window.kakao.maps.Map(mapContainer.value, {
           center: new window.kakao.maps.LatLng(
             mapOptions.center.lat,
@@ -171,17 +187,14 @@ onMounted(async () => {
           level: mapOptions.level,
         });
 
-        // 사용자 위치 가져오기
         getUserLocation()
           .then((coords) => {
-            // 지도 중심을 현재 위치로 이동
             const currentPosition = new window.kakao.maps.LatLng(
               coords.latitude,
               coords.longitude
             );
             map.value.setCenter(currentPosition);
 
-            // 현재 위치에 특별한 마커 표시
             userLocationMarker.value = new window.kakao.maps.Marker({
               map: map.value,
               position: currentPosition,
@@ -191,69 +204,57 @@ onMounted(async () => {
               ),
             });
 
-            // 사용자 위치 인포윈도우 생성
             const userLocationInfoWindow = new window.kakao.maps.InfoWindow({
               content: `
-              <div style="
-                padding: 10px; 
-                width: 200px; 
-                text-align: center;
-                max-width: 100px; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-                white-space: nowrap;
-              ">
-                <h3 style="
-                  font-weight: bold; 
-                  margin-bottom: 5px; 
+                <div style="
+                  padding: 10px; 
+                  width: 200px; 
+                  text-align: center;
+                  max-width: 100px; 
                   overflow: hidden; 
                   text-overflow: ellipsis; 
                   white-space: nowrap;
-                ">내 위치</h3>
-              </div>
-            `,
+                ">
+                  <h3 style="
+                    font-weight: bold; 
+                    margin-bottom: 5px; 
+                    overflow: hidden; 
+                    text-overflow: ellipsis; 
+                    white-space: nowrap;
+                  ">내 위치</h3>
+                </div>
+              `,
               removable: true,
             });
 
-            // 마커 클릭 이벤트 리스너 추가
             window.kakao.maps.event.addListener(
               userLocationMarker.value,
               'click',
               () => {
-                // 기존에 열려있는 모든 인포윈도우 닫기
                 infoWindows.value.forEach((iw) => iw.close());
-
-                // 새 인포윈도우 열기
                 userLocationInfoWindow.open(
                   map.value,
                   userLocationMarker.value
                 );
-
-                // 현재 인포윈도우 목록 업데이트
                 infoWindows.value = [userLocationInfoWindow];
               }
             );
 
-            // 현재 위치 기준 근처 은행 검색
             searchNearbyBanks(coords.latitude, coords.longitude);
           })
           .catch((error) => {
-            // 위치 정보 가져오기 실패 시 콘솔에 로그
             console.error('위치 정보를 가져올 수 없습니다:', error);
           });
       });
     };
   } catch (error) {
-    // 지도 로딩 중 오류 발생 시 콘솔에 로그
     console.error('지도 로딩 중 오류:', error);
   }
 });
 
-// 외부에서 특정 은행으로 이동하는 메서드 추가
+// 외부에서 사용할 메서드 노출
 defineExpose({
-  navigateToBank: (bank) => {
-    // navigateToBank 함수 내용
-  },
+  navigateToBank,
 });
 </script>
 
