@@ -192,25 +192,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-[200px]">
+  <div class="w-full h-full flex flex-col">
     <!-- 카드 헤더 -->
-    <div class="p-6 bg-white border-b rounded-t-xl">
-      <h2 class="text-2xl font-bold text-gray-800">환율 계산기</h2>
-      <p class="mt-1 text-sm text-gray-500">
+    <div class="p-4 bg-white border-b rounded-t-xl">
+      <p class="mt-0.5 text-xs text-gray-500">
         최종 업데이트: {{ lastUpdated.toLocaleString() }}
       </p>
     </div>
 
     <!-- 메인 컨버터 섹션 -->
-    <div class="p-6 bg-white shadow-lg rounded-b-xl">
+    <div class="flex-1 p-4 bg-white shadow-lg rounded-b-xl">
       <!-- From Currency -->
-      <div class="space-y-2">
+      <div class="space-y-1">
         <label class="block text-sm font-medium text-gray-700">출발 통화</label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
           <div class="w-1/3">
             <select
               v-model="fromCurrency"
-              class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option
                 v-for="rate in exchangeRates"
@@ -233,7 +232,7 @@ onMounted(() => {
                 :value="displayAmount"
                 @input="handleAmountInput"
                 placeholder="0.00"
-                class="w-full p-3 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -241,24 +240,24 @@ onMounted(() => {
       </div>
 
       <!-- Swap Button -->
-      <div class="flex justify-center my-4">
+      <div class="flex justify-center my-2">
         <button
           @click="swapCurrencies"
-          class="p-2 transition-colors rounded-full hover:bg-gray-100"
+          class="p-1 transition-colors rounded-full hover:bg-gray-100"
           title="통화 교환"
         >
-          <ArrowDownUp class="w-6 h-6 text-blue-600" />
+          <ArrowDownUp class="w-5 h-5 text-blue-600" />
         </button>
       </div>
 
       <!-- To Currency -->
-      <div class="space-y-2">
+      <div class="space-y-1">
         <label class="block text-sm font-medium text-gray-700">도착 통화</label>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
           <div class="w-1/3">
             <select
               v-model="toCurrency"
-              class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option
                 v-for="rate in exchangeRates"
@@ -280,7 +279,7 @@ onMounted(() => {
                 type="text"
                 :value="formatNumber(toAmount, toCurrency)"
                 readonly
-                class="w-full p-3 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50"
+                class="w-full p-2 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50"
               />
             </div>
           </div>
@@ -288,7 +287,7 @@ onMounted(() => {
       </div>
 
       <!-- Exchange Rate Display -->
-      <div class="p-4 mt-6 rounded-lg bg-gray-50">
+      <div class="p-3 mt-4 rounded-lg bg-gray-50">
         <div class="flex items-center justify-between">
           <span class="text-sm text-gray-600">환율</span>
           <div class="flex items-center gap-2">
@@ -298,6 +297,5 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
   </div>
 </template>
