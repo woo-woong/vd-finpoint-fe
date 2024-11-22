@@ -2,7 +2,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
-import RequestAdvisorBubble from '../external/RequestAdvisorBubble.vue';
+import FinProductRequestBubble from '@/components/smartAssistant/FinProductRequestBubble.vue';
+import FinProductAdvisorBubble from '@/components/smartAssistant/FinProductAdvisorBubble.vue';
 import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
@@ -10,6 +11,7 @@ const buttonRef = ref(null);
 const tooltipRef = ref(null);
 const router = useRouter();
 const currentView = ref('buttons'); // 'buttons', 'map', 'converter'
+const selectedService = ref(null); // 'deposit' 또는 'savings'를 저장
 
 const tooltipStyle = computed(() => {
   if (!buttonRef.value) return {};
@@ -63,17 +65,24 @@ const toggleConverter = () => {
   currentView.value = 'converter';
 };
 
-const toggleFinProductAdvisor = () => {
+const toggleFinProductAdvisor = (service) => {
+  selectedService.value = service;
   currentView.value = 'fin-product-advisor';
 };
 
 const goBack = () => {
   currentView.value = 'buttons';
+  selectedService.value = null;
 };
 
 const goToNearestBankPage = () => {
   toggleTooltip();
   router.push('/find-nearest-bank');
+};
+
+const goToExchangeRateCalculatorPage = () => {
+  toggleTooltip();
+  router.push('/calculate-exchange-rate');
 };
 </script>
 
@@ -132,99 +141,64 @@ const goToNearestBankPage = () => {
             <!-- Views Container -->
             <div class="relative w-full h-full">
               <!-- Buttons View -->
-              <Transition
-                enter-active-class="transition-all duration-700 ease-in-out"
-                enter-from-class="transform translate-x-full opacity-0"
-                enter-to-class="transform translate-x-0 opacity-100"
-                leave-active-class="transition-all duration-700 ease-in-out"
-                leave-from-class="transform translate-x-0 opacity-100"
-                leave-to-class="transform -translate-x-full opacity-0"
-                mode="out-in"
+              <div
+                v-if="currentView === 'buttons'"
+                v-motion
+                :initial="{ opacity: 0 }"
+                :enter="{ opacity: 1 }"
+                :leave="{ opacity: 0 }"
+                class="absolute inset-0 w-full h-full flex flex-col space-y-2"
               >
-                <div
-                  v-if="currentView === 'buttons'"
-                  class="absolute inset-0 w-full space-y-2"
+                <button
+                  @click="toggleKakaoMap"
+                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
                 >
-                  <button
-                    @click="toggleKakaoMap"
-                    class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                  >
-                    근처 은행 찾기
-                  </button>
-                  <button
-                    @click="toggleConverter"
-                    class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                  >
-                    환율 계산
-                  </button>
-                  <!-- 남은 공간을 flex로 채우는 컨테이너 -->
-                  <div
-                    class="flex flex-col justify-between flex-1 gap-4 mt-2 h-80"
-                  >
-                    <RequestAdvisorBubble
-                      message="예금 추천해줘"
-                      service="deposit"
-                    />
-                    <RequestAdvisorBubble
-                      message="적금 추천해줘"
-                      service="savings"
-                    />
-                  </div>
+                  근처 은행 찾기
+                </button>
+                <button
+                  @click="toggleConverter"
+                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  @close="isOpen = false"
+                >
+                  환율 계산
+                </button>
+                <!-- flex-1을 사용하여 남은 공간 채우기 -->
+                <div class="flex-1 flex flex-col justify-between gap-4">
+                  <FinProductRequestBubble
+                    message="예금 추천해줘"
+                    service="deposit"
+                    @click="toggleFinProductAdvisor('deposit')"
+                  />
+                  <FinProductRequestBubble
+                    message="적금 추천해줘"
+                    service="savings"
+                    @click="toggleFinProductAdvisor('savings')"
+                  />
                 </div>
-              </Transition>
+              </div>
 
               <!-- Map View -->
-              <Transition
-                enter-active-class="transition-all duration-700 ease-in-out"
-                enter-from-class="transform translate-x-full opacity-0"
-                enter-to-class="transform translate-x-0 opacity-100"
-                leave-active-class="transition-all duration-700 ease-in-out"
-                leave-from-class="transform translate-x-0 opacity-100"
-                leave-to-class="transform -translate-x-full opacity-0"
-                mode="out-in"
+              <div
+                v-if="currentView === 'map'"
+                v-motion
+                :initial="{ opacity: 0 }"
+                :enter="{ opacity: 1 }"
+                :leave="{ opacity: 0 }"
+                class="absolute inset-0 w-full"
               >
-                <div
-                  v-if="currentView === 'map'"
-                  class="absolute inset-0 w-full"
-                >
-                  <div class="flex justify-between mb-3">
-                    <h2 class="mb-2 text-xl font-bold">근처 은행 찾기</h2>
-                    <button
-                      @click="goToNearestBankPage"
-                      class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                    >
-                      크게 보기
-                    </button>
-                  </div>
-                  <div class="relative w-full h-[300px]">
-                    <KakaoMap class="w-full h-full" />
-                  </div>
-                  <div class="flex justify-end">
-                    <button
-                      @click="goBack"
-                      class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
-                    >
-                      돌아가기
-                    </button>
-                  </div>
+                <div class="flex justify-between mb-3">
+                  <h2 class="mb-2 text-xl font-bold">근처 은행 찾기</h2>
+                  <button
+                    @click="goToNearestBankPage"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  >
+                    크게 보기
+                  </button>
                 </div>
-              </Transition>
-
-              <!-- Converter View -->
-              <Transition
-                enter-active-class="transition-all duration-700 ease-in-out"
-                enter-from-class="transform translate-x-full opacity-0"
-                enter-to-class="transform translate-x-0 opacity-100"
-                leave-active-class="transition-all duration-700 ease-in-out"
-                leave-from-class="transform translate-x-0 opacity-100"
-                leave-to-class="transform -translate-x-full opacity-0"
-                mode="out-in"
-              >
-                <div
-                  v-if="currentView === 'converter'"
-                  class="absolute inset-0 w-full h-full"
-                >
-                  <exchangeRateCalculation class="w-full h-full" />
+                <div class="relative w-full h-[300px]">
+                  <KakaoMap class="w-full h-full" />
+                </div>
+                <div class="flex justify-end">
                   <button
                     @click="goBack"
                     class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
@@ -232,7 +206,73 @@ const goToNearestBankPage = () => {
                     돌아가기
                   </button>
                 </div>
-              </Transition>
+              </div>
+
+              <!-- Converter View -->
+              <div
+                v-if="currentView === 'converter'"
+                v-motion
+                :initial="{ opacity: 0 }"
+                :enter="{ opacity: 1 }"
+                :leave="{ opacity: 0 }"
+                class="absolute inset-0 w-full h-full flex flex-col"
+              >
+                <div class="flex justify-between mb-3">
+                  <h2 class="mb-2 text-xl font-bold">환율 계산기</h2>
+                  <button
+                    @click="goToExchangeRateCalculatorPage"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  >
+                    크게 보기
+                  </button>
+                </div>
+                <div class="flex-1 overflow-auto">
+                  <exchangeRateCalculation />
+                </div>
+                <button
+                  @click="goBack"
+                  class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                >
+                  돌아가기
+                </button>
+              </div>
+
+              <!-- FinProductAdvisor View -->
+              <div
+                v-if="currentView === 'fin-product-advisor'"
+                v-motion
+                :initial="{ opacity: 0 }"
+                :enter="{ opacity: 1 }"
+                :leave="{ opacity: 0 }"
+                class="absolute inset-0 w-full h-full"
+              >
+                <div
+                  class="relative flex flex-col h-full bg-white rounded-lg p-4"
+                >
+                  <!-- 헤더 -->
+                  <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold">AI 금융 상품 추천</h2>
+                  </div>
+
+                  <!-- 컨텐츠 영역 - 단일 스크롤 -->
+                  <div class="flex-1 overflow-y-auto pr-2">
+                    <FinProductAdvisorBubble
+                      :service="selectedService"
+                      @close="isOpen = false"
+                    />
+                  </div>
+
+                  <!-- 푸터 -->
+                  <div class="mt-4">
+                    <button
+                      @click="goBack"
+                      class="w-full px-4 py-2 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-gray-50"
+                    >
+                      돌아가기
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -256,3 +296,22 @@ const goToNearestBankPage = () => {
     </Transition>
   </div>
 </template>
+<style scoped>
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #bfdbfe transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: #bfdbfe;
+  border-radius: 2px;
+}
+</style>
