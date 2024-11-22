@@ -1,14 +1,18 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { exchangeService } from '@/services/exchangeService';
+import { ArrowDownUp, ArrowRight } from 'lucide-vue-next';
+
 const API_URL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
 const exchangeRates = ref([]);
 const fromCurrency = ref('');
 const toCurrency = ref('');
 const fromAmount = ref('');
+const displayAmount = ref(''); // 표시용 금액
 const toAmount = ref('');
 const currencyUnitMap = ref({});
+const lastUpdated = ref(new Date());
 
 // 통화 심볼 매핑
 const currencySymbols = {
@@ -37,7 +41,6 @@ const currencySymbols = {
   미국: '$',
 };
 
-// 통화명에서 국가명만 추출하는 함수
 const getCountryName = (fullName) => {
   const countryMap = {
     '아랍에미리트 디르함': '아랍에미리트',
@@ -67,10 +70,68 @@ const getCountryName = (fullName) => {
   return countryMap[fullName] || fullName;
 };
 
-// 숫자 포맷팅 함수
 const formatNumber = (value, currency) => {
   const num = parseFloat(value);
-  return `${currencySymbols[getCountryName(currency)] || ''} ${value ? num.toLocaleString() : ''}`;
+  if (!value || isNaN(num)) return '';
+  return `${num.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
+
+// 입력값 포맷팅 함수
+const formatInput = (value) => {
+  if (!value) return '';
+  // 숫자와 소수점만 남기고 모두 제거
+  const number = value.replace(/[^\d.]/g, '');
+  // 소수점은 하나만 허용
+  const parts = number.split('.');
+  if (parts.length > 2) {
+    parts.splice(2, parts.length - 2);
+  }
+  // 소수점 이하 2자리까지만 허용
+  if (parts[1]) {
+    parts[1] = parts[1].slice(0, 2);
+  }
+  // 정수 부분에 천 단위 구분자 추가
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+};
+
+// 포맷된 문자열에서 숫자만 추출
+const unformatNumber = (value) => {
+  return value.replace(/[^\d.]/g, '');
+};
+
+const handleAmountInput = (event) => {
+  const value = event.target.value;
+  const unformattedValue = unformatNumber(value);
+  fromAmount.value = unformattedValue; // 계산용 값 (숫자만)
+  displayAmount.value = formatInput(unformattedValue); // 표시용 값 (포맷됨)
+};
+
+const getExchangeRate = () => {
+  if (
+    !fromCurrency.value ||
+    !toCurrency.value ||
+    !toAmount.value ||
+    !fromAmount.value
+  )
+    return '';
+  const rate = (
+    parseFloat(toAmount.value) / parseFloat(fromAmount.value)
+  ).toFixed(4);
+  return `1 ${currencySymbols[getCountryName(fromCurrency.value)]} = ${rate} ${
+    currencySymbols[getCountryName(toCurrency.value)]
+  }`;
+};
+
+const swapCurrencies = () => {
+  [fromCurrency.value, toCurrency.value] = [
+    toCurrency.value,
+    fromCurrency.value,
+  ];
+  calculateExchange();
 };
 
 const fetchExchangeRateData = async () => {
@@ -88,16 +149,21 @@ const fetchExchangeRateData = async () => {
     toCurrency.value =
       response.find((rate) => rate.cur_nm === '한국 원')?.cur_nm ||
       response[0]?.cur_nm;
+    lastUpdated.value = new Date();
   } catch (err) {
     console.error(err);
+  } finally {
   }
 };
 
 const calculateExchange = async () => {
-  if (!fromCurrency.value || !toCurrency.value) return;
-  // fromAmount가 비어있거나 0일 경우
-  if (!fromAmount.value || parseFloat(fromAmount.value) === 0) {
-    toAmount.value = 0;
+  if (
+    !fromCurrency.value ||
+    !toCurrency.value ||
+    !fromAmount.value ||
+    parseFloat(fromAmount.value) === 0
+  ) {
+    toAmount.value = '';
     return;
   }
 
@@ -112,6 +178,7 @@ const calculateExchange = async () => {
     toAmount.value = data.result;
   } catch (err) {
     console.error('환율 계산 중 오류 발생:', err);
+  } finally {
   }
 };
 
@@ -125,79 +192,117 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col max-w-md gap-4 p-6 mx-auto rounded-lg shadow-md bg-blue-50"
-  >
-    <!-- 출발 통화 -->
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-row items-center justify-center gap-2">
-        <select
-          v-model="fromCurrency"
-          class="w-[60%] p-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option
-            v-for="rate in exchangeRates"
-            :key="rate.cur_unit"
-            :value="rate.cur_nm"
-          >
-            {{ getCountryName(rate.cur_nm) }}
-          </option>
-        </select>
-        <input
-          type="number"
-          v-model="fromAmount"
-          placeholder="금액 입력"
-          class="w-full p-2 text-right border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div class="text-center w-[20%] p-2 bg-gray-300 rounded-md">
-          <p class="font-semibold">
-            {{ currencySymbols[getCountryName(fromCurrency)] || '' }}
-          </p>
-        </div>
-      </div>
-      <div class="text-right text-gray-600">
-        {{ formatNumber(fromAmount, fromCurrency) }}
-      </div>
+  <div class="w-full h-[200px]">
+    <!-- 카드 헤더 -->
+    <div class="p-6 bg-white border-b rounded-t-xl">
+      <h2 class="text-2xl font-bold text-gray-800">환율 계산기</h2>
+      <p class="mt-1 text-sm text-gray-500">
+        최종 업데이트: {{ lastUpdated.toLocaleString() }}
+      </p>
     </div>
 
-    <!-- 등호 표시 -->
-    <div class="flex items-center justify-center">
-      <div class="relative w-16 h-8">
-        <div class="absolute w-full h-1 bg-gray-400"></div>
-        <div class="absolute w-full h-1 translate-y-2 bg-gray-400"></div>
-      </div>
-    </div>
-
-    <!-- 도착 통화 -->
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-row items-center justify-center gap-2">
-        <select
-          v-model="toCurrency"
-          class="w-[60%] p-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option
-            v-for="rate in exchangeRates"
-            :key="rate.cur_unit"
-            :value="rate.cur_nm"
-          >
-            {{ getCountryName(rate.cur_nm) }}
-          </option>
-        </select>
-        <input
-          type="text"
-          :value="toAmount"
-          readonly
-          class="w-full p-2 text-right bg-gray-100 border border-blue-300 rounded-lg"
-        />
-        <div class="text-center w-[20%] p-2 bg-gray-300 rounded-md">
-          <p class="font-semibold">
-            {{ currencySymbols[getCountryName(toCurrency)] || '' }}
-          </p>
+    <!-- 메인 컨버터 섹션 -->
+    <div class="p-6 bg-white shadow-lg rounded-b-xl">
+      <!-- From Currency -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">출발 통화</label>
+        <div class="flex items-center gap-3">
+          <div class="w-1/3">
+            <select
+              v-model="fromCurrency"
+              class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option
+                v-for="rate in exchangeRates"
+                :key="rate.cur_unit"
+                :value="rate.cur_nm"
+              >
+                {{ getCountryName(rate.cur_nm) }}
+              </option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <div class="relative">
+              <span
+                class="absolute text-gray-500 -translate-y-1/2 left-3 top-1/2"
+              >
+                {{ currencySymbols[getCountryName(fromCurrency)] }}
+              </span>
+              <input
+                type="text"
+                :value="displayAmount"
+                @input="handleAmountInput"
+                placeholder="0.00"
+                class="w-full p-3 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <div class="text-right text-gray-600">
-        {{ formatNumber(toAmount, toCurrency) }}
+
+      <!-- Swap Button -->
+      <div class="flex justify-center my-4">
+        <button
+          @click="swapCurrencies"
+          class="p-2 transition-colors rounded-full hover:bg-gray-100"
+          title="통화 교환"
+        >
+          <ArrowDownUp class="w-6 h-6 text-blue-600" />
+        </button>
+      </div>
+
+      <!-- To Currency -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">도착 통화</label>
+        <div class="flex items-center gap-3">
+          <div class="w-1/3">
+            <select
+              v-model="toCurrency"
+              class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option
+                v-for="rate in exchangeRates"
+                :key="rate.cur_unit"
+                :value="rate.cur_nm"
+              >
+                {{ getCountryName(rate.cur_nm) }}
+              </option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <div class="relative">
+              <span
+                class="absolute text-gray-500 -translate-y-1/2 left-3 top-1/2"
+              >
+                {{ currencySymbols[getCountryName(toCurrency)] }}
+              </span>
+              <input
+                type="text"
+                :value="formatNumber(toAmount, toCurrency)"
+                readonly
+                class="w-full p-3 pl-8 text-right border border-gray-200 rounded-lg bg-gray-50"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exchange Rate Display -->
+      <div class="p-4 mt-6 rounded-lg bg-gray-50">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-600">환율</span>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium">{{ getExchangeRate() }}</span>
+            <ArrowRight class="w-4 h-4 text-gray-400" />
+          </div>
+        </div>
       </div>
     </div>
+    <button
+      @click="goBack"
+      class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+    >
+      돌아가기
+    </button>
   </div>
 </template>

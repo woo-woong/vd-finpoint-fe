@@ -116,7 +116,7 @@ const goToNearestBankPage = () => {
           <div class="absolute flex justify-end top-2 right-2">
             <button
               @click="toggleTooltip"
-              class="p-1 text-gray-600 transition-colors duration-200 hover:text-gray-800"
+              class="z-10 p-1 text-gray-600 transition-colors duration-200 hover:text-gray-800"
             >
               ✕
             </button>
@@ -125,7 +125,7 @@ const goToNearestBankPage = () => {
           <!-- Content Container -->
           <div class="relative flex flex-col items-center w-full gap-2 p-6">
             <!-- Views Container -->
-            <div class="relative w-full h-full overflow-hidden">
+            <div class="relative w-full h-full">
               <!-- Buttons View -->
               <Transition
                 enter-active-class="transition-all duration-700 ease-in-out"
@@ -204,15 +204,9 @@ const goToNearestBankPage = () => {
               >
                 <div
                   v-if="currentView === 'converter'"
-                  class="absolute inset-0 w-full"
+                  class="absolute inset-0 w-full h-full"
                 >
-                  <exchangeRateCalculation class="w-full" />
-                  <button
-                    @click="goBack"
-                    class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
-                  >
-                    돌아가기
-                  </button>
+                  <exchangeRateCalculation class="w-full h-full" />
                 </div>
               </Transition>
             </div>
