@@ -22,7 +22,7 @@ import ExchangeRateCalculatorPage from './pages/external/ExchangeRateCalculatorP
 import { useCookie } from '@/hooks/auth/useCookie';
 
 const requireAuth = (to, from, next) => {
-  const { value: sessionId } = useCookie('sessionid');
+  const sessionId = useCookie('sessionid');
   if (sessionId) {
     next();
   } else {
@@ -30,8 +30,11 @@ const requireAuth = (to, from, next) => {
   }
 };
 // 로그인되지 않은 상태 체크
+// Cookie를 직접 읽는 방식으로 변경
 const requireNonAuth = (to, from, next) => {
-  const { value: sessionId } = useCookie('sessionid');
+  // 쿠키를 직접 파싱하는 함수
+  const sessionId = useCookie('sessionid');
+
   if (sessionId) {
     next('/'); // 이미 로그인된 경우 홈으로 리다이렉트
   } else {
