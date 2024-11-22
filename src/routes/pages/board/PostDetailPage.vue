@@ -83,8 +83,8 @@ function goEdit() {
 
       <FinanceRecommendCard
         v-if="postData && productData"
-        :service="postData.type"
-        :productData="productData"
+        :type="postData.type"
+        :product="productData"
       />
 
       <!-- 내용 -->

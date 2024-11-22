@@ -1,14 +1,22 @@
 <script setup>
 import { defineProps } from 'vue';
+import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 
 const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
 });
 
-const { kor_co_nm, fin_prdt_nm, join_way, mtrt_int } = props.product;
+const { fin_prdt_cd, kor_co_nm, fin_prdt_nm, join_way, mtrt_int } =
+  props.product;
+
+const { navigateToFinProductDetail } = useFinanceNavigation();
 </script>
 
 <template>
@@ -17,7 +25,15 @@ const { kor_co_nm, fin_prdt_nm, join_way, mtrt_int } = props.product;
   >
     <div class="space-y-4">
       <!-- kor_co_nm -->
-      <div class="text-sm text-gray-500">금융회사 명</div>
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-gray-500">금융회사 명</div>
+        <div
+          @click="navigateToFinProductDetail(props.type, fin_prdt_cd)"
+          class="text-sm text-gray-500 cursor-pointer hover:underline"
+        >
+          바로 가기->
+        </div>
+      </div>
       <div class="text-xl font-semibold text-gray-800">{{ kor_co_nm }}</div>
 
       <!-- fin_prdt_nm -->
@@ -30,7 +46,9 @@ const { kor_co_nm, fin_prdt_nm, join_way, mtrt_int } = props.product;
 
       <!-- mtrInt -->
       <div class="text-sm text-gray-500">만기 후 이자율</div>
-      <div class="text-lg text-gray-800">{{ mtrt_int }}</div>
+      <div class="text-lg text-gray-800 break-keep">
+        {{ mtrt_int }}
+      </div>
     </div>
   </div>
 </template>

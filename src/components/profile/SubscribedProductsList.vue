@@ -1,28 +1,18 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { finProductService } from '@/services/finProductService';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper/modules';
+import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const router = useRouter();
 const { unsubscribeFinProduct } = finProductService();
 
-const navigateToProductDetail = (service, fin_prdt_cd) => {
-  if (service && fin_prdt_cd) {
-    router.push({
-      path: `/${service.toLowerCase()}/detail/`,
-      query: { finPrdtCd: fin_prdt_cd },
-    });
-  } else {
-    console.warn('상품 정보가 부족합니다.');
-  }
-};
+const { navigateToFinProductDetail } = useFinanceNavigation();
 
 const props = defineProps({
   subscribedProducts: {
@@ -107,7 +97,7 @@ const handleUnsubscribe = async (event, product) => {
           },
           '1024': {
             slidesPerView: 3,
-            spaceBetween: 30,
+            spaceBetween: 10,
           },
         }"
         class="w-full financial-swiper"
@@ -118,10 +108,10 @@ const handleUnsubscribe = async (event, product) => {
           class="pb-12"
         >
           <div
-            class="relative h-full p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
+            class="relative h-full p-4 transition duration-200 rounded-lg shadow bg-gray-100 hover:shadow-lg"
           >
             <!-- 상품 정보 -->
-            <div class="flex flex-col h-full space-y-3">
+            <div class="flex flex-col h-full space-y-3 p-1">
               <!-- 상품명 -->
               <div class="flex items-start">
                 <span
@@ -162,7 +152,7 @@ const handleUnsubscribe = async (event, product) => {
               <!-- 상품 상세 정보 -->
               <div class="flex-1">
                 <div
-                  class="px-3 py-2 space-y-1 text-sm text-gray-600 bg-gray-100 rounded"
+                  class="px-3 py-2 space-y-1 text-sm text-gray-600 bg-gray-200 rounded"
                 >
                   <p>
                     <span class="font-medium">가입방법:</span>
@@ -187,7 +177,10 @@ const handleUnsubscribe = async (event, product) => {
                 <span
                   @click="
                     !isManagingAll &&
-                      navigateToProductDetail(product.type, product.fin_prdt_cd)
+                      navigateToFinProductDetail(
+                        product.type,
+                        product.fin_prdt_cd
+                      )
                   "
                   class="text-lg font-semibold text-white cursor-pointer"
                   >자세히 보기 →</span

@@ -1,30 +1,29 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import FinanceCard from './FinanceCard.vue';
-const router = useRouter();
+import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 
 const props = defineProps({
-  service: {
+  type: {
     type: String,
     required: true,
   },
-  productData: {
+  product: {
     type: Object,
     required: true,
   },
 });
 
-const servicelowerCased = props.service.toLowerCase();
+const isShowFinanceCard = ref(false);
 
-const navigateToFinProductDetail = (finPrdtCd) => {
-  router.push({
-    path: `/${servicelowerCased}/detail`,
-    query: { finPrdtCd },
-  });
+const { navigateToFinProductDetail } = useFinanceNavigation();
+
+const toggleFinanceCard = () => {
+  isShowFinanceCard.value = !isShowFinanceCard.value;
 };
 </script>
 <template>
-  <div class="relative group" v-if="productData">
+  <div class="relative group" v-if="product">
     <div
       class="p-4 mb-6 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
     >
@@ -32,7 +31,7 @@ const navigateToFinProductDetail = (finPrdtCd) => {
         <div>
           <span class="text-sm font-medium text-gray-500">추천 금융상품</span>
           <h3 class="mt-1 text-lg font-bold text-blue-600">
-            {{ productData.fin_prdt_nm }}
+            {{ product.fin_prdt_nm }}
           </h3>
         </div>
         <div class="flex items-center text-sm text-gray-500">
@@ -50,15 +49,22 @@ const navigateToFinProductDetail = (finPrdtCd) => {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span>자세히 보기</span>
+          <span @click="toggleFinanceCard" class="cursor-pointer">{{
+            isShowFinanceCard ? '카드 닫기' : '간단 정보 보기'
+          }}</span>
         </div>
       </div>
       <div
-        class="absolute z-[100] transition-all duration-300 transform scale-95 translate-y-2 opacity-0 top-full left-0 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100"
+        class="transition-all duration-200 absolute z-10 mt-6 right-0"
+        :class="{
+          'opacity-100 visible': isShowFinanceCard,
+          'opacity-0 invisible': !isShowFinanceCard,
+        }"
       >
         <FinanceCard
-          :product="productData"
-          @click="navigateToFinProductDetail(productData.fin_prdt_cd)"
+          :product="product"
+          :type="props.type"
+          @click="navigateToFinProductDetail(props.type, product.fin_prdt_cd)"
         />
       </div>
     </div>

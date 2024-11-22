@@ -1,10 +1,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { finProductService } from '@/services/finProductService';
+import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 import Loading from '../common/Loading.vue';
-
-const router = useRouter();
 
 const props = defineProps({
   path: {
@@ -16,6 +14,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const { navigateToFinProductDetail } = useFinanceNavigation();
 
 // 상태 초기화
 const finProducts = ref([]);
@@ -29,7 +29,6 @@ const sortDirection = ref('desc'); // 기본값 내림차순
 
 // finProductService에서 함수 가져오기
 const { getAllFinProducts } = finProductService();
-
 // getAllFinProducts 호출 및 데이터 설정 부분 수정
 const fetchProducts = async () => {
   isLoading.value = true;
@@ -133,10 +132,6 @@ const filteredProducts = computed(() => {
 // 검색 실행
 const handleSearch = () => {
   // 검색 로직 구현
-};
-
-const navigateToFinProductDetail = (finPrdtCd) => {
-  router.push({ path: `/${props.path}/detail`, query: { finPrdtCd } });
 };
 </script>
 
@@ -310,7 +305,12 @@ const navigateToFinProductDetail = (finPrdtCd) => {
                 <div class="truncate">
                   <span
                     class="text-blue-600 cursor-pointer hover:underline"
-                    @click="navigateToFinProductDetail(product.fin_prdt_cd)"
+                    @click="
+                      navigateToFinProductDetail(
+                        props.path,
+                        product.fin_prdt_cd
+                      )
+                    "
                     >{{ product.fin_prdt_nm }}</span
                   >
                 </div>
