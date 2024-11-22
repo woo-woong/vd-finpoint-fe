@@ -51,6 +51,12 @@ onMounted(() => {
         <li class="flex justify-end w-1/3 gap-3">
           <template v-if="!userStore.isLoggedIn">
             <RouterLink
+              to="/signup"
+              class="transition-colors cursor-pointer hover:text-blue-500"
+            >
+              회원가입
+            </RouterLink>
+            <RouterLink
               to="/login"
               class="transition-colors cursor-pointer hover:text-blue-500"
             >

@@ -165,22 +165,24 @@ const goBack = () => {
             </Transition>
 
             <!-- 카카오맵 -->
-            <Transition
-              enter-active-class="transition-all duration-500"
-              leave-active-class="transition-all duration-500"
-              enter-from-class="opacity-0 translate-x-[-20px]"
-              leave-to-class="opacity-0 translate-x-[-20px]"
-            >
-              <div v-if="showKakaoMap" class="w-full">
-                <KakaoMap class="w-full" />
-                <button
-                  @click="goBack"
-                  class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
-                >
-                  돌아가기
-                </button>
-              </div>
-            </Transition>
+            <div class="w-full h-[200px]">
+              <Transition
+                enter-active-class="transition-all duration-500"
+                leave-active-class="transition-all duration-500"
+                enter-from-class="opacity-0 translate-x-[-20px]"
+                leave-to-class="opacity-0 translate-x-[-20px]"
+              >
+                <div v-if="showKakaoMap" class="w-full">
+                  <KakaoMap class="w-full" />
+                  <button
+                    @click="goBack"
+                    class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                  >
+                    돌아가기
+                  </button>
+                </div>
+              </Transition>
+            </div>
 
             <!-- 환율 계산기 -->
             <Transition
