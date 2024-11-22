@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full min-h-[500px]">
+  <div class="w-full h-[500px]">
     <KakaoMap
       v-model:banks="banks"
       ref="kakaoMapRef"
