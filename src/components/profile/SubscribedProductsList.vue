@@ -61,7 +61,13 @@ const handleUnsubscribe = async (event, product) => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div
+    v-motion
+    :initial="{ opacity: 0, y: 20 }"
+    :enter="{ opacity: 1, y: 0 }"
+    :transition="{ duration: 100 }"
+    class="space-y-6"
+  >
     <!-- 상품 개수 표시 -->
     <div class="flex items-center justify-between">
       <div class="space-y-1">
@@ -107,7 +113,7 @@ const handleUnsubscribe = async (event, product) => {
         class="w-full financial-swiper"
       >
         <SwiperSlide
-          v-for="product in localSubscribedProducts"
+          v-for="(product, index) in localSubscribedProducts"
           :key="product.id"
           class="pb-12"
         >

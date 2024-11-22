@@ -216,7 +216,14 @@ const navigateToFinProductDetail = (finPrdtCd) => {
         <p>검색 결과가 없습니다.</p>
       </div>
 
-      <div v-else class="overflow-x-auto">
+      <div
+        v-else
+        v-motion
+        :initial="{ opacity: 0, y: 20 }"
+        :enter="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 100 }"
+        class="overflow-x-auto"
+      >
         <table class="w-full divide-y divide-gray-200 table-fixed">
           <colgroup>
             <col class="w-[12%]" />

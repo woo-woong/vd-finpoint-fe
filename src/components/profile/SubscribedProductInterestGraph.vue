@@ -158,7 +158,13 @@ const chartOptions = {
 </script>
 
 <template>
-  <div class="w-full h-64">
+  <div
+    v-motion
+    :initial="{ opacity: 0, y: 50 }"
+    :enter="{ opacity: 1, y: 0 }"
+    :transition="{ duration: 1000 }"
+    class="w-full h-64"
+  >
     <h2 class="mb-4 text-xl font-semibold">나의 가입 상품 금리 비교</h2>
     <Bar
       v-if="props.options?.length"

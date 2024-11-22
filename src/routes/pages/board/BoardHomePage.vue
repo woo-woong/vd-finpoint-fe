@@ -46,6 +46,10 @@ const goToNewPost = () => {
 
     <!-- 메인 콘텐츠 -->
     <main
+      v-motion
+      :initial="{ opacity: 0, y: 20 }"
+      :enter="{ opacity: 1, y: 0 }"
+      :transition="{ duration: 100 }"
       class="flex flex-col items-center w-full max-w-6xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
     >
       <!-- 게시판 헤더 -->

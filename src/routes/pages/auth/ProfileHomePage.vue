@@ -78,7 +78,7 @@ onMounted(fetchProfile);
       </div>
 
       <!-- 가입 상품 목록 -->
-      <main class="flex flex-col items-center w-full max-w-4xl">
+      <main class="flex flex-col items-center w-full max-w-4xl mb-10">
         <div class="w-full">
           <Loading v-if="isLoading" message="목록을 불러오는 중입니다..." />
           <SubscribedProductsList
