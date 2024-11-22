@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
+import RequestAdvisorBubble from '../external/RequestAdvisorBubble.vue';
 import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
@@ -160,27 +161,8 @@ const goToNearestBankPage = () => {
                   <div
                     class="flex flex-col justify-between flex-1 gap-4 mt-2 h-80"
                   >
-                    <!-- 예금 추천 말풍선 -->
-                    <div
-                      @click="toggleFinProductAdvisor"
-                      class="relative flex items-center justify-center w-full h-full px-4 py-2 text-xl font-semibold text-blue-600 bg-white border border-gray-200 rounded-2xl"
-                    >
-                      예금 추천해줘
-                      <div
-                        class="absolute right-4 bottom-[-8px] w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45"
-                      ></div>
-                    </div>
-
-                    <!-- 적금 추천 말풍선 -->
-                    <div
-                      @click="toggleFinProductAdvisor"
-                      class="relative flex items-center justify-center w-full h-full px-4 py-2 text-xl font-semibold text-blue-600 bg-white border border-gray-200 rounded-2xl"
-                    >
-                      적금 추천해줘
-                      <div
-                        class="absolute right-4 bottom-[-8px] w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45"
-                      ></div>
-                    </div>
+                    <RequestAdvisorBubble message="예금 추천해줘" />
+                    <RequestAdvisorBubble message="적금 추천해줘" />
                   </div>
                 </div>
               </Transition>
