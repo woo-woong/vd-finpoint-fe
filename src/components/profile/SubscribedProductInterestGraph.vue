@@ -159,7 +159,7 @@ const chartOptions = {
 
 <template>
   <div class="w-full h-64">
-    <h2 class="mb-4 text-xl font-semibold">가입 상품 금리 비교 그래프</h2>
+    <h2 class="mb-4 text-xl font-semibold">나의 가입 상품 금리 비교</h2>
     <Bar
       v-if="props.options?.length"
       :data="chartData"
