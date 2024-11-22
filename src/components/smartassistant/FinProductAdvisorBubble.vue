@@ -88,7 +88,9 @@ const handleProductDetail = (service, productCode) => {
           <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
           <h3 class="text-lg font-semibold text-gray-800">AI 금융 조언</h3>
         </div>
-        <p class="text-gray-600 leading-relaxed break-all">
+        <p
+          class="text-gray-600 leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere"
+        >
           {{ displayText }}
         </p>
       </div>
@@ -106,9 +108,12 @@ const handleProductDetail = (service, productCode) => {
             v-motion
             :initial="{ opacity: 0, x: -50 }"
             :enter="{ opacity: 1, x: 0, transition: { delay: index * 200 } }"
-            class="p-4 bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-md transition-all"
+            class="p-4 bg-white rounded-lg shadow-md border border-gray-300 hover:shadow-lg transition-all"
           >
             <div class="space-y-2">
+              <h4 class="text-lg font-semibold text-gray-800">
+                {{ item.fin_prdt_nm }}
+              </h4>
               <div class="flex flex-wrap gap-2 mb-2">
                 <span
                   v-for="feature in item.key_features"
@@ -118,9 +123,6 @@ const handleProductDetail = (service, productCode) => {
                   {{ feature }}
                 </span>
               </div>
-              <h4 class="text-lg font-semibold text-gray-800">
-                {{ item.fin_prdt_nm }}
-              </h4>
               <div class="grid grid-cols-2 gap-2 text-sm">
                 <div class="text-gray-600">기본 금리</div>
                 <div class="font-medium">{{ item.interest_rate }}</div>
@@ -157,5 +159,12 @@ const handleProductDetail = (service, productCode) => {
 .scrollbar-thin::-webkit-scrollbar-thumb {
   background-color: #bfdbfe;
   border-radius: 3px;
+}
+
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  -ms-word-break: break-all;
+  word-wrap: break-word;
 }
 </style>
