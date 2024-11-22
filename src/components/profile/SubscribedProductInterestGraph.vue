@@ -159,12 +159,13 @@ const chartOptions = {
 
 <template>
   <div class="w-full h-64">
+    <h2 class="mb-4 text-xl font-semibold">가입 상품 금리 비교 그래프</h2>
     <Bar
       v-if="props.options?.length"
       :data="chartData"
       :options="chartOptions"
     />
-    <div v-else class="h-full flex items-center justify-center text-gray-500">
+    <div v-else class="flex items-center justify-center h-full text-gray-500">
       가입한 상품이 없습니다.
     </div>
   </div>
