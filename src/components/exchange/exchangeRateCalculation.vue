@@ -298,11 +298,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <button
-      @click="goBack"
-      class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
-    >
-      돌아가기
-    </button>
+
   </div>
 </template>
