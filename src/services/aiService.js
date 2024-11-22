@@ -1,12 +1,12 @@
 import ky from 'ky';
 import { getCsrfToken } from '@/hooks/auth/useCsrfToken';
 
-const AI_API_URL = `${import.meta.env.VITE_AI_API_URL}`;
+const BACKEND_AI_MODEL_API_URL = `${import.meta.env.VITE_BACKEND_AI_MODEL_API_KEY}`;
 
 export const aiService = {
   fetchRecommendProduct: async (service) => {
     try {
-      const response = await ky.get(`${AI_API_URL}${service}/`, {
+      const response = await ky.get(`${BACKEND_AI_MODEL_API_URL}${service}/`, {
         credentials: 'include',
         headers: {
           'X-CSRFToken': getCsrfToken(),
