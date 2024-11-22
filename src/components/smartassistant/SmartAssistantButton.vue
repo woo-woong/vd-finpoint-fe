@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
-import FinProductRequestBubble from '@/components/smartAssistant/FinProductRequestBubble.vue';
 import FinProductAdvisorBubble from '@/components/smartAssistant/FinProductAdvisorBubble.vue';
 import { useRouter } from 'vue-router';
 
