@@ -1,8 +1,8 @@
 <template>
   <!-- 지도를 포함할 전체 컨테이너. 최소 높이 500px로 설정 -->
-  <div class="w-full h-full min-h-[500px]">
+  <div class="w-full h-full">
     <!-- 실제 지도가 렌더링될 div. ref를 사용해 Vue에서 DOM 요소에 접근 -->
-    <div ref="mapContainer" class="w-full h-full min-h-[500px]"></div>
+    <div ref="mapContainer" class="w-full h-full shadow-md rounded-xl"></div>
   </div>
 </template>
 
