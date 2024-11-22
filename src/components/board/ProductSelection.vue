@@ -144,6 +144,7 @@ onMounted(() => {
       <FinanceCard
         v-if="selectedProduct"
         :product="selectedProduct"
+        :type="selectedType"
         :key="selectedProduct.code"
       />
     </div>
