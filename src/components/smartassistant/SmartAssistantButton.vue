@@ -2,10 +2,13 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
+import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
 const buttonRef = ref(null);
 const tooltipRef = ref(null);
+const router = useRouter();
+const currentView = ref('buttons'); // 'buttons', 'map', 'converter'
 
 const tooltipStyle = computed(() => {
   if (!buttonRef.value) return {};
@@ -50,45 +53,25 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleEscKey);
 });
 
-const showKakaoMap = ref(false);
-const showConverter = ref(false);
-const showButtons = ref(true);
-
 const toggleKakaoMap = () => {
-  showKakaoMap.value = true;
-  showConverter.value = false;
-  showButtons.value = false;
+  currentView.value = 'map';
 };
 
 const toggleConverter = () => {
-  showConverter.value = true;
-  showKakaoMap.value = false;
-  showButtons.value = false;
+  currentView.value = 'converter';
 };
 
 const goBack = () => {
-  showKakaoMap.value = false;
-  showConverter.value = false;
-  showButtons.value = true;
+  currentView.value = 'buttons';
+};
+
+const goToNearestBankPage = () => {
+  currentView.value = 'buttons';
+  toggleTooltip();
+  router.push('/find-nearest-bank');
 };
 </script>
 
-<style>
-@keyframes bounce-once {
-  0%,
-  100% {
-    transform: rotate(45deg) translateY(0);
-  }
-  50% {
-    transform: rotate(45deg) translateY(-5px);
-  }
-}
-
-.animate-bounce-once {
-  animation: bounce-once 1s ease-in-out;
-}
-</style>
-<!-- SmartAssistantTooltip.vue -->
 <template>
   <div class="relative">
     <!-- Smart Assistant Button -->
@@ -106,12 +89,12 @@ const goBack = () => {
       </span>
     </button>
 
-    <!-- Animated Tooltip Content -->
+    <!-- Tooltip Container -->
     <Transition
-      enter-active-class="transition duration-200 ease-out"
+      enter-active-class="transition duration-300 ease-out"
       enter-from-class="transform scale-95 opacity-0"
       enter-to-class="transform scale-100 opacity-100"
-      leave-active-class="transition duration-150 ease-in"
+      leave-active-class="transition duration-200 ease-in"
       leave-from-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0"
     >
@@ -139,41 +122,91 @@ const goBack = () => {
             </button>
           </div>
 
-          <!-- Animated Content Sections -->
-          <div class="flex flex-col items-center w-full gap-2 pt-8">
-            <!-- 버튼 그룹 -->
-            <Transition
-              enter-active-class="transition-all duration-500"
-              leave-active-class="transition-all duration-500"
-              enter-from-class="opacity-0"
-              leave-to-class="opacity-0"
-            >
-              <div v-if="showButtons" class="w-full space-y-2">
-                <button
-                  @click="toggleKakaoMap"
-                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                >
-                  카카오맵
-                </button>
-                <button
-                  @click="toggleConverter"
-                  class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                >
-                  환율 계산기
-                </button>
-              </div>
-            </Transition>
-
-            <!-- 카카오맵 -->
-            <div class="w-full h-[200px]">
+          <!-- Content Container -->
+          <div class="relative flex flex-col items-center w-full gap-2 p-6">
+            <!-- Views Container -->
+            <div class="relative w-full h-full overflow-hidden">
+              <!-- Buttons View -->
               <Transition
-                enter-active-class="transition-all duration-500"
-                leave-active-class="transition-all duration-500"
-                enter-from-class="opacity-0 translate-x-[-20px]"
-                leave-to-class="opacity-0 translate-x-[-20px]"
+                enter-active-class="transition-all duration-700 ease-in-out"
+                enter-from-class="transform translate-x-full opacity-0"
+                enter-to-class="transform translate-x-0 opacity-100"
+                leave-active-class="transition-all duration-700 ease-in-out"
+                leave-from-class="transform translate-x-0 opacity-100"
+                leave-to-class="transform -translate-x-full opacity-0"
+                mode="out-in"
               >
-                <div v-if="showKakaoMap" class="w-full">
-                  <KakaoMap class="w-full" />
+                <div
+                  v-if="currentView === 'buttons'"
+                  class="absolute inset-0 w-full space-y-2"
+                >
+                  <button
+                    @click="toggleKakaoMap"
+                    class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  >
+                    근처 은행 찾기
+                  </button>
+                  <button
+                    @click="toggleConverter"
+                    class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                  >
+                    환율 계산
+                  </button>
+                </div>
+              </Transition>
+
+              <!-- Map View -->
+              <Transition
+                enter-active-class="transition-all duration-700 ease-in-out"
+                enter-from-class="transform translate-x-full opacity-0"
+                enter-to-class="transform translate-x-0 opacity-100"
+                leave-active-class="transition-all duration-700 ease-in-out"
+                leave-from-class="transform translate-x-0 opacity-100"
+                leave-to-class="transform -translate-x-full opacity-0"
+                mode="out-in"
+              >
+                <div
+                  v-if="currentView === 'map'"
+                  class="absolute inset-0 w-full"
+                >
+                  <div class="flex justify-between mb-3">
+                    <h2 class="mb-2 text-xl font-bold">근처 은행 찾기</h2>
+                    <button
+                      @click="goToNearestBankPage"
+                      class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                    >
+                      크게 보기
+                    </button>
+                  </div>
+                  <div class="relative w-full h-[300px]">
+                    <KakaoMap class="w-full h-full" />
+                  </div>
+                  <div class="flex justify-end">
+                    <button
+                      @click="goBack"
+                      class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
+                    >
+                      돌아가기
+                    </button>
+                  </div>
+                </div>
+              </Transition>
+
+              <!-- Converter View -->
+              <Transition
+                enter-active-class="transition-all duration-700 ease-in-out"
+                enter-from-class="transform translate-x-full opacity-0"
+                enter-to-class="transform translate-x-0 opacity-100"
+                leave-active-class="transition-all duration-700 ease-in-out"
+                leave-from-class="transform translate-x-0 opacity-100"
+                leave-to-class="transform -translate-x-full opacity-0"
+                mode="out-in"
+              >
+                <div
+                  v-if="currentView === 'converter'"
+                  class="absolute inset-0 w-full"
+                >
+                  <exchangeRateCalculation class="w-full" />
                   <button
                     @click="goBack"
                     class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
@@ -183,30 +216,12 @@ const goBack = () => {
                 </div>
               </Transition>
             </div>
-
-            <!-- 환율 계산기 -->
-            <Transition
-              enter-active-class="transition-all duration-500"
-              leave-active-class="transition-all duration-500"
-              enter-from-class="opacity-0 translate-x-[-20px]"
-              leave-to-class="opacity-0 translate-x-[-20px]"
-            >
-              <div v-if="showConverter" class="w-full">
-                <exchangeRateCalculation class="w-full" />
-                <button
-                  @click="goBack"
-                  class="px-4 py-2 mt-4 text-sm font-semibold text-blue-600 bg-white border border-blue-600 rounded-lg shadow hover:bg-gray-100"
-                >
-                  돌아가기
-                </button>
-              </div>
-            </Transition>
           </div>
         </div>
       </div>
     </Transition>
 
-    <!-- Animated Backdrop -->
+    <!-- Backdrop -->
     <Transition
       enter-active-class="transition-opacity duration-200"
       enter-from-class="opacity-0"
