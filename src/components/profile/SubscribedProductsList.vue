@@ -119,10 +119,6 @@ const handleUnsubscribe = async (event, product) => {
         >
           <div
             class="relative h-full p-4 transition duration-200 rounded-lg shadow bg-gray-50 hover:shadow-lg"
-            @click="
-              !isManagingAll &&
-                navigateToProductDetail(product.type, product.fin_prdt_cd)
-            "
           >
             <!-- 상품 정보 -->
             <div class="flex flex-col h-full space-y-3">
@@ -188,7 +184,12 @@ const handleUnsubscribe = async (event, product) => {
                 v-if="!isManagingAll"
                 class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg opacity-0 hover:opacity-100"
               >
-                <span class="text-lg font-semibold text-white"
+                <span
+                  @click="
+                    !isManagingAll &&
+                      navigateToProductDetail(product.type, product.fin_prdt_cd)
+                  "
+                  class="text-lg font-semibold text-white cursor-pointer"
                   >자세히 보기 →</span
                 >
               </div>
