@@ -4,7 +4,7 @@ import { getCsrfToken } from '@/hooks/auth/useCsrfToken';
 const AI_API_URL = `${import.meta.env.VITE_AI_API_URL}`;
 
 export const aiService = {
-  getRecommendProduct: async (service) => {
+  fetchRecommendProduct: async (service) => {
     try {
       const response = await ky.get(`${AI_API_URL}${service}/`, {
         credentials: 'include',
