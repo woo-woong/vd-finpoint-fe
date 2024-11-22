@@ -79,11 +79,11 @@ const handleUnsubscribe = async (event, product) => {
         <!-- 상품명 -->
         <div class="flex items-start">
           <span
-            class="w-20 px-2 py-1 text-xs font-medium text-white rounded-full text-center shrink-0"
+            class="w-20 px-2 py-1 text-xs font-medium text-center text-white rounded-full shrink-0"
             :class="product.type === 'DEPOSIT' ? 'bg-blue-600' : 'bg-blue-900'"
-            >{{ product.type === 'DEPOSIT' ? '적금상품' : '예금상품' }}</span
+            >{{ product.type === 'DEPOSIT' ? '예금상품' : '적금상품' }}</span
           >
-          <h3 class="ml-2 text-lg font-bold text-gray-600 break-keep truncate">
+          <h3 class="ml-2 text-lg font-bold text-gray-600 truncate break-keep">
             {{ product.fin_prdt_nm }}
           </h3>
         </div>
@@ -102,7 +102,7 @@ const handleUnsubscribe = async (event, product) => {
               clipRule="evenodd"
             />
           </svg>
-          <span class="ml-2 text-md font-semibold text-gray-500">{{
+          <span class="ml-2 font-semibold text-gray-500 text-md">{{
             product.kor_co_nm
           }}</span>
         </div>
@@ -164,13 +164,13 @@ const handleUnsubscribe = async (event, product) => {
 
           <!-- 자세히 보기 오버레이 -->
           <div
-            class="absolute inset-0 flex items-center justify-center opacity-0 bg-black bg-opacity-50 transition-opacity duration-300 hover:opacity-100 cursor-pointer rounded-lg"
+            class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg opacity-0 cursor-pointer hover:opacity-100"
             :class="{
               'opacity-0 pointer-events-none': isManagingAll,
               'hover:opacity-100': !isManagingAll,
             }"
           >
-            <span class="text-white text-lg font-semibold">자세히 보기 →</span>
+            <span class="text-lg font-semibold text-white">자세히 보기 →</span>
           </div>
         </div>
       </div>
@@ -178,7 +178,7 @@ const handleUnsubscribe = async (event, product) => {
       <!-- 관리 버튼 -->
       <button
         type="button"
-        class="absolute p-2 text-white bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600 transition-all duration-300 ease-in-out"
+        class="absolute p-2 text-white transition-all duration-300 ease-in-out bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600"
         :class="{
           'opacity-0 pointer-events-none translate-y-1': !isManagingAll,
           'opacity-100 pointer-events-auto translate-y-0': isManagingAll,
