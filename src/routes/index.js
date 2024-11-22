@@ -17,8 +17,8 @@ import SignUpPage from '@routes/pages/auth/SignUpPage.vue';
 import KakaoOauth from '@routes/pages/auth/KakaoOauth.vue';
 import ProfileHomePage from '@routes/pages/auth/ProfileHomePage.vue';
 import ProfileEditPage from '@routes/pages/auth/ProfileEditPage.vue';
-import NearestBankPage from './pages/external/NearestBankPage.vue';
-import ExchangeRateCalculatorPage from './pages/external/ExchangeRateCalculatorPage.vue';
+import NearestBankPage from '@routes/pages/external/NearestBankPage.vue';
+import ExchangeRateCalculatorPage from '@routes/pages/external/ExchangeRateCalculatorPage.vue';
 import { useCookie } from '@/hooks/auth/useCookie';
 
 const requireAuth = (to, from, next) => {
