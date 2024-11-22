@@ -62,6 +62,10 @@ const toggleConverter = () => {
   currentView.value = 'converter';
 };
 
+const toggleFinProductAdvisor = () => {
+  currentView.value = 'fin-product-advisor';
+};
+
 const goBack = () => {
   currentView.value = 'buttons';
 };
@@ -152,6 +156,32 @@ const goToNearestBankPage = () => {
                   >
                     환율 계산
                   </button>
+                  <!-- 남은 공간을 flex로 채우는 컨테이너 -->
+                  <div
+                    class="flex flex-col justify-between flex-1 gap-4 mt-2 h-80"
+                  >
+                    <!-- 예금 추천 말풍선 -->
+                    <div
+                      @click="toggleFinProductAdvisor"
+                      class="relative flex items-center justify-center w-full h-full px-4 py-2 text-xl font-semibold text-blue-600 bg-white border border-gray-200 rounded-2xl"
+                    >
+                      예금 추천해줘
+                      <div
+                        class="absolute right-4 bottom-[-8px] w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45"
+                      ></div>
+                    </div>
+
+                    <!-- 적금 추천 말풍선 -->
+                    <div
+                      @click="toggleFinProductAdvisor"
+                      class="relative flex items-center justify-center w-full h-full px-4 py-2 text-xl font-semibold text-blue-600 bg-white border border-gray-200 rounded-2xl"
+                    >
+                      적금 추천해줘
+                      <div
+                        class="absolute right-4 bottom-[-8px] w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45"
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </Transition>
 
