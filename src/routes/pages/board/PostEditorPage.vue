@@ -9,6 +9,7 @@ import PostContent from '@/components/board/PostContent.vue';
 import ActionButtons from '@/components/board/ActionButtons.vue';
 import Loading from '@/components/common/Loading.vue';
 import { useUserStore } from '@/stores/userStore';
+import { toast } from 'vue-sonner';
 
 const props = defineProps({
   mode: {
@@ -78,25 +79,56 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
   if (!formData.value.title || !formData.value.content) {
-    alert('제목과 내용을 모두 입력해주세요.');
+    toast.error('제목과 내용을 모두 입력해주세요.', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+        border: '1px solid #dc2626',
+      },
+    });
     return;
   }
 
   try {
-    // type이 빈 문자열이거나 'DEPOSIT' 또는 'SAVINGS' 중 하나인지 확인
     if (!formData.value.product_code) {
-      alert('상품을 선택해주세요.');
+      toast.error('상품을 선택해주세요.', {
+        style: {
+          background: '#fee2e2',
+          color: '#dc2626',
+          border: '1px solid #dc2626',
+        },
+      });
       return;
     }
 
     if (props.mode === 'create') {
       await create(formData.value);
+      toast.success('게시글이 등록되었습니다!', {
+        style: {
+          background: '#dcfce7',
+          color: '#16a34a',
+          border: '1px solid #16a34a',
+        },
+      });
     } else {
       await update(route.params.id, formData.value);
+      toast.success('게시글이 수정되었습니다!', {
+        style: {
+          background: '#dcfce7',
+          color: '#16a34a',
+          border: '1px solid #16a34a',
+        },
+      });
     }
     router.push('/board');
   } catch (error) {
-    console.error('게시글 처리 실패:', error);
+    toast.error('게시글 처리 중 오류가 발생했습니다.', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+        border: '1px solid #dc2626',
+      },
+    });
   }
 };
 

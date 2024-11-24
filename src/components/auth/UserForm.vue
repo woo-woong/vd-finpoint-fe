@@ -6,6 +6,7 @@ import { profileService } from '@/services/profileService';
 import DaumAddress from '@components/external/DaumAddress.vue';
 import SignUpFormInput from '@components/auth/SignUpFormInput.vue';
 import ky from 'ky';
+import { toast } from 'vue-sonner';
 
 const props = defineProps({
   mode: {
@@ -121,7 +122,13 @@ const handleSubmit = async (e) => {
 
   // 비밀번호 확인 로직 수정
   if (props.mode === 'signup' && !passwordMatch.value) {
-    alert('비밀번호가 일치하지 않습니다.');
+    toast.error('비밀번호가 일치하지 않습니다.', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+        border: '1px solid #dc2626',
+      },
+    });
     return;
   }
 
@@ -129,6 +136,13 @@ const handleSubmit = async (e) => {
     if (props.mode === 'signup') {
       await ky.post(`${import.meta.env.VITE_BACKEND_API_URL}signup/`, {
         json: formData.value,
+      });
+      toast.success('회원가입이 완료되었습니다!', {
+        style: {
+          background: '#dcfce7',
+          color: '#16a34a',
+          border: '1px solid #16a34a',
+        },
       });
       router.push('/login');
     } else {
@@ -142,7 +156,13 @@ const handleSubmit = async (e) => {
       // 비밀번호 변경이 있는 경우
       if (currentPassword.value && newPassword.value) {
         if (!passwordMatch.value) {
-          alert('새 비밀번호가 일치하지 않습니다.');
+          toast.error('새 비밀번호가 일치하지 않습니다.', {
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #dc2626',
+            },
+          });
           return;
         }
         updatedData.current_password = currentPassword.value;
@@ -150,20 +170,23 @@ const handleSubmit = async (e) => {
       }
 
       await profileService().editProfile(updatedData);
-      store.userData = { ...store.userData, ...updatedData };
+      toast.success('프로필이 수정되었습니다!', {
+        style: {
+          background: '#dcfce7',
+          color: '#16a34a',
+          border: '1px solid #16a34a',
+        },
+      });
       router.push('/profile');
     }
-    alert(
-      props.mode === 'signup'
-        ? '회원가입이 완료되었습니다!'
-        : '수정이 완료되었습니다!'
-    );
   } catch (error) {
-    console.error(
-      props.mode === 'signup' ? '회원가입 실패:' : '프로필 수정 실패:',
-      error
-    );
-    alert('처리에 실패했습니다. 다시 시도해주세요.');
+    toast.error('처리 중 오류가 발생했습니다.', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+        border: '1px solid #dc2626',
+      },
+    });
   }
 };
 
