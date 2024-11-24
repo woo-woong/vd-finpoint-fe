@@ -131,12 +131,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="w-full py-8 text-center bg-gray-800 text-gray-300">
-      <p>© 2024 FinPoint. All rights reserved.</p>
-      <p class="mt-2">Developed by Team woo-woong</p>
-    </footer>
   </div>
 </template>
 

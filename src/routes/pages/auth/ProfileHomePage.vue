@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
-import Loading from '@/components/common/Loading.vue';
 import TabHeader from '@/components/common/TabHeader.vue';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard.vue';
 import SubscribedProductsList from '@/components/profile/SubscribedProductsList.vue';
 import { profileService } from '@/services/profileService';
 import SubscribedProductInterestGraph from '@/components/profile/SubscribedProductInterestGraph.vue';
+import SectionLoading from '@/components/common/SectionLoading.vue';
 
 const { getProfile } = profileService();
 
@@ -80,7 +80,10 @@ onMounted(fetchProfile);
       <!-- 가입 상품 목록 -->
       <main class="flex flex-col items-center w-full max-w-4xl mb-10">
         <div class="w-full">
-          <Loading v-if="isLoading" message="목록을 불러오는 중입니다..." />
+          <SectionLoading
+            v-if="isLoading"
+            message="목록을 불러오는 중입니다..."
+          />
           <SubscribedProductsList
             v-else
             :subscribedProducts="subscribedProducts"
@@ -90,7 +93,10 @@ onMounted(fetchProfile);
       <!-- 가입 상품 그래프 -->
       <main class="flex flex-col items-center w-full max-w-4xl">
         <div class="w-full">
-          <Loading v-if="isLoading" message="그래프를 불러오는 중입니다..." />
+          <SectionLoading
+            v-if="isLoading"
+            message="그래프를 불러오는 중입니다..."
+          />
           <SubscribedProductInterestGraph
             v-else
             :options="processedGraphData"
