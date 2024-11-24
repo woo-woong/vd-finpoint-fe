@@ -40,7 +40,7 @@ onMounted(fetchProfile);
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-full min-h-screen bg-gray-100">
+  <div class="flex flex-col items-center w-full min-h-screen pb-24 bg-gray-100">
     <!-- 헤더 -->
     <TabHeader
       title="내 프로필"
