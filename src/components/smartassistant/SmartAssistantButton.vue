@@ -33,9 +33,8 @@ const toggleTooltip = () => {
 const handleClickOutside = (event) => {
   if (
     isOpen.value &&
-    tooltipRef.value &&
-    !tooltipRef.value.contains(event.target) &&
-    !buttonRef.value.contains(event.target)
+    !buttonRef.value?.contains(event.target) &&
+    !tooltipRef.value?.contains(event.target)
   ) {
     isOpen.value = false;
   }
@@ -48,12 +47,12 @@ const handleEscKey = (event) => {
 };
 
 onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside);
+  document.addEventListener('click', handleClickOutside);
   document.addEventListener('keydown', handleEscKey);
 });
 
 onUnmounted(() => {
-  document.removeEventListener('mousedown', handleClickOutside);
+  document.removeEventListener('click', handleClickOutside);
   document.removeEventListener('keydown', handleEscKey);
 });
 
@@ -112,7 +111,14 @@ const welcomeMessage = ref(
     </button>
 
     <!-- Tooltip Container -->
-    <Transition>
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="transform opacity-0"
+      enter-to-class="transform opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="transform opacity-100"
+      leave-to-class="transform opacity-0"
+    >
       <div
         v-show="isOpen"
         ref="tooltipRef"
@@ -171,12 +177,6 @@ const welcomeMessage = ref(
             <button
               v-for="(service, index) in [
                 {
-                  icon: '🎣',
-                  text: '오늘의 특별 상품',
-                  subtext: '최고 금리 상품을 찾아보세요',
-                  action: () => toggleFinProductAdvisor('best'),
-                },
-                {
                   icon: '🐟',
                   text: '예금 상품 낚시터',
                   subtext: '목돈 굴리기',
@@ -203,7 +203,7 @@ const welcomeMessage = ref(
               ]"
               :key="index"
               @click="service.action"
-              class="w-full flex items-center gap-4 p-2 bg-white rounded-xl hover:bg-blue-50/50 transition-colors border border-blue-200 hover:border-blue-300 group"
+              class="w-full flex items-center gap-4 p-4 bg-white rounded-xl hover:bg-blue-50/50 transition-colors border border-blue-200 hover:border-blue-300 group"
             >
               <div
                 class="p-2 bg-blue-50 rounded-full group-hover:bg-blue-100 transition-colors"
@@ -323,22 +323,6 @@ const welcomeMessage = ref(
           <div class="absolute inset-0 waves-animation"></div>
         </div>
       </div>
-    </Transition>
-
-    <!-- Backdrop -->
-    <Transition
-      enter-active-class="transition-opacity duration-200"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-200"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div
-        v-if="isOpen"
-        class="fixed inset-0 z-30 bg-black/10 backdrop-blur-[2px]"
-        @click="toggleTooltip"
-      ></div>
     </Transition>
   </div>
 </template>
