@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue';
+
 defineProps({
   infoTitle: {
     type: String,
@@ -10,6 +12,9 @@ import { useUserStore } from '@/stores/userStore';
 
 // 사용자 정보 데이터
 const userData = useUserStore().userData;
+const formattedPhone = computed(() => {
+  return userData.phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+});
 </script>
 
 <template>
@@ -35,7 +40,7 @@ const userData = useUserStore().userData;
       <span class="font-semibold">{{ userData.birth_date }}</span>
     </p>
     <p class="py-1 text-sm text-gray-700">
-      전화번호: <span class="font-semibold">{{ userData.phone }}</span>
+      전화번호: <span class="font-semibold">{{ formattedPhone }}</span>
     </p>
     <p class="py-1 text-sm text-gray-700">
       주소: <span class="font-semibold">{{ userData.address }}</span>
