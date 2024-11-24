@@ -53,8 +53,8 @@ const emit = defineEmits(['close']);
 const handleProductDetail = (service, productCode) => {
   // 부모 컴포넌트에 닫기 이벤트 발생
   emit('close');
-  // replace: true 옵션을 사용하여 히스토리에 추가하지 않고 페이지 이동
-  navigateToFinProductDetail(service, productCode, { replace: true });
+  // 바로 페이지 이동
+  navigateToFinProductDetail(service, productCode);
 };
 </script>
 
