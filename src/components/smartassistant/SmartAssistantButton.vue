@@ -158,7 +158,7 @@ const welcomeMessage = ref(
         </div>
 
         <!-- 메인 컨텐츠 -->
-        <div class="bg-gradient-to-b from-blue-50/50 to-white flex-1 relative">
+        <div class="bg-gradient-to-b from-blue-50 to-white flex-1 relative">
           <!-- 웰컴 메시지 -->
           <div v-if="currentView === 'buttons'" class="p-4">
             <div
