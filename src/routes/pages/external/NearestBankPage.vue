@@ -1,11 +1,18 @@
 <template>
-  <div class="w-full h-[500px]">
-    <KakaoMap
-      v-model:banks="banks"
-      ref="kakaoMapRef"
-      @bank-selected="handleBankSelected"
-    />
-    <div v-if="banks.length" class="mt-4">
+  <TabHeader
+    title="주변 은행 찾기"
+    subtitle="근처 은행을 확인할 수 있습니다."
+  />
+  <div class="w-full mt-4 bg-white rounded-lg shadow-md p-4">
+    <div class="h-[500px]">
+      <KakaoMap
+        class="w-full h-full"
+        v-model:banks="banks"
+        ref="kakaoMapRef"
+        @bank-selected="handleBankSelected"
+      />
+    </div>
+    <div v-if="banks.length" class="mt-4 mb-8">
       <h2 class="mb-4 text-2xl font-semibold text-gray-800">근처 은행 목록</h2>
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <!-- 사용자 위치 추가 -->
@@ -46,6 +53,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
+import TabHeader from '@/components/common/TabHeader.vue';
 
 const banks = ref([]);
 const userLocation = ref(null);
