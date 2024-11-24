@@ -31,11 +31,11 @@ const toggleTooltip = () => {
 };
 
 const handleClickOutside = (event) => {
-  if (
-    isOpen.value &&
-    !buttonRef.value?.contains(event.target) &&
-    !tooltipRef.value?.contains(event.target)
-  ) {
+  const isMenuButton = event.target.closest('button');
+  const isInsideTooltip = tooltipRef.value?.contains(event.target);
+  const isMainButton = buttonRef.value?.contains(event.target);
+
+  if (isOpen.value && !isInsideTooltip && !isMainButton && !isMenuButton) {
     isOpen.value = false;
   }
 };
