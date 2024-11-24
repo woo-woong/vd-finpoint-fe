@@ -27,7 +27,7 @@ const mapOptions = reactive({
 // 부모 컴포넌트로 은행 목록 전달을 위한 이벤트 정의
 const emit = defineEmits(['update:banks', 'bank-selected']);
 
-// 근처 은행 검색 함수 (비동기)
+// 근처 은행 색 함수 (비동기)
 const searchNearbyBanks = async (latitude, longitude) => {
   try {
     // Kakao Local API를 사용해 은행 검색
@@ -154,17 +154,26 @@ const navigateToBank = (bank) => {
   map.value.setCenter(bankPosition);
   map.value.setLevel(3);
 
-  const targetMarker = bankMarkers.value.find(
-    (marker) =>
-      marker.getPosition().getLat() === parseFloat(bank.y) &&
-      marker.getPosition().getLng() === parseFloat(bank.x)
-  );
+  // 마커 찾기 로직 개선
+  const targetMarker = bankMarkers.value.find((marker) => {
+    const pos = marker.getPosition();
+    return (
+      Math.abs(pos.getLat() - parseFloat(bank.y)) < 0.0000001 &&
+      Math.abs(pos.getLng() - parseFloat(bank.x)) < 0.0000001
+    );
+  });
 
   if (targetMarker) {
+    // 기존 인포윈도우들 모두 닫기
     infoWindows.value.forEach((iw) => iw.close());
+    infoWindows.value = [];
+
+    // 새 인포윈도우 생성 및 열기
     const infoWindow = createInfoWindow(bank);
     infoWindow.open(map.value, targetMarker);
-    infoWindows.value = [infoWindow];
+    infoWindows.value.push(infoWindow);
+
+    // 선택된 은행 정보 emit
     emit('bank-selected', bank);
   }
 };

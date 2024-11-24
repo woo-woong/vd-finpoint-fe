@@ -23,7 +23,10 @@
             userLocation && !isHovered ? 'bg-blue-50' : 'bg-blue-100',
             'hover:bg-blue-100',
           ]"
-          @click="navigateToBank(userLocation)"
+          @click="
+            navigateToBank(userLocation);
+            scrollToTop();
+          "
           @mouseover="isHovered = true"
           @mouseleave="isHovered = false"
         >
@@ -37,7 +40,10 @@
           :key="bank.id"
           class="p-4 bg-white border border-gray-200 shadow-md cursor-pointer rounded-xl hover:bg-gray-100"
           :class="{ 'bg-blue-50': selectedBank?.id === bank.id }"
-          @click="navigateToBank(bank)"
+          @click="
+            navigateToBank(bank);
+            scrollToTop();
+          "
         >
           <h3 class="text-lg font-semibold text-gray-800">
             {{ bank.place_name }}
@@ -60,6 +66,11 @@ const userLocation = ref(null);
 const selectedBank = ref(null);
 const kakaoMapRef = ref(null);
 const isHovered = ref(false);
+
+// 페이지 최상단으로 스크롤
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
 // 은행 선택 시 지도 이동
 const navigateToBank = (bank) => {
