@@ -62,6 +62,7 @@ watch(
 const selectedBank = ref('전체');
 const selectedPeriod = ref('전체기간');
 const searchQuery = ref('');
+const appliedSearchQuery = ref('');
 
 // computed 속성들도 null 체크 추가
 const bankOptions = computed(() => {
@@ -105,7 +106,7 @@ const filteredProducts = computed(() => {
         product.kor_co_nm === selectedBank.value;
       const nameMatch = product.fin_prdt_nm
         .toLowerCase()
-        .includes(searchQuery.value.toLowerCase());
+        .includes(appliedSearchQuery.value.toLowerCase());
 
       let periodMatch = true;
       if (selectedPeriod.value !== '전체기간') {
@@ -131,7 +132,14 @@ const filteredProducts = computed(() => {
 
 // 검색 실행
 const handleSearch = () => {
-  // 검색 로직 구현
+  appliedSearchQuery.value = searchQuery.value.trim();
+};
+
+// 엔터키 이벤트 처리 함수 추가
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    handleSearch();
+  }
 };
 </script>
 
@@ -183,6 +191,7 @@ const handleSearch = () => {
             <input
               v-model="searchQuery"
               type="text"
+              @keyup.enter="handleSearch"
               class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500"
               placeholder="상품명을 입력하세요"
             />
