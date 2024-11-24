@@ -97,7 +97,7 @@ const handleUnsubscribe = async (event, product) => {
           },
           '1024': {
             slidesPerView: 3,
-            spaceBetween: 10,
+            spaceBetween: 18,
           },
         }"
         class="w-full financial-swiper"
@@ -108,10 +108,10 @@ const handleUnsubscribe = async (event, product) => {
           class="pb-12"
         >
           <div
-            class="relative h-full p-4 transition duration-200 rounded-lg shadow bg-gray-100 hover:shadow-lg"
+            class="relative h-[200px] rounded-lg shadow bg-gray-100 hover:shadow-lg"
           >
             <!-- 상품 정보 -->
-            <div class="flex flex-col h-full space-y-3 p-1">
+            <div class="h-full p-4">
               <!-- 상품명 -->
               <div class="flex items-start">
                 <span
@@ -152,7 +152,7 @@ const handleUnsubscribe = async (event, product) => {
               <!-- 상품 상세 정보 -->
               <div class="flex-1">
                 <div
-                  class="px-3 py-2 space-y-1 text-sm text-gray-600 bg-gray-200 rounded"
+                  class="px-4 py-3 space-y-2 text-sm text-gray-600 bg-gray-200 rounded"
                 >
                   <p>
                     <span class="font-medium">가입방법:</span>
@@ -168,47 +168,30 @@ const handleUnsubscribe = async (event, product) => {
                   </p>
                 </div>
               </div>
-
-              <!-- 자세히 보기 오버레이 -->
-              <div
-                v-if="!isManagingAll"
-                class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg opacity-0 hover:opacity-100"
-              >
-                <span
-                  @click="
-                    !isManagingAll &&
-                      navigateToFinProductDetail(
-                        product.type,
-                        product.fin_prdt_cd
-                      )
-                  "
-                  class="text-lg font-semibold text-white cursor-pointer"
-                  >자세히 보기 →</span
-                >
-              </div>
             </div>
 
-            <!-- 관리 버튼 -->
+            <!-- 자세히 보기 오버레이 -->
+            <div
+              v-if="!isManagingAll"
+              class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg opacity-0 hover:opacity-100"
+            >
+              <span
+                class="text-lg font-semibold text-white cursor-pointer"
+                @click="
+                  navigateToFinProductDetail(product.type, product.fin_prdt_cd)
+                "
+              >
+                자세히 보기 →
+              </span>
+            </div>
+
+            <!-- 삭제 버튼 -->
             <button
               v-if="isManagingAll"
-              type="button"
-              class="absolute p-2 text-white transition-all duration-300 ease-in-out bg-red-500 rounded-full shadow-md bottom-2 right-2 hover:bg-red-600"
+              class="absolute bottom-2 right-2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full"
               @click="(event) => handleUnsubscribe(event, product)"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="w-4 h-4"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M5.75 12h12.5"
-                />
-              </svg>
+              -
             </button>
           </div>
         </SwiperSlide>
@@ -223,12 +206,12 @@ const handleUnsubscribe = async (event, product) => {
 <style scoped>
 .financial-swiper {
   padding: 1rem !important;
-  height: 300px;
+  height: 280px;
 }
 
 .financial-swiper-container {
   position: relative;
-  padding: 0 50px; /* 좌우 네비게이션 버튼을 위한 여백 */
+  padding: 0 50px;
 }
 
 :deep(.swiper-button-next),
@@ -239,19 +222,10 @@ const handleUnsubscribe = async (event, product) => {
   height: 40px;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  top: 50%;
+  top: calc(50% - 30px);
   transform: translateY(-50%);
   margin-top: 0;
   z-index: 20;
-}
-
-/* 네비게이션 버튼 위치 조정 */
-:deep(.swiper-button-prev) {
-  left: 0;
-}
-
-:deep(.swiper-button-next) {
-  right: 0;
 }
 
 :deep(.swiper-button-next:after),
