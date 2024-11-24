@@ -22,7 +22,8 @@ const router = useRouter();
 const route = useRoute();
 const { create, update, read } = boardService();
 const userStore = useUserStore();
-const isLoading = ref(true);
+const isPageLoading = ref(true);
+const isLoading = ref(false);
 
 const formData = ref({
   title: '',
@@ -42,7 +43,7 @@ const submitButtonText = computed(() => {
 const fetchPost = async () => {
   if (props.mode === 'edit') {
     try {
-      isLoading.value = true;
+      isPageLoading.value = true;
       const response = await read(route.params.id);
 
       if (response.board.user !== userStore.userData.username) {
@@ -56,19 +57,17 @@ const fetchPost = async () => {
         product_code: response.board.product_code,
         type: response.board.type,
         content: response.board.content,
+        product: response.board.product,
       };
-
-      // ProductSelection 컴포넌트의 데이터 로딩이 완료될 때까지 기다림
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 데이터 로딩을 위한 여유 시간
     } catch (error) {
       console.error('게시글 조회 실패:', error);
       alert('게시글을 불러오는데 실패했습니다.');
       router.push('/board');
     } finally {
-      isLoading.value = false;
+      isPageLoading.value = false;
     }
   } else {
-    isLoading.value = false;
+    isPageLoading.value = false;
   }
 };
 
@@ -113,13 +112,15 @@ const goBack = () => {
     <main
       class="flex flex-col w-full max-w-2xl px-6 py-8 mt-10 bg-white rounded-lg shadow-lg"
     >
-      <div v-if="!isLoading">
+      <Loading message="게시글 불러오는 중..." v-if="isPageLoading" />
+      <div v-else>
         <PostTitle v-model="formData.title" :disabled="isLoading" />
 
         <ProductSelection
           v-model:type="formData.type"
           v-model:product-code="formData.product_code"
-          :disabled="isLoading"
+          :mode="mode"
+          :edit-product="formData.product"
         />
 
         <PostContent v-model="formData.content" :disabled="isLoading" />
@@ -130,7 +131,6 @@ const goBack = () => {
           @cancel="goBack"
         />
       </div>
-      <Loading message="게시글 불러오는 중..." v-else />
     </main>
   </div>
 </template>

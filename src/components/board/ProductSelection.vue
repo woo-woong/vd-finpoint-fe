@@ -6,14 +6,18 @@ import FinanceCard from '@/components/finance/FinanceCard.vue';
 const props = defineProps({
   type: String,
   productCode: String,
+  initialLoading: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits(['update:type', 'update:product-code']);
 
 const selectedType = ref(props.type?.toLowerCase() || 'deposit');
-const selectedProduct = ref(null);
+const selectedProduct = ref(props.editProduct || null);
 const products = ref([]);
-const isLoading = ref(false);
+const isLoading = ref(props.initialLoading);
 const showProductList = ref(false);
 const showTypeList = ref(false);
 
@@ -24,11 +28,16 @@ const productTypes = [
 
 const { getAllFinProducts } = finProductService();
 
-const initializeSelectedProduct = () => {
+const initializeSelectedProduct = async () => {
   if (props.productCode && products.value.length > 0) {
-    const product = products.value.find((p) => p.code === props.productCode);
-    if (product) {
-      selectedProduct.value = JSON.parse(JSON.stringify(product));
+    isLoading.value = true;
+    try {
+      const product = products.value.find((p) => p.code === props.productCode);
+      if (product) {
+        selectedProduct.value = JSON.parse(JSON.stringify(product));
+      }
+    } finally {
+      isLoading.value = false;
     }
   }
 };
@@ -153,10 +162,9 @@ onMounted(() => {
     <!-- FinanceCard -->
     <div class="mt-4">
       <FinanceCard
-        v-if="selectedProduct"
         :product="selectedProduct"
         :type="selectedType"
-        :key="selectedProduct.code"
+        :key="selectedProduct?.code"
       />
     </div>
   </div>
