@@ -1,21 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import kakaoLogo from '@assets/images/kakao-login.png';
 import { authService } from '@/services/authService';
 const router = useRouter();
-
-const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-const KAKAO_REDIRECT_URL = import.meta.env.VITE_KAKAO_REDIRECT_URL;
-const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URL}&response_type=code`;
 
 const username = ref('');
 const password = ref('');
 const { login, error } = authService;
-
-const handleSocialLoginClick = () => {
-  window.location.href = KAKAO_AUTH_URI;
-};
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -26,57 +17,73 @@ const handleSubmit = async (e) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center p-20 rounded-md shadow-md">
-    <h1 class="text-xl font-bold mb-7">로그인</h1>
-    <form @submit="handleSubmit" class="flex flex-col items-center">
-      <div class="flex flex-col w-full gap-2 mb-5">
-        <input
-          type="text"
-          placeholder="아이디"
-          class="p-2 border border-gray-40"
-          v-model="username"
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          class="p-2 border border-gray-40"
-          v-model="password"
-        />
+  <div
+    v-motion
+    :initial="{ opacity: 0, y: 10 }"
+    :enter="{ opacity: 1, y: 0 }"
+    class="w-full min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-blue-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-2xl space-y-8">
+      <div>
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-2">
+          FinPoint
+        </h1>
+        <h2 class="text-xl font-semibold text-center text-gray-600">로그인</h2>
       </div>
-      <button
-        type="submit"
-        class="w-full p-3 font-semibold transition-colors bg-blue-200 border rounded-sm cursor-pointer hover:bg-blue-400"
-      >
-        로그인
-      </button>
-      <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
-      <nav>
-        <ul class="flex gap-2 p-4">
-          <li>아이디 찾기</li>
-          |
-          <li>비밀번호 찾기</li>
-          |
-          <RouterLink to="/signup">
-            <li>회원가입</li>
-          </RouterLink>
-        </ul>
-      </nav>
-      <hr class="w-full my-3 border-t border-gray-300" />
-      <div class="flex flex-col items-center gap-2 mt-3">
-        <h1 class="text-lg font-bold">SNS 로그인</h1>
-        <button
-          type="button"
-          class="flex flex-col items-center gap-2 mt-3 transition-all duration-300 transform hover:scale-102 hover:shadow-lg active:scale-98"
-          @click="handleSocialLoginClick"
+
+      <form @submit="handleSubmit" class="mt-8 space-y-6">
+        <div class="rounded-md shadow-sm space-y-4">
+          <div>
+            <label for="username" class="sr-only">아이디</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="아이디"
+              class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+              v-model="username"
+              required
+            />
+          </div>
+          <div>
+            <label for="password" class="sr-only">비밀번호</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="비밀번호"
+              class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+              v-model="password"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+          >
+            로그인
+          </button>
+        </div>
+
+        <p
+          v-if="error"
+          class="text-sm text-center text-red-600 bg-red-100 p-2 rounded"
         >
-          <img
-            :src="kakaoLogo"
-            alt="카카오 로그인"
-            class="w-12 transition-transform duration-300 cursor-pointer hover:scale-110"
-          />
-        </button>
-        <p class="text-sm font-medium">카카오톡</p>
-      </div>
-    </form>
+          {{ error }}
+        </p>
+
+        <div class="flex items-center justify-center">
+          <div class="text-sm">
+            <RouterLink
+              to="/signup"
+              class="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+            >
+              아직 계정이 없으신가요? 회원가입
+            </RouterLink>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
