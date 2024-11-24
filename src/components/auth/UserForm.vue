@@ -59,6 +59,23 @@ const formData = ref({
   detail_address: props.mode === 'edit' ? store.userData.detail_address : '',
 });
 
+// 비밀번호 관련 상태들
+const currentPassword = ref('');
+const newPassword = ref('');
+const newPasswordConfirm = ref('');
+const passwordConfirm = ref('');
+
+// 비밀번호 매칭 검증 수정
+const passwordMatch = computed(() => {
+  if (props.mode === 'signup') {
+    if (!formData.value.password && !passwordConfirm.value) return true;
+    return formData.value.password === passwordConfirm.value;
+  } else {
+    if (!newPassword.value && !newPasswordConfirm.value) return true;
+    return newPassword.value === newPasswordConfirm.value;
+  }
+});
+
 // 이메일 도메인 변경 처리
 const handleDomainChange = (e) => {
   selectedDomain.value = e.target.value;
@@ -98,9 +115,15 @@ const handleAddressChange = (value) => {
   }
 };
 
-// 폼 제출 처리
+// 폼 제출 처리 수정
 const handleSubmit = async (e) => {
   if (e) e.preventDefault();
+
+  // 비밀번호 확인 로직 수정
+  if (props.mode === 'signup' && !passwordMatch.value) {
+    alert('비밀번호가 일치하지 않습니다.');
+    return;
+  }
 
   try {
     if (props.mode === 'signup') {
@@ -115,6 +138,17 @@ const handleSubmit = async (e) => {
         address: formData.value.address,
         detail_address: formData.value.detail_address,
       };
+
+      // 비밀번호 변경이 있는 경우
+      if (currentPassword.value && newPassword.value) {
+        if (!passwordMatch.value) {
+          alert('새 비밀번호가 일치하지 않습니다.');
+          return;
+        }
+        updatedData.current_password = currentPassword.value;
+        updatedData.new_password = newPassword.value;
+      }
+
       await profileService().editProfile(updatedData);
       store.userData = { ...store.userData, ...updatedData };
       router.push('/profile');
@@ -166,6 +200,9 @@ watch([phoneFirst, phoneMiddle, phoneLast], () => {
   }
 });
 
+// 비밀번호 변경 섹션 표시 여부
+const showPasswordChange = ref(false);
+
 onMounted(() => {
   initializePhoneNumber();
 });
@@ -189,148 +226,234 @@ onMounted(() => {
     <main
       class="flex flex-col items-center w-full max-w-4xl px-6 py-10 mt-8 bg-white rounded-lg shadow-lg"
     >
-      <form @submit="handleSubmit" class="w-full max-w-lg">
-        <!-- 회원가입 시에만 보이는 필드들 -->
-        <SignUpFormInput
-          label="아이디"
-          type="text"
-          id="username"
-          name="username"
-          v-model="formData.username"
-          :disabled="isEditMode"
-        />
-        <SignUpFormInput
-          label="비밀번호"
-          type="password"
-          id="password"
-          name="password"
-          v-model="formData.password"
-          :disabled="isEditMode"
-        />
-        <SignUpFormInput
-          label="이름"
-          type="text"
-          id="name"
-          name="name"
-          v-model="formData.name"
-          :disabled="isEditMode"
-        />
+      <form @submit="handleSubmit" class="w-full max-w-2xl">
+        <!-- 기본 정보 섹션 -->
+        <div class="mb-3">
+          <h2 class="text-xl font-semibold mb-4">기본 정보</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <SignUpFormInput
+              label="아이디"
+              type="text"
+              id="username"
+              name="username"
+              v-model="formData.username"
+              :disabled="isEditMode"
+            />
+            <SignUpFormInput
+              label="이름"
+              type="text"
+              id="name"
+              name="name"
+              v-model="formData.name"
+              :disabled="isEditMode"
+            />
+          </div>
+        </div>
 
-        <!-- 이메일 입력 필드 -->
-        <div class="mb-4">
-          <label class="block mb-2 text-sm font-medium text-gray-700"
-            >이메일</label
+        <!-- 비밀번호 섹션 -->
+        <div class="mb-3" v-if="!isEditMode">
+          <h2 class="text-xl font-semibold mb-4">비밀번호 설정</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <SignUpFormInput
+              label="비밀번호"
+              type="password"
+              id="password"
+              name="password"
+              v-model="formData.password"
+            />
+            <SignUpFormInput
+              label="비밀번호 확인"
+              type="password"
+              id="passwordConfirm"
+              name="passwordConfirm"
+              v-model="passwordConfirm"
+              :class="{ 'border-red-500': !passwordMatch && passwordConfirm }"
+            />
+          </div>
+          <p
+            v-if="!passwordMatch && passwordConfirm"
+            class="text-sm text-red-500 mt-1"
           >
-          <div class="flex gap-2 items-center">
-            <input
-              type="text"
-              v-model="emailId"
-              class="flex-1 p-2 border rounded-md"
-              placeholder="이메일"
-            />
-            <span class="text-gray-500">@</span>
-            <input
-              type="text"
-              v-model="emailDomain"
-              class="p-2 border rounded-md w-28"
-              :disabled="selectedDomain !== '직접입력'"
-              placeholder="도메인"
-            />
-            <select
-              v-model="selectedDomain"
-              @change="handleDomainChange"
-              class="w-32 p-2 border rounded-md"
+            비밀번호가 일치하지 않습니다.
+          </p>
+        </div>
+
+        <!-- 프로필 수정 시 비밀번호 변경 섹션 -->
+        <div class="mb-3" v-if="isEditMode">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">비밀번호</h2>
+            <button
+              type="button"
+              @click="showPasswordChange = !showPasswordChange"
+              class="px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50"
             >
-              <option
-                v-for="domain in emailDomains"
-                :key="domain"
-                :value="domain"
+              {{ showPasswordChange ? '취소' : '비밀번호 변경' }}
+            </button>
+          </div>
+          <div class="grid grid-cols-1 gap-1">
+            <SignUpFormInput
+              label="현재 비밀번호"
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              v-model="currentPassword"
+            />
+            <div v-if="showPasswordChange" class="grid grid-cols-2 gap-4">
+              <SignUpFormInput
+                label="새 비밀번호"
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                v-model="newPassword"
+              />
+              <SignUpFormInput
+                label="새 비밀번호 확인"
+                type="password"
+                id="newPasswordConfirm"
+                name="newPasswordConfirm"
+                v-model="newPasswordConfirm"
+                :class="{
+                  'border-red-500': !passwordMatch && newPasswordConfirm,
+                }"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 연락처 정보 섹션 -->
+        <div class="mb-3">
+          <h2 class="text-xl font-semibold mb-4">연락처 정보</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- 이메일 입력 -->
+            <div class="col-span-2">
+              <label class="block mb-2 text-sm font-medium text-gray-700"
+                >이메일</label
               >
-                {{ domain }}
-              </option>
-            </select>
+              <div class="flex gap-2 items-center">
+                <input
+                  type="text"
+                  v-model="emailId"
+                  class="flex-1 p-2 border rounded-md"
+                  placeholder="이메일"
+                  :disabled="isEditMode"
+                />
+                <span class="text-gray-500">@</span>
+                <input
+                  type="text"
+                  v-model="emailDomain"
+                  class="w-32 p-2 border rounded-md"
+                  :disabled="selectedDomain !== '직접입력' || isEditMode"
+                  placeholder="도메인"
+                />
+                <select
+                  v-model="selectedDomain"
+                  @change="handleDomainChange"
+                  class="w-40 p-2 border rounded-md"
+                  :disabled="isEditMode"
+                >
+                  <option
+                    v-for="domain in emailDomains"
+                    :key="domain"
+                    :value="domain"
+                  >
+                    {{ domain }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 전화번호 입력 -->
+            <div class="col-span-2">
+              <label class="block mb-2 text-sm font-medium text-gray-700"
+                >전화번호</label
+              >
+              <div class="flex gap-2 items-center">
+                <select v-model="phoneFirst" class="w-24 p-2 border rounded-md">
+                  <option value="010">010</option>
+                  <option value="011">011</option>
+                  <option value="016">016</option>
+                  <option value="017">017</option>
+                  <option value="018">018</option>
+                  <option value="019">019</option>
+                </select>
+                <span class="text-gray-500">-</span>
+                <input
+                  v-model="phoneMiddle"
+                  type="text"
+                  maxlength="4"
+                  placeholder="0000"
+                  class="w-24 p-2 border rounded-md"
+                  @input="
+                    $event.target.value = $event.target.value.replace(
+                      /[^0-9]/g,
+                      ''
+                    )
+                  "
+                />
+                <span class="text-gray-500">-</span>
+                <input
+                  v-model="phoneLast"
+                  type="text"
+                  maxlength="4"
+                  placeholder="0000"
+                  class="w-24 p-2 border rounded-md"
+                  @input="
+                    $event.target.value = $event.target.value.replace(
+                      /[^0-9]/g,
+                      ''
+                    )
+                  "
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- 생월일 -->
-        <SignUpFormInput
-          label="생년월일"
-          type="date"
-          id="birth_date"
-          name="birth_date"
-          v-model="formData.birth_date"
-          :disabled="isEditMode && !formData.birth_date"
-          :max="today"
-        />
-
-        <!-- 전화번호 입력 필드 -->
-        <div class="mb-4">
-          <label class="block mb-2 text-sm font-medium text-gray-700"
-            >전화번호</label
-          >
-          <div class="flex gap-2 items-center">
-            <select
-              v-model="phoneFirst"
-              class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-            >
-              <option value="010">010</option>
-              <option value="011">011</option>
-              <option value="016">016</option>
-              <option value="017">017</option>
-              <option value="018">018</option>
-              <option value="019">019</option>
-            </select>
-            <span class="text-gray-500">-</span>
-            <input
-              v-model="phoneMiddle"
-              type="text"
-              maxlength="4"
-              placeholder="0000"
-              class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-              @input="
-                $event.target.value = $event.target.value.replace(/[^0-9]/g, '')
-              "
-            />
-            <span class="text-gray-500">-</span>
-            <input
-              v-model="phoneLast"
-              type="text"
-              maxlength="4"
-              placeholder="0000"
-              class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
-              @input="
-                $event.target.value = $event.target.value.replace(/[^0-9]/g, '')
-              "
+        <!-- 추가 정보 섹션 -->
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold mb-4">추가 정보</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <SignUpFormInput
+              label="생년월일"
+              type="date"
+              id="birth_date"
+              name="birth_date"
+              v-model="formData.birth_date"
+              :max="today"
+              class="col-span-1"
             />
           </div>
-        </div>
 
-        <!-- 주소 관련 필드들 -->
-        <div class="flex flex-col space-y-0">
-          <SignUpFormInput
-            label="주소"
-            type="text"
-            id="address"
-            name="address"
-            v-model="formData.address"
-            :disabled="true"
-          />
-          <SignUpFormInput
-            label="상세 주소"
-            type="text"
-            id="detail_address"
-            name="detail_address"
-            v-model="formData.detail_address"
-            :disabled="formData.address.length === 0"
-            :required="false"
-          />
-          <DaumAddress :setAddress="handleAddressChange" />
+          <!-- 주소 입력 -->
+          <div class="mt-4">
+            <SignUpFormInput
+              label="주소"
+              type="text"
+              id="address"
+              name="address"
+              v-model="formData.address"
+              :disabled="true"
+            />
+            <div class="flex gap-4 mt-2 justify-center items-center">
+              <SignUpFormInput
+                label="상세 주소"
+                type="text"
+                id="detail_address"
+                name="detail_address"
+                v-model="formData.detail_address"
+                :disabled="formData.address.length === 0"
+                :required="false"
+                class="flex-1"
+              />
+              <DaumAddress :setAddress="handleAddressChange" />
+            </div>
+          </div>
         </div>
 
         <!-- 제출 버튼 -->
         <button
           type="submit"
-          class="w-full px-4 py-2 mt-6 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          class="w-full px-4 py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
         >
           {{ submitButtonText }}
         </button>

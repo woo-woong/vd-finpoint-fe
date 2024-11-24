@@ -65,7 +65,7 @@ const handleClick = () => {
     <button
       type="button"
       @click="handleClick"
-      class="w-1/6 px-2 py-1 ml-auto text-sm text-blue-500 transition-colors duration-200 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      class="w-full px-2 py-1 ml-auto text-sm mt-2 text-blue-500 transition-colors duration-200 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
     >
       주소 검색
     </button>
