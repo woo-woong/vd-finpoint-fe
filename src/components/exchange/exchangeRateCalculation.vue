@@ -195,7 +195,7 @@ onMounted(() => {
   <div class="w-full h-full flex flex-col">
     <!-- 카드 헤더 -->
     <div class="p-4 bg-white border-b rounded-t-xl">
-      <p class="mt-0.5 text-xs text-gray-500">
+      <p class="mt-0.5 text-sm text-gray-500">
         최종 업데이트: {{ lastUpdated.toLocaleString() }}
       </p>
     </div>

@@ -2,7 +2,7 @@
 import { RouterLink } from 'vue-router';
 </script>
 <template>
-  <footer class="w-full bg-slate-900 text-gray-300">
+  <footer class="w-full bg-slate-900 text-gray-300 mt-5">
     <div class="max-w-7xl mx-auto px-4 py-12">
       <!-- 메인 푸터 콘텐츠 -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
