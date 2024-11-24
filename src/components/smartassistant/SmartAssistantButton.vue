@@ -96,7 +96,7 @@ const welcomeMessage = ref(
     <button
       ref="buttonRef"
       @click="toggleTooltip"
-      class="fixed z-40 p-3 text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-lg bottom-4 right-4 hover:scale-105 hover:shadow-xl group"
+      class="fixed z-50 p-3 text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-lg bottom-4 right-4 hover:scale-105 hover:shadow-xl group"
     >
       <div class="relative flex items-center gap-2 px-2">
         <div class="relative">
