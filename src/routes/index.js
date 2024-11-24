@@ -122,6 +122,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }; // 항상 페이지 상단으로 스크롤
+  },
 });
 
 export default router;
