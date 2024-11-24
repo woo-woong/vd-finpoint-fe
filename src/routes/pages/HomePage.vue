@@ -2,16 +2,29 @@
   <div class="flex flex-col items-center min-h-screen">
     <!-- 메인 배너 -->
     <section
-      class="w-full py-20 mb-10 text-center text-white bg-gradient-to-r from-blue-600 to-blue-400"
+      class="w-full py-20 mb-10 text-center text-white bg-gradient-to-r from-blue-600 to-blue-400 relative overflow-hidden"
       v-motion
       :initial="{ opacity: 0 }"
       :enter="{ opacity: 1, transition: { duration: 500 } }"
     >
-      <h2 class="text-4xl font-bold">당신의 금융 파트너, FinPoint</h2>
-      <p class="mt-4 text-lg">모든 금융 상품을 한눈에 비교하고 관리하세요.</p>
+      <div
+        class="absolute bottom-[-130px] right-[-80px] w-96 h-96 transform rotate-45"
+      >
+        <img
+          src="@assets/logo.png"
+          alt="FinPoint Logo"
+          class="w-full h-full object-contain opacity-10"
+        />
+      </div>
+      <h2 class="text-4xl font-bold relative z-10">
+        당신의 금융 파트너, FinPoint
+      </h2>
+      <p class="mt-4 text-lg relative z-10">
+        모든 금융 상품을 한눈에 비교하고 관리하세요.
+      </p>
       <router-link
         to="/login"
-        class="inline-block px-6 py-3 mt-6 text-lg font-semibold text-blue-600 bg-white rounded-lg shadow-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105"
+        class="inline-block px-6 py-3 mt-6 text-lg font-semibold text-blue-600 bg-white rounded-lg shadow-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 relative z-10"
         @click="
           isLoggedIn &&
             toast('이미 로그인되어 있습니다.', {
