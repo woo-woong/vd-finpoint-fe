@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:type', 'update:product-code']);
 
-const selectedType = ref('deposit');
+const selectedType = ref(props.type?.toLowerCase() || 'deposit');
 const selectedProduct = ref(null);
 const products = ref([]);
 const isLoading = ref(false);
@@ -23,6 +23,15 @@ const productTypes = [
 ];
 
 const { getAllFinProducts } = finProductService();
+
+const initializeSelectedProduct = () => {
+  if (props.productCode && products.value.length > 0) {
+    const product = products.value.find((p) => p.code === props.productCode);
+    if (product) {
+      selectedProduct.value = JSON.parse(JSON.stringify(product));
+    }
+  }
+};
 
 const fetchProducts = async () => {
   isLoading.value = true;
@@ -39,6 +48,8 @@ const fetchProducts = async () => {
       fin_prdt_nm: product.fin_prdt_nm,
       ...product,
     }));
+
+    initializeSelectedProduct();
   } catch (error) {
     console.error('상품 목록 조회 실패:', error);
     alert('상품 목록을 불러오는데 실패했습니다.');

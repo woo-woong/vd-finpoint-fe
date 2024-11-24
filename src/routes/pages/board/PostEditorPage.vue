@@ -7,6 +7,8 @@ import PostTitle from '@/components/board/PostTitle.vue';
 import ProductSelection from '@/components/board/ProductSelection.vue';
 import PostContent from '@/components/board/PostContent.vue';
 import ActionButtons from '@/components/board/ActionButtons.vue';
+import Loading from '@/components/common/Loading.vue';
+import { useUserStore } from '@/stores/userStore';
 
 const props = defineProps({
   mode: {
@@ -19,6 +21,8 @@ const props = defineProps({
 const router = useRouter();
 const route = useRoute();
 const { create, update, read } = boardService();
+const userStore = useUserStore();
+const isLoading = ref(true);
 
 const formData = ref({
   title: '',
@@ -38,24 +42,39 @@ const submitButtonText = computed(() => {
 const fetchPost = async () => {
   if (props.mode === 'edit') {
     try {
-      const post = await read(route.params.id);
+      isLoading.value = true;
+      const response = await read(route.params.id);
+
+      if (response.board.user !== userStore.userData.username) {
+        alert('자신의 게시물만 수정할 수 있습니다.');
+        router.push('/board');
+        return;
+      }
+
       formData.value = {
-        title: post.title,
-        product_code: post.product_code,
-        type: post.type,
-        content: post.content,
+        title: response.board.title,
+        product_code: response.board.product_code,
+        type: response.board.type,
+        content: response.board.content,
       };
+
+      // ProductSelection 컴포넌트의 데이터 로딩이 완료될 때까지 기다림
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 데이터 로딩을 위한 여유 시간
     } catch (error) {
       console.error('게시글 조회 실패:', error);
       alert('게시글을 불러오는데 실패했습니다.');
       router.push('/board');
+    } finally {
+      isLoading.value = false;
     }
+  } else {
+    isLoading.value = false;
   }
 };
 
 // 컴포넌트 마운트 시 게시글 데이터 불러오기
-onMounted(() => {
-  fetchPost();
+onMounted(async () => {
+  await fetchPost();
 });
 
 const handleSubmit = async () => {
@@ -94,20 +113,24 @@ const goBack = () => {
     <main
       class="flex flex-col w-full max-w-2xl px-6 py-8 mt-10 bg-white rounded-lg shadow-lg"
     >
-      <PostTitle v-model="formData.title" />
+      <div v-if="!isLoading">
+        <PostTitle v-model="formData.title" :disabled="isLoading" />
 
-      <ProductSelection
-        v-model:type="formData.type"
-        v-model:product-code="formData.product_code"
-      />
+        <ProductSelection
+          v-model:type="formData.type"
+          v-model:product-code="formData.product_code"
+          :disabled="isLoading"
+        />
 
-      <PostContent v-model="formData.content" />
+        <PostContent v-model="formData.content" :disabled="isLoading" />
 
-      <ActionButtons
-        :submit-text="submitButtonText"
-        @submit="handleSubmit"
-        @cancel="goBack"
-      />
+        <ActionButtons
+          :submit-text="submitButtonText"
+          @submit="handleSubmit"
+          @cancel="goBack"
+        />
+      </div>
+      <Loading message="게시글 불러오는 중..." v-else />
     </main>
   </div>
 </template>
