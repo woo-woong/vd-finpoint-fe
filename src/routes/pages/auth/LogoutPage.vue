@@ -18,5 +18,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- 이 컴포넌트는 아무것도 렌더링하지 않음 -->
+  <div class="min-h-screen">
+    <!-- 로딩 중 화면이 깜빡이는 것을 방지하기 위한 최소 높이 설정 -->
+  </div>
 </template>
