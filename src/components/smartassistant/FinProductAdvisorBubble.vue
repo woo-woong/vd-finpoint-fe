@@ -63,8 +63,6 @@ const handleProductDetail = (service, productCode) => {
   // 부모 컴포넌트에 닫기 이벤트 발생
   emit('close');
 
-  window.location.reload();
-
   // 다른 경로인 경우 일반적인 페이지 이동
   navigateToFinProductDetail(service, productCode);
 };
