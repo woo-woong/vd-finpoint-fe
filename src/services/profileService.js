@@ -8,14 +8,19 @@ export const profileService = () => {
   const userData = useUserStore().userData;
 
   const getProfile = async (data) => {
-    const response = await ky.get(`${API_URL}profile/`, {
-      json: data,
-      headers: {
-        'X-CSRFToken': getCsrfToken(),
-      },
-      credentials: 'include',
-    });
-    return response.json();
+    try {
+      const response = await ky.get(`${API_URL}profile/`, {
+        json: data,
+        headers: {
+          'X-CSRFToken': getCsrfToken(),
+        },
+        credentials: 'include',
+        timeout: 30000,
+      });
+      return response.json();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const editProfile = async (data) => {
