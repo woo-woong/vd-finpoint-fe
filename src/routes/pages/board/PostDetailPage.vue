@@ -7,22 +7,24 @@ import Loading from '@/components/common/Loading.vue';
 import PostLikeButton from '@/components/board/PostLikeButton.vue';
 import FinanceRecommendCard from '@/components/finance/FinanceRecommendCard.vue';
 import { toast } from 'vue-sonner';
+import { useMaskedAuthor } from '@/hooks/common/useMaskedAuthor';
 
 const router = useRouter();
 const route = useRoute();
 const postData = ref(null);
 const productData = ref(null);
-
 const boardId = route.params.id;
 const { read, remove } = boardService();
 
 let formattedDate;
+let maskedAuthor;
 const fetchBoardData = async () => {
   try {
     const data = await read(boardId);
     postData.value = data.board;
     productData.value = data.product;
     formattedDate = useDate(postData.value.created_at);
+    maskedAuthor = useMaskedAuthor(postData.value.name);
   } catch (error) {
     // boardService에서 에러 처리하므로 여기서는 생략
     throw error;
@@ -72,7 +74,7 @@ function goEdit() {
         </div>
         <div class="flex items-center justify-between">
           <p class="mt-2 text-base text-gray-500">
-            작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
+            작성자: {{ maskedAuthor }} | 작성일: {{ formattedDate }}
           </p>
           <PostLikeButton
             :boardId="Number(boardId)"

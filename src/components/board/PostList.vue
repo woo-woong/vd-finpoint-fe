@@ -1,5 +1,6 @@
 <script setup>
 import { useDate } from '@/hooks/common/useDate';
+import { useMaskedAuthor } from '@/hooks/common/useMaskedAuthor';
 
 const props = defineProps({
   id: Number,
@@ -9,7 +10,7 @@ const props = defineProps({
   likeCount: Number,
 });
 const formattedDate = useDate(props.created_at);
-const maskedAuthor = props.author.slice(0, 1) + '**';
+const maskedAuthor = useMaskedAuthor(props.author);
 </script>
 
 <template>
