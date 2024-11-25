@@ -26,7 +26,8 @@ const props = defineProps({
 
 <template>
   <Sonner
-    class="toaster group bottom-24 z-10"
+    :style="{ fontFamily: 'Pretendard Variable' }"
+    class="z-10 toaster group bottom-24"
     v-bind="props"
     :toast-options="{
       classes: {
