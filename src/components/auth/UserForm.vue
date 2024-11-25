@@ -19,14 +19,7 @@ const props = defineProps({
 const router = useRouter();
 const store = useUserStore();
 
-// 이메일 관련 상태
-const emailId = ref(
-  props.mode === 'edit' ? store.userData.email.split('@')[0] : ''
-);
-const emailDomain = ref(
-  props.mode === 'edit' ? store.userData.email.split('@')[1] : ''
-);
-const selectedDomain = ref('직접입력');
+// 이메일 도메인 목록을 먼저 정의
 const emailDomains = [
   '직접입력',
   'naver.com',
@@ -36,6 +29,21 @@ const emailDomains = [
   'nate.com',
   'kakao.com',
 ];
+
+// 초기 이메일 값 설정
+const initialEmail = props.mode === 'edit' ? store.userData.email || '' : '';
+const [initialId = '', initialDomain = ''] = initialEmail.split('@');
+
+// 이메일 관련 상태
+const emailId = ref(initialId);
+const emailDomain = ref(initialDomain);
+const selectedDomain = ref(
+  props.mode === 'edit'
+    ? emailDomains.includes(store.userData.email.split('@')[1])
+      ? store.userData.email.split('@')[1]
+      : '직접입력'
+    : '직접입력'
+);
 
 // 전화번호 관련 상태
 const phoneFirst = ref(
@@ -137,6 +145,7 @@ const handleSubmit = async (e) => {
       router.push('/login');
     } else {
       const updatedData = {
+        email: formData.value.email,
         birth_date: formData.value.birth_date,
         phone: formData.value.phone,
         address: formData.value.address,
@@ -358,21 +367,19 @@ onMounted(() => {
                   v-model="emailId"
                   class="flex-1 p-2 border rounded-md"
                   placeholder="이메일"
-                  :disabled="isEditMode"
                 />
                 <span class="text-gray-500">@</span>
                 <input
                   type="text"
                   v-model="emailDomain"
                   class="w-32 p-2 border rounded-md"
-                  :disabled="selectedDomain !== '직접입력' || isEditMode"
+                  :disabled="selectedDomain !== '직접입력'"
                   placeholder="도메인"
                 />
                 <select
                   v-model="selectedDomain"
                   @change="handleDomainChange"
                   class="w-40 p-2 border rounded-md"
-                  :disabled="isEditMode"
                 >
                   <option
                     v-for="domain in emailDomains"
