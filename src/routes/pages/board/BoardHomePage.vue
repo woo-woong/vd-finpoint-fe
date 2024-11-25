@@ -15,16 +15,34 @@ const router = useRouter();
 
 const Posts = ref([]);
 const loading = ref(true); // 로딩 상태를 관리할 변수 추가
+const sortBy = ref('latest'); // 정렬 기준 상태 추가
 
 const fetchPosts = async () => {
   try {
     const response = await list();
     Posts.value = response;
+    sortPosts(); // 정렬 함수 호출
     loading.value = false; // 데이터 로드 완료 후 로딩 상태 false로 변경
   } catch (error) {
     console.error('게시물 목록 조회 실패:', error);
     loading.value = false; // 오류 발생 시 로딩 상태 false로 변경
   }
+};
+
+// 정렬 함수 추가
+const sortPosts = () => {
+  if (sortBy.value === 'likes') {
+    Posts.value.sort((a, b) => b.like_count - a.like_count);
+  } else {
+    // 최신순 정렬 (기본값)
+    Posts.value.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+};
+
+// 정렬 방식 변경 함수
+const changeSortBy = (type) => {
+  sortBy.value = type;
+  sortPosts();
 };
 
 onMounted(() => {
@@ -61,6 +79,32 @@ const goToNewPost = () => {
           class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700"
         >
           새 글 작성
+        </button>
+      </div>
+
+      <!-- 정렬 탭 추가 -->
+      <div class="flex justify-start w-full gap-4 mb-4">
+        <button
+          @click="changeSortBy('latest')"
+          :class="[
+            'px-3 py-1 rounded-lg',
+            sortBy === 'latest'
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
+          ]"
+        >
+          최신순
+        </button>
+        <button
+          @click="changeSortBy('likes')"
+          :class="[
+            'px-3 py-2 rounded-lg',
+            sortBy === 'likes'
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
+          ]"
+        >
+          추천순
         </button>
       </div>
 
