@@ -216,8 +216,17 @@ const handleKeyPress = (event) => {
         <Loading message="상품 데이터를 불러오는 중입니다..." />
       </div>
 
-      <div v-else-if="filteredProducts.length === 0" class="p-4">
+      <div
+        v-else-if="filteredProducts.length === 0"
+        class="flex flex-col items-center p-4"
+      >
         <p>검색 결과가 없습니다.</p>
+        <button
+          @click="fetchProducts"
+          class="px-4 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
+        >
+          다시 검색하기
+        </button>
       </div>
 
       <div

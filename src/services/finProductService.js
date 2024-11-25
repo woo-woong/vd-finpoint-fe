@@ -1,4 +1,5 @@
 import { getCsrfToken } from '@/hooks/auth/useCsrfToken';
+import { toast } from 'vue-sonner';
 import ky from 'ky';
 
 const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL;
@@ -12,9 +13,15 @@ export const finProductService = () => {
       const data = await response.json();
       return data;
     } catch (err) {
-      console.error('데이터 로딩 실패:', err);
-      throw new Error(
-        '금융 상품 데이터를 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.'
+      toast.error(
+        '금융 상품 데이터를 불러오는데 실패했습니다. 잠시 후 다시 시도해주세요.',
+        {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+          },
+        }
       );
     }
   };
@@ -28,8 +35,16 @@ export const finProductService = () => {
       });
       return response.json();
     } catch (error) {
-      console.error('API 요청 실패:', error);
-      throw new Error('금융 상품 데이터를 가져오는데 실패했습니다.');
+      toast.error(
+        '금융 상품 데이터를 가져오는데 실패했습니다. 잠시 후 다시 시도해주세요.',
+        {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+          },
+        }
+      );
     }
   };
 
@@ -46,8 +61,13 @@ export const finProductService = () => {
       });
       return response.json();
     } catch (error) {
-      console.error('API 요청 실패:', error);
-      throw new Error('금융 상품 가입에 실패했습니다.');
+      toast.error('금융 상품 가입에 실패했습니다. 잠시 후 다시 시도해주세요.', {
+        style: {
+          background: '#fee2e2',
+          color: '#dc2626',
+          border: '1px solid #dc2626',
+        },
+      });
     }
   };
 
@@ -69,8 +89,16 @@ export const finProductService = () => {
       // 응답 본문이 비어있으면 빈 객체 반환
       return responseText.trim() === '' ? {} : await response.json();
     } catch (error) {
-      console.error('API 요청 실패:', error);
-      throw new Error('금융 상품 가입 취소에 실패했습니다.');
+      toast.error(
+        '금융 상품 가입 취소에 실패했습니다. 잠시 후 다시 시도해주세요.',
+        {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+          },
+        }
+      );
     }
   };
 

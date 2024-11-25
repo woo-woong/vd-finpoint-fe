@@ -114,6 +114,15 @@ onMounted(async () => {
             {{ product?.etc_note }}
           </p>
         </div>
+        <!-- 재요청 -->
+        <div class="flex justify-center mt-4">
+          <button
+            @click="getFinProduct(service, product?.fin_prdt_cd)"
+            class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
+          >
+            재요청
+          </button>
+        </div>
       </div>
     </div>
   </div>
