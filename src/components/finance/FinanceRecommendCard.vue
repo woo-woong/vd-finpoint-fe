@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import FinanceCard from './FinanceCard.vue';
-import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 
 const props = defineProps({
   type: {
@@ -15,8 +14,6 @@ const props = defineProps({
 });
 
 const isShowFinanceCard = ref(false);
-
-const { navigateToFinProductDetail } = useFinanceNavigation();
 
 const toggleFinanceCard = () => {
   isShowFinanceCard.value = !isShowFinanceCard.value;
@@ -55,17 +52,13 @@ const toggleFinanceCard = () => {
         </div>
       </div>
       <div
-        class="transition-all duration-200 absolute z-10 mt-6 right-0"
+        class="absolute right-0 z-10 mt-6 transition-all duration-200"
         :class="{
           'opacity-100 visible': isShowFinanceCard,
           'opacity-0 invisible': !isShowFinanceCard,
         }"
       >
-        <FinanceCard
-          :product="product"
-          :type="props.type"
-          @click="navigateToFinProductDetail(props.type, product.fin_prdt_cd)"
-        />
+        <FinanceCard :product="product" :type="props.type" />
       </div>
     </div>
   </div>
