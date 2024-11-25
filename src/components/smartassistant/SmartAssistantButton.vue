@@ -96,14 +96,14 @@ const welcomeMessage = ref(
     <button
       ref="buttonRef"
       @click="toggleTooltip"
-      class="fixed z-50 p-3 text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full shadow-lg bottom-4 right-4 hover:scale-105 hover:shadow-xl group"
+      class="fixed z-50 p-3 text-white transition-all duration-200 rounded-full shadow-lg bg-gradient-to-r from-blue-600 to-blue-400 bottom-4 right-4 hover:scale-105 hover:shadow-xl group"
     >
       <div class="relative flex items-center gap-2 px-2">
         <div class="relative">
           <span class="text-2xl">🎣</span>
           <span
             v-show="!isOpen"
-            class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"
+            class="absolute w-3 h-3 bg-red-500 rounded-full -top-1 -right-1 animate-ping"
           ></span>
         </div>
         <span class="font-medium">{{ assistantName }}</span>
@@ -126,10 +126,10 @@ const welcomeMessage = ref(
         class="fixed z-50 w-[400px] rounded-2xl shadow-2xl overflow-hidden border border-blue-400 flex flex-col"
       >
         <!-- 헤더 -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-400 p-4">
+        <div class="p-4 bg-gradient-to-r from-blue-600 to-blue-400">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="p-2 bg-white/20 rounded-full">
+              <div class="p-2 rounded-full bg-white/20">
                 <span class="text-2xl">🎣</span>
               </div>
               <div>
@@ -139,7 +139,7 @@ const welcomeMessage = ref(
             </div>
             <button
               @click="toggleTooltip"
-              class="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+              class="p-2 transition-colors rounded-full text-white/80 hover:text-white hover:bg-white/10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,11 +158,11 @@ const welcomeMessage = ref(
         </div>
 
         <!-- 메인 컨텐츠 -->
-        <div class="bg-gradient-to-b from-blue-50 to-white flex-1 relative">
+        <div class="relative flex-1 bg-gradient-to-b from-blue-50 to-white">
           <!-- 웰컴 메시지 -->
           <div v-if="currentView === 'buttons'" class="p-4">
             <div
-              class="bg-white rounded-2xl p-3 shadow-sm border border-blue-400"
+              class="p-3 bg-white border border-blue-400 shadow-sm rounded-2xl"
             >
               <p
                 class="text-gray-700 break-words whitespace-pre-wrap overflow-wrap-anywhere"
@@ -203,10 +203,10 @@ const welcomeMessage = ref(
               ]"
               :key="index"
               @click="service.action"
-              class="w-full flex items-center gap-4 p-4 bg-white rounded-xl hover:bg-blue-50/50 transition-colors border border-blue-200 hover:border-blue-300 group"
+              class="flex items-center w-full gap-4 p-4 transition-colors bg-white border border-blue-200 rounded-xl hover:bg-blue-50/50 hover:border-blue-300 group"
             >
               <div
-                class="p-2 bg-blue-50 rounded-full group-hover:bg-blue-100 transition-colors"
+                class="p-2 transition-colors rounded-full bg-blue-50 group-hover:bg-blue-100"
               >
                 <span class="text-xl">{{ service.icon }}</span>
               </div>
@@ -225,7 +225,7 @@ const welcomeMessage = ref(
             :initial="{ opacity: 0 }"
             :enter="{ opacity: 1 }"
             :leave="{ opacity: 0 }"
-            class="absolute inset-0 w-full h-full flex flex-col p-4"
+            class="absolute inset-0 flex flex-col w-full h-full p-4"
           >
             <div class="flex justify-between mb-3">
               <h2 class="mb-2 text-xl font-bold">근처 은행 찾기</h2>
@@ -256,7 +256,7 @@ const welcomeMessage = ref(
             :initial="{ opacity: 0 }"
             :enter="{ opacity: 1 }"
             :leave="{ opacity: 0 }"
-            class="absolute inset-0 w-full h-full flex flex-col p-4"
+            class="absolute inset-0 flex flex-col w-full h-full p-4"
           >
             <div class="flex justify-between mb-3">
               <h2 class="mb-2 text-xl font-bold">환율 계산기</h2>
@@ -289,14 +289,14 @@ const welcomeMessage = ref(
             :leave="{ opacity: 0 }"
             class="absolute inset-0 w-full h-full"
           >
-            <div class="relative flex flex-col h-full bg-white rounded-lg p-4">
+            <div class="relative flex flex-col h-full p-4 bg-white rounded-lg">
               <!-- 헤더 -->
               <div class="flex items-center justify-between mb-3">
                 <h2 class="text-lg font-semibold">AI 금융 상품 추천</h2>
               </div>
 
               <!-- 컨텐츠 영역 - 단일 스크롤 -->
-              <div class="flex-1 overflow-y-auto pr-2">
+              <div class="flex-1 pr-2 overflow-y-auto">
                 <FinProductAdvisorBubble
                   :service="selectedService"
                   @close="isOpen = false"
@@ -318,7 +318,7 @@ const welcomeMessage = ref(
 
         <!-- 물결 효과가 있는 푸터 -->
         <div
-          class="h-2 bg-gradient-to-r from-blue-600 to-blue-400 relative overflow-hidden"
+          class="relative h-2 overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400"
         >
           <div class="absolute inset-0 waves-animation"></div>
         </div>
