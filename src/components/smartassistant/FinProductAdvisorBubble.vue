@@ -37,7 +37,7 @@ const handleRequestRecommendation = async () => {
     const data = await fetchRecommendProduct(props.service);
     recommendation.value = data;
     // 타이핑 효과 시작
-    typeText(data.financial_advice);
+    typeText(data.user_insights.general_advice);
   } catch (error) {
     console.error('AI 추천 요청 실패:', error);
     isError.value = error;
@@ -137,14 +137,6 @@ const handleProductDetail = (service, productCode) => {
                 >
                   {{ feature }}
                 </span>
-              </div>
-              <div class="grid grid-cols-2 gap-2 text-sm">
-                <div class="text-gray-600">기본 금리</div>
-                <div class="font-medium">{{ item.interest_rate }}</div>
-                <div class="text-gray-600">최대 금리</div>
-                <div class="font-medium text-blue-600">
-                  {{ item.max_interest_rate }}
-                </div>
               </div>
               <p class="mt-2 text-sm text-gray-600">{{ item.reason }}</p>
               <button
