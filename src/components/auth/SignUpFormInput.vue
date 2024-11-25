@@ -63,6 +63,7 @@ const emit = defineEmits(['update:modelValue']);
         name === 'annual_salary' || name === 'asset' ? 'text-right' : '',
       ]"
       :max="max"
+      autocomplete="off"
     />
   </div>
 </template>
