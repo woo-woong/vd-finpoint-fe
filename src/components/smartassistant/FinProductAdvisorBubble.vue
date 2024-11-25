@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue';
 import { aiService } from '@/services/aiService';
 import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   service: {
@@ -73,6 +76,13 @@ const handleFindNearestBank = () => {
     path: '/find-nearest-bank',
   });
 };
+
+const handleLogin = () => {
+  emit('close');
+  router.push({
+    path: '/login',
+  });
+};
 </script>
 
 <template>
@@ -85,10 +95,18 @@ const handleFindNearestBank = () => {
     >
       <p class="mb-4 text-red-600">{{ errorMessage }}</p>
       <button
+        v-if="errorMessage != 'Error: 로그인이 필요합니다.'"
         @click="handleRequestRecommendation"
         class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
       >
         재요청하기
+      </button>
+      <button
+        v-if="errorMessage == 'Error: 로그인이 필요합니다.'"
+        @click="handleLogin"
+        class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+      >
+        로그인하기
       </button>
     </div>
     <div v-if="isLoading" class="p-6 text-center">
