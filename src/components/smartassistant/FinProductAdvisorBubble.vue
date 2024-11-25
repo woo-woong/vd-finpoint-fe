@@ -62,8 +62,24 @@ const emit = defineEmits(['close']);
 const handleProductDetail = (service, productCode) => {
   // 부모 컴포넌트에 닫기 이벤트 발생
   emit('close');
-  // 바로 페이지 이동
+
+  // 현재 경로가 동일한 경우 강제로 페이지를 새로고침
+  const currentPath = `/financial-products/${service}/${productCode}`;
+  if (window.location.pathname === currentPath) {
+    window.location.reload();
+    return;
+  }
+
+  // 다른 경로인 경우 일반적인 페이지 이동
   navigateToFinProductDetail(service, productCode);
+};
+
+const handleFindNearestBank = () => {
+  emit('close');
+  // 현재 경로가 find-nearest-bank인 경우 강제로 페이지를 새로고침
+  if (window.location.pathname === '/find-nearest-bank') {
+    window.location.reload();
+  }
 };
 </script>
 
@@ -119,9 +135,12 @@ const handleProductDetail = (service, productCode) => {
         <!-- 400 에러일 경우 상담 버튼 표시 -->
         <router-link
           v-if="recommendation.recommendations.length === 0"
-          to="/find-nearest-bank"
+          :to="{
+            path: '/find-nearest-bank',
+            query: { refresh: Date.now() },
+          }"
           class="block w-full px-4 py-2 mt-4 text-sm text-center text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
-          @click="emit('close')"
+          @click="handleFindNearestBank"
         >
           가까운 지점 찾아보기
         </router-link>

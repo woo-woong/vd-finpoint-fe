@@ -172,7 +172,7 @@ const chartOptions = {
       :options="chartOptions"
     />
     <div v-else class="flex items-center justify-center h-full text-gray-500">
-      가입한 상품이 없습니다.
+      <p class="mb-4">가입 상품이 없어 그래프를 표시할 수 없습니다.</p>
     </div>
   </div>
 </template>

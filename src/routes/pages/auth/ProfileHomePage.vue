@@ -6,6 +6,7 @@ import SubscribedProductsList from '@/components/profile/SubscribedProductsList.
 import { profileService } from '@/services/profileService';
 import SubscribedProductInterestGraph from '@/components/profile/SubscribedProductInterestGraph.vue';
 import SectionLoading from '@/components/common/SectionLoading.vue';
+import { toast } from 'vue-sonner';
 
 const { getProfile } = profileService();
 
@@ -28,9 +29,13 @@ const fetchProfile = async () => {
   try {
     const data = await getProfile();
     subscribedProducts.value = data.wishlist;
-    console.log(subscribedProducts);
   } catch (error) {
-    console.error('프로필 데이터를 가져오는 데 실패했습니다', error);
+    toast.error('프로필 데이터를 가져오는 데 실패했습니다', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+      },
+    });
   } finally {
     isLoading.value = false;
   }
