@@ -212,12 +212,6 @@ const subscribe = async () => {
       >
         가입 취소
       </button>
-      <p
-        class="text-sm text-red-500 font-medium bg-red-50 p-3 rounded-md border border-red-200"
-      >
-        ⚠️ 주의: 가입 및 가입 취소는 진행 중 취소가 불가능합니다.<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신중히 결정해주시기 바랍니다.
-      </p>
     </div>
   </div>
 </template>
