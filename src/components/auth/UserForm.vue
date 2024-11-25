@@ -238,6 +238,28 @@ const showPasswordChange = ref(false);
 onMounted(() => {
   initializePhoneNumber();
 });
+
+function formatToKoreanUnit(value) {
+  // 최대값 제한 (999,999,999)
+  const maxValue = 99999999;
+  const safeValue = Math.min(Number(value), maxValue);
+
+  const units = ['만', '억', '조'];
+  let result = '';
+  let num = safeValue;
+  let unitIndex = 0;
+
+  while (num > 0) {
+    const part = num % 10000;
+    if (part > 0) {
+      result = part.toLocaleString('ko-KR') + units[unitIndex] + ' ' + result;
+    }
+    num = Math.floor(num / 10000);
+    unitIndex++;
+  }
+
+  return result.trim() || '0만';
+}
 </script>
 
 <template>
@@ -487,19 +509,20 @@ onMounted(() => {
                   v-model="formData.annual_salary"
                   :required="false"
                   min="0"
-                  max="9999999999.99"
+                  max="99999999"
                   step="0.01"
                   @input="
-                    $event.target.value = $event.target.value
-                      .replace(/[^0-9.]/g, '')
-                      .slice(0, 12)
+                    $event.target.value = Math.min(
+                      Number($event.target.value.replace(/[^0-9.]/g, '')),
+                      99999999
+                    ).toString()
                   "
                   placeholder="만원 단위로 입력"
                 />
                 <p class="mt-1 text-sm text-right text-gray-600">
                   {{
                     formData.annual_salary
-                      ? `총 ${(formData.annual_salary * 10000).toLocaleString()}원`
+                      ? `총 ${(formData.annual_salary * 10000).toLocaleString()}원 (${formatToKoreanUnit(formData.annual_salary)})`
                       : ''
                   }}
                 </p>
@@ -513,19 +536,20 @@ onMounted(() => {
                   v-model="formData.asset"
                   :required="false"
                   min="0"
-                  max="9999999999999.99"
+                  max="99999999"
                   step="0.01"
                   @input="
-                    $event.target.value = $event.target.value
-                      .replace(/[^0-9.]/g, '')
-                      .slice(0, 15)
+                    $event.target.value = Math.min(
+                      Number($event.target.value.replace(/[^0-9.]/g, '')),
+                      99999999
+                    ).toString()
                   "
                   placeholder="만원 단위로 입력"
                 />
                 <p class="mt-1 text-sm text-right text-gray-600">
                   {{
                     formData.asset
-                      ? `총 ${(formData.asset * 10000).toLocaleString()}원`
+                      ? `총 ${(formData.asset * 10000).toLocaleString()}원 (${formatToKoreanUnit(formData.asset)})`
                       : ''
                   }}
                 </p>
