@@ -194,22 +194,30 @@ const subscribe = async () => {
       </div>
     </div>
 
-    <!-- 버튼 -->
-    <button
-      v-if="productDetails && !isSubscribed"
-      class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50"
-      @click="subscribe"
-      :disabled="isLoading"
-    >
-      가입하기
-    </button>
-    <button
-      v-if="isSubscribed"
-      class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 disabled:opacity-50"
-      @click="subscribe"
-      :disabled="isLoading"
-    >
-      가입 취소
-    </button>
+    <!-- 버튼과 경고 문구 컨테이너 -->
+    <div class="flex flex-col items-end space-y-3">
+      <button
+        v-if="productDetails && !isSubscribed"
+        class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50"
+        @click="subscribe"
+        :disabled="isLoading"
+      >
+        가입하기
+      </button>
+      <button
+        v-if="isSubscribed"
+        class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 disabled:opacity-50"
+        @click="subscribe"
+        :disabled="isLoading"
+      >
+        가입 취소
+      </button>
+      <p
+        class="text-sm text-red-500 font-medium bg-red-50 p-3 rounded-md border border-red-200"
+      >
+        ⚠️ 주의: 가입 및 가입 취소는 진행 중 취소가 불가능합니다.<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신중히 결정해주시기 바랍니다.
+      </p>
+    </div>
   </div>
 </template>

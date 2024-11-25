@@ -4,7 +4,9 @@ import { finProductService } from '@/services/finProductService';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper/modules';
 import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
-
+import { Progress } from '@/components/ui/progress';
+import { toast } from 'vue-sonner';
+import WarningCard from '@/components/common/WarningCard.vue';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -31,21 +33,85 @@ watch(
   }
 );
 
+const isLoading = ref(false);
+const progress = ref(0);
+const currentMessage = ref('');
+
+const unsubscribeLoadingMessages = [
+  '가입 취소를 처리하고 있습니다...',
+  '고객님의 요청을 처리중입니다 📝',
+  '안전하게 취소 처리를 진행하고 있어요 ⚡️',
+  '조금만 더 기다려주세요! 🔄',
+];
+
+const simulateProgress = () => {
+  progress.value = 100;
+  let currentMessageIndex = 0;
+  currentMessage.value = unsubscribeLoadingMessages[0];
+
+  const messageInterval = setInterval(() => {
+    currentMessageIndex =
+      (currentMessageIndex + 1) % unsubscribeLoadingMessages.length;
+    currentMessage.value = unsubscribeLoadingMessages[currentMessageIndex];
+  }, 875);
+
+  const totalSteps = 100;
+  const stepTime = 3500 / totalSteps;
+
+  const interval = setInterval(() => {
+    if (progress.value <= 0) {
+      clearInterval(interval);
+      clearInterval(messageInterval);
+      return;
+    }
+    progress.value -= 1;
+  }, stepTime);
+
+  return { progressInterval: interval, messageInterval };
+};
+
 const handleUnsubscribe = async (event, product) => {
   event.stopPropagation();
+  if (isLoading.value) return;
 
   try {
+    isLoading.value = true;
+    const { progressInterval, messageInterval } = simulateProgress();
+
     const productData = {
       fin_prdt_cd: product.fin_prdt_cd,
       type: product.type,
     };
+
     await unsubscribeFinProduct(productData, product.id);
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+
+    clearInterval(progressInterval);
+    clearInterval(messageInterval);
+    progress.value = 0;
+
     localSubscribedProducts.value = localSubscribedProducts.value.filter(
       (p) => p.id !== product.id
     );
+
+    toast.success('상품 가입이 취소되었습니다.', {
+      style: {
+        background: '#dcfce7',
+        color: '#16a34a',
+        border: '1px solid #16a34a',
+      },
+    });
   } catch (error) {
-    console.error('상품 가입 해제 실패:', error);
-    alert('상품 가입 해제에 실패했습니다. 다시 시도해주세요.');
+    progress.value = 0;
+    toast.error('상품 가입 해제에 실패했습니다. 다시 시도해주세요.', {
+      style: {
+        background: '#fee2e2',
+        color: '#dc2626',
+        border: '1px solid #dc2626',
+      },
+    });
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -59,9 +125,18 @@ const handleUnsubscribe = async (event, product) => {
     class="space-y-6"
   >
     <!-- 상품 개수 표시 -->
-    <div class="flex items-center justify-between">
-      <div class="space-y-1">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
         <h2 class="text-2xl font-bold text-gray-800">나의 가입 상품</h2>
+        <button
+          type="button"
+          class="px-6 py-2 text-sm font-semibold text-white transition-colors bg-green-500 rounded-lg shadow hover:bg-green-600"
+          @click="isManagingAll = !isManagingAll"
+        >
+          {{ isManagingAll ? '종료' : '상품 가입 관리' }}
+        </button>
+      </div>
+      <div class="flex justify-between gap-2 relative">
         <p class="text-gray-600">
           총
           <span class="font-semibold text-blue-600">{{
@@ -69,14 +144,15 @@ const handleUnsubscribe = async (event, product) => {
           }}</span
           >개의 상품에 가입되어 있습니다
         </p>
+        <WarningCard
+          v-if="isManagingAll"
+          v-motion
+          :initial="{ opacity: 0, y: 20 }"
+          :enter="{ opacity: 1, y: 0 }"
+          :transition="{ duration: 100 }"
+          message="⚠️ 가입 취소는 진행 중 취소가 불가능합니다. 신중히 결정해 주시기 바랍니다."
+        />
       </div>
-      <button
-        type="button"
-        class="px-6 py-2 text-sm font-semibold text-white transition-colors bg-green-500 rounded-lg shadow hover:bg-green-600"
-        @click="isManagingAll = !isManagingAll"
-      >
-        {{ isManagingAll ? '종료' : '상품 가입 관리' }}
-      </button>
     </div>
 
     <!-- Swiper 컨테이너 -->
@@ -199,6 +275,34 @@ const handleUnsubscribe = async (event, product) => {
       <!-- 커스텀 네비게이션 버튼 -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
+    </div>
+
+    <!-- 로딩 오버레이 추가 -->
+    <div
+      v-if="isLoading"
+      class="fixed inset-0 z-50 flex items-center justify-center"
+    >
+      <div
+        v-motion
+        :initial="{ opacity: 0, y: 20 }"
+        :enter="{ opacity: 1, y: 0 }"
+        :exit="{ opacity: 0, y: -20 }"
+        class="p-8 bg-white rounded-lg shadow-xl w-[500px]"
+      >
+        <div class="space-y-6">
+          <Progress :modelValue="progress" />
+          <p
+            v-motion
+            :initial="{ opacity: 0, y: 20 }"
+            :enter="{ opacity: 1, y: 0 }"
+            :exit="{ opacity: 0, y: -20 }"
+            :key="currentMessage"
+            class="text-center text-gray-700 font-medium"
+          >
+            {{ currentMessage }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
