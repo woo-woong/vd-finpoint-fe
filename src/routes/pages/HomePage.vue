@@ -8,12 +8,12 @@
       :enter="{ opacity: 1, transition: { duration: 500 } }"
     >
       <div
-        class="absolute bottom-[-130px] right-[-80px] w-96 h-96 transform rotate-45"
+        class="absolute bottom-[-70px] right-[-50px] w-96 h-96 transform rotate-[20deg]"
       >
         <img
           src="@assets/logo.png"
           alt="FinPoint Logo"
-          class="object-contain w-full h-full opacity-10"
+          class="object-contain w-full h-full opacity-40"
         />
       </div>
       <h2 class="relative z-10 text-4xl font-bold">
