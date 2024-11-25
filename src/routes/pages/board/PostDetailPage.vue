@@ -96,7 +96,7 @@ function goEdit() {
 
       <!-- 내용 -->
       <div class="mb-8" v-if="postData">
-        <p class="text-gray-700">
+        <p class="p-5 text-lg text-gray-700 break-all whitespace-pre-line">
           {{ postData.content }}
         </p>
       </div>
