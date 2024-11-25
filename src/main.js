@@ -4,6 +4,7 @@ import { createPinia } from 'pinia';
 import { useKakao } from 'vue3-kakao-maps/@utils';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { MotionPlugin } from '@vueuse/motion';
+import Vue3Lottie from 'vue3-lottie';
 
 import App from './App.vue';
 import routes from './routes';
@@ -18,5 +19,6 @@ app.use(pinia);
 
 app.use(routes);
 app.use(MotionPlugin);
+app.use(Vue3Lottie, { name: 'LottieAnimation' });
 
 app.mount('#app');
