@@ -9,6 +9,7 @@ const props = defineProps({
   likeCount: Number,
 });
 const formattedDate = useDate(props.created_at);
+const maskedAuthor = props.author.slice(0, 1) + '**';
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const formattedDate = useDate(props.created_at);
         {{ title }}
       </router-link>
     </td>
-    <td class="p-4 border-b">{{ author }}</td>
+    <td class="p-4 border-b">{{ maskedAuthor }}</td>
     <td class="p-4 border-b">{{ formattedDate }}</td>
   </tr>
 </template>
