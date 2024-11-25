@@ -71,13 +71,15 @@ const formattedInfo = computed(() => {
         </div>
         <div class="mt-4">
           <p class="text-sm text-gray-600">주소</p>
-          <p class="font-medium">{{ formattedInfo.address }}</p>
-          <p
-            class="text-sm font-normal"
-            v-if="formattedInfo.detail_address !== '-'"
-          >
-            {{ formattedInfo.detail_address }}
-          </p>
+          <div class="flex flex-col">
+            <p class="font-medium">{{ formattedInfo.address }}</p>
+            <p
+              v-if="formattedInfo.detail_address !== '-'"
+              class="mt-1 text-sm text-gray-700"
+            >
+              (상세) {{ formattedInfo.detail_address }}
+            </p>
+          </div>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
