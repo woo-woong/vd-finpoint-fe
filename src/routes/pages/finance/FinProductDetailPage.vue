@@ -5,13 +5,14 @@ import { finProductService } from '@/services/finProductService';
 import FinanceSubScriptionBtn from '@/components/finance/FinanceSubScriptionBtn.vue';
 import Loading from '@/components/common/Loading.vue';
 import BackBtn from '@/components/common/BackBtn.vue';
+import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 
 const route = useRoute();
 const product = ref(null);
 const isLoading = ref(false);
 const initialIsSubscribed = ref(false);
 const { getFinProduct } = finProductService();
-
+const { navigateToOfficialProductHomepage } = useFinanceNavigation();
 const formattedJoinDeny = ref('');
 // service 파라미터를 통해 상품 종류 구분 (예: deposit, savings 등)
 const service = route.params.service;
@@ -57,7 +58,7 @@ onMounted(async () => {
       </div>
       <!-- 상품 헤더 -->
       <div class="mb-2">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between mb-2">
           <h1 class="mb-2 text-2xl font-bold">{{ product?.fin_prdt_nm }}</h1>
           <FinanceSubScriptionBtn
             :initialIsSubscribed="initialIsSubscribed"
@@ -67,11 +68,42 @@ onMounted(async () => {
             @update:subscribed="updateSubscribedStatus"
           />
         </div>
-        <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col">
+            <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
+            <a
+              v-if="product?.kor_co_nm"
+              @click="navigateToOfficialProductHomepage(product?.kor_co_nm)"
+              class="inline-flex items-center px-4 py-2 mt-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer"
+              target="_blank"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+              공식 홈페이지 방문
+            </a>
+          </div>
+          <p
+            class="text-sm text-red-500 font-medium bg-red-50 p-3 rounded-md border border-red-200"
+          >
+            ⚠️ 주의: 가입 및 가입 취소는 진행 중 취소가 불가능합니다.<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신중히 결정해주시기 바랍니다.
+          </p>
+        </div>
       </div>
 
       <!-- 상품 상세 정보 -->
-      <div class="p-6 bg-white rounded-lg shadow-md">
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-md">
         <!-- 기본 정보 테이블 -->
         <table class="w-full mb-8">
           <tbody>
