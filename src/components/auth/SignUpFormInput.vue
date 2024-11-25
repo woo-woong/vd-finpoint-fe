@@ -48,7 +48,15 @@ const emit = defineEmits(['update:modelValue']);
       :name="name"
       :value="modelValue"
       :disabled="disabled"
-      :required="required"
+      :required="
+        name === 'birth_date' ||
+        name === 'address' ||
+        name === 'detail_address' ||
+        name === 'annual_salary' ||
+        name === 'asset'
+          ? false
+          : required
+      "
       @input="$emit('update:modelValue', $event.target.value)"
       :class="[
         'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
