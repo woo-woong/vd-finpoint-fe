@@ -145,12 +145,20 @@ const chartOptions = {
       title: {
         display: true,
         text: '금리 (%)',
+        font: {
+          family: "'Pretendard Variable', sans-serif",
+          weight: 500,
+        },
       },
     },
     x: {
       title: {
         display: true,
         text: '저축 기간',
+        font: {
+          family: "'Pretendard Variable', sans-serif",
+          weight: 500,
+        },
       },
     },
   },
