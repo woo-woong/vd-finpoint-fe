@@ -62,7 +62,12 @@ function goEdit() {
     >
       <!-- 제목 -->
       <div class="mb-8" v-if="postData">
-        <h2 class="text-2xl font-bold">{{ postData.title }}</h2>
+        <div class="flex items-center justify-between gap-4">
+          <h2 class="text-2xl font-bold">{{ postData.title }}</h2>
+          <span class="text-lg text-blue-600"
+            >좋아요 {{ postData.like_count }}개</span
+          >
+        </div>
         <div class="flex items-center justify-between">
           <p class="mt-2 text-base text-gray-500">
             작성자: {{ postData.name }} | 작성일: {{ formattedDate }}
