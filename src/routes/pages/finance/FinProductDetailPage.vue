@@ -117,6 +117,7 @@ onMounted(async () => {
         <!-- 재요청 -->
         <div class="flex justify-center mt-4">
           <button
+            v-if="!product"
             @click="getFinProduct(service, product?.fin_prdt_cd)"
             class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
           >

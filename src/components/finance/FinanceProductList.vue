@@ -208,18 +208,11 @@ const handleKeyPress = (event) => {
 
     <!-- 테이블 섹션 -->
     <div class="bg-white border border-gray-200 rounded-lg">
-      <div v-if="error" class="p-4 text-red-600">
-        <p>데이터를 불러오는데 실패했습니다: {{ error.message }}</p>
-      </div>
-
-      <div v-else-if="isLoading" class="p-4">
+      <div v-if="isLoading" class="p-4">
         <Loading message="상품 데이터를 불러오는 중입니다..." />
       </div>
 
-      <div
-        v-else-if="filteredProducts.length === 0"
-        class="flex flex-col items-center p-4"
-      >
+      <div v-else-if="error" class="flex flex-col items-center p-4">
         <p>검색 결과가 없습니다.</p>
         <button
           @click="fetchProducts"
