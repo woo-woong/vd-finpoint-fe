@@ -10,6 +10,7 @@ import ActionButtons from '@/components/board/ActionButtons.vue';
 import Loading from '@/components/common/Loading.vue';
 import { useUserStore } from '@/stores/userStore';
 import { toast } from 'vue-sonner';
+import BackBtn from '@/components/common/BackBtn.vue';
 
 const props = defineProps({
   mode: {
@@ -161,6 +162,9 @@ const goBack = () => {
     >
       <Loading message="게시글 불러오는 중..." v-if="isPageLoading" />
       <div v-else>
+        <div class="flex justify-end w-full">
+          <BackBtn />
+        </div>
         <PostTitle v-model="formData.title" :disabled="isLoading" />
 
         <ProductSelection

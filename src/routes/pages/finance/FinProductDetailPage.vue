@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { finProductService } from '@/services/finProductService';
 import FinanceSubScriptionBtn from '@/components/finance/FinanceSubScriptionBtn.vue';
 import Loading from '@/components/common/Loading.vue';
+import BackBtn from '@/components/common/BackBtn.vue';
 
 const route = useRoute();
 const product = ref(null);
@@ -49,7 +50,11 @@ onMounted(async () => {
 <template>
   <div class="w-full p-6 mx-auto">
     <Loading v-if="isLoading" />
+
     <div v-else>
+      <div class="flex justify-end w-full mb-4">
+        <BackBtn />
+      </div>
       <!-- 상품 헤더 -->
       <div class="mb-2">
         <div class="flex items-center justify-between">
