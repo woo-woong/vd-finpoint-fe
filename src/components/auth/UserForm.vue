@@ -386,7 +386,23 @@ onMounted(() => {
                 </select>
               </div>
             </div>
+          </div>
+        </div>
 
+        <!-- 추가 정보 섹션 -->
+        <div class="mb-8">
+          <h2 class="mb-4 text-xl font-semibold">추가 정보</h2>
+
+          <SignUpFormInput
+            label="생년월일"
+            type="date"
+            id="birth_date"
+            name="birth_date"
+            v-model="formData.birth_date"
+            :max="today"
+            class="col-span-1"
+          />
+          <div class="grid grid-cols-2 gap-4">
             <!-- 전화번호 입력 -->
             <div class="col-span-2">
               <label class="block mb-2 text-sm font-medium text-gray-700"
@@ -431,22 +447,6 @@ onMounted(() => {
                 />
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- 추가 정보 섹션 -->
-        <div class="mb-8">
-          <h2 class="mb-4 text-xl font-semibold">추가 정보</h2>
-          <div class="grid grid-cols-2 gap-4">
-            <SignUpFormInput
-              label="생년월일"
-              type="date"
-              id="birth_date"
-              name="birth_date"
-              v-model="formData.birth_date"
-              :max="today"
-              class="col-span-1"
-            />
           </div>
 
           <!-- 주소 입력 -->
