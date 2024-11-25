@@ -1,5 +1,6 @@
 import ky from 'ky';
 import { useCookie } from '@/hooks/auth/useCookie';
+import { toast } from 'vue-sonner';
 
 const BOARD_API_URL = `${import.meta.env.VITE_BACKEND_API_URL}board/`;
 
@@ -22,8 +23,16 @@ export const boardService = () => {
         });
         return response.json();
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 생성에 실패했습니다.');
+        toast.error('게시글 생성에 실패했습니다. 잠시 후 다시 시도해주세요.', {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+            width: '400px',
+            right: '0',
+          },
+        });
+        throw error;
       }
     },
     read: async (board_id) => {
@@ -34,8 +43,19 @@ export const boardService = () => {
         const data = await response.json();
         return data;
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 상세조회에 실패했습니다.');
+        toast.error(
+          '게시글 상세조회에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          {
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #dc2626',
+              width: '400px',
+              right: '0',
+            },
+          }
+        );
+        throw error;
       }
     },
     list: async () => {
@@ -44,8 +64,16 @@ export const boardService = () => {
         const data = await response.json();
         return data;
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 조회에 실패했습니다.');
+        toast.error('게시글 조회에 실패했습니다. 잠시 후 다시 시도해주세요.', {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+            width: '400px',
+            right: '0',
+          },
+        });
+        throw error;
       }
     },
     update: async (board_id, formData) => {
@@ -63,8 +91,16 @@ export const boardService = () => {
         });
         return response.json();
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 수정에 실패했습니다.');
+        toast.error('게시글 수정에 실패했습니다. 잠시 후 다시 시도해주세요.', {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+            width: '400px',
+            right: '0',
+          },
+        });
+        throw error;
       }
     },
     remove: async (board_id) => {
@@ -77,8 +113,19 @@ export const boardService = () => {
         });
         return true;
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 삭제에 실패했습니다.');
+        toast.error(
+          '게시글 삭제에 실패했습니다. 본인의 게시글만 삭제할 수 있습니다.',
+          {
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #dc2626',
+              width: '400px',
+              right: '0',
+            },
+          }
+        );
+        throw error;
       }
     },
     like: async (board_id) => {
@@ -96,8 +143,19 @@ export const boardService = () => {
         });
         return response.json();
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 좋아요에 실패했습니다.');
+        toast.error(
+          '게시글 좋아요에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          {
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #dc2626',
+              width: '400px',
+              right: '0',
+            },
+          }
+        );
+        throw error;
       }
     },
     unlike: async (board_id) => {
@@ -115,8 +173,19 @@ export const boardService = () => {
         });
         return response.json();
       } catch (error) {
-        console.error('API 요청 실패:', error);
-        throw new Error('게시글 안좋아요에 실패했습니다.');
+        toast.error(
+          '게시글 좋아요 취소에 실패했습니다. 잠시 후 다시 시도해주세요.',
+          {
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #dc2626',
+              width: '400px',
+              right: '0',
+            },
+          }
+        );
+        throw error;
       }
     },
   };

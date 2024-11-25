@@ -48,7 +48,15 @@ const fetchPost = async () => {
       const response = await read(route.params.id);
 
       if (response.board.user !== userStore.userData.username) {
-        alert('자신의 게시물만 수정할 수 있습니다.');
+        toast.error('자신의 게시물만 수정할 수 있습니다.', {
+          style: {
+            background: '#fee2e2',
+            color: '#dc2626',
+            border: '1px solid #dc2626',
+            width: '400px',
+            right: '0',
+          },
+        });
         router.push('/board');
         return;
       }
@@ -61,8 +69,15 @@ const fetchPost = async () => {
         product: response.board.product,
       };
     } catch (error) {
-      console.error('게시글 조회 실패:', error);
-      alert('게시글을 불러오는데 실패했습니다.');
+      toast.error('게시글을 불러오는데 실패했습니다.', {
+        style: {
+          background: '#fee2e2',
+          color: '#dc2626',
+          border: '1px solid #dc2626',
+          width: '400px',
+          right: '0',
+        },
+      });
       router.push('/board');
     } finally {
       isPageLoading.value = false;

@@ -6,6 +6,7 @@ import { useDate } from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
 import PostLikeButton from '@/components/board/PostLikeButton.vue';
 import FinanceRecommendCard from '@/components/finance/FinanceRecommendCard.vue';
+import { toast } from 'vue-sonner';
 
 const router = useRouter();
 const route = useRoute();
@@ -16,7 +17,6 @@ const boardId = route.params.id;
 const { read, remove } = boardService();
 
 let formattedDate;
-
 const fetchBoardData = async () => {
   try {
     const data = await read(boardId);
@@ -24,7 +24,8 @@ const fetchBoardData = async () => {
     productData.value = data.product;
     formattedDate = useDate(postData.value.created_at);
   } catch (error) {
-    console.error('게시글 조회 실패:', error);
+    // boardService에서 에러 처리하므로 여기서는 생략
+    throw error;
   }
 };
 
@@ -33,7 +34,8 @@ const handleDelete = async () => {
     await remove(route.params.id);
     router.push('/board');
   } catch (error) {
-    console.error('게시글 삭제 실패:', error);
+    // boardService에서 에러 처리하므로 여기서는 생략
+    throw error;
   }
 };
 
