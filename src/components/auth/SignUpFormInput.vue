@@ -50,7 +50,10 @@ const emit = defineEmits(['update:modelValue']);
       :disabled="disabled"
       :required="required"
       @input="$emit('update:modelValue', $event.target.value)"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+      :class="[
+        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black',
+        name === 'annual_salary' || name === 'asset' ? 'text-right' : '',
+      ]"
       :max="max"
     />
   </div>

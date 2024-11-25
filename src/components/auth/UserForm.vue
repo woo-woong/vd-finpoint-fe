@@ -58,6 +58,8 @@ const formData = ref({
   phone: props.mode === 'edit' ? store.userData.phone : '',
   address: props.mode === 'edit' ? store.userData.address : '',
   detail_address: props.mode === 'edit' ? store.userData.detail_address : '',
+  annual_salary: props.mode === 'edit' ? store.userData.annual_salary : '',
+  asset: props.mode === 'edit' ? store.userData.asset : '',
 });
 
 // 비밀번호 관련 상태들
@@ -252,7 +254,7 @@ onMounted(() => {
       <form @submit="handleSubmit" class="w-full max-w-2xl">
         <!-- 기본 정보 섹션 -->
         <div class="mb-3">
-          <h2 class="text-xl font-semibold mb-4">기본 정보</h2>
+          <h2 class="mb-4 text-xl font-semibold">기본 정보</h2>
           <div class="grid grid-cols-2 gap-4">
             <SignUpFormInput
               label="아이디"
@@ -275,7 +277,7 @@ onMounted(() => {
 
         <!-- 비밀번호 섹션 -->
         <div class="mb-3" v-if="!isEditMode">
-          <h2 class="text-xl font-semibold mb-4">비밀번호 설정</h2>
+          <h2 class="mb-4 text-xl font-semibold">비밀번호 설정</h2>
           <div class="grid grid-cols-2 gap-4">
             <SignUpFormInput
               label="비밀번호"
@@ -295,7 +297,7 @@ onMounted(() => {
           </div>
           <p
             v-if="!passwordMatch && passwordConfirm"
-            class="text-sm text-red-500 mt-1"
+            class="mt-1 text-sm text-red-500"
           >
             비밀번호가 일치하지 않습니다.
           </p>
@@ -303,7 +305,7 @@ onMounted(() => {
 
         <!-- 프로필 수정 시 비밀번호 변경 섹션 -->
         <div class="mb-3" v-if="isEditMode">
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold">비밀번호</h2>
             <button
               type="button"
@@ -345,14 +347,14 @@ onMounted(() => {
 
         <!-- 연락처 정보 섹션 -->
         <div class="mb-3">
-          <h2 class="text-xl font-semibold mb-4">연락처 정보</h2>
+          <h2 class="mb-4 text-xl font-semibold">연락처 정보</h2>
           <div class="grid grid-cols-2 gap-4">
             <!-- 이메일 입력 -->
             <div class="col-span-2">
               <label class="block mb-2 text-sm font-medium text-gray-700"
                 >이메일</label
               >
-              <div class="flex gap-2 items-center">
+              <div class="flex items-center gap-2">
                 <input
                   type="text"
                   v-model="emailId"
@@ -390,7 +392,7 @@ onMounted(() => {
               <label class="block mb-2 text-sm font-medium text-gray-700"
                 >전화번호</label
               >
-              <div class="flex gap-2 items-center">
+              <div class="flex items-center gap-2">
                 <select v-model="phoneFirst" class="w-24 p-2 border rounded-md">
                   <option value="010">010</option>
                   <option value="011">011</option>
@@ -434,7 +436,7 @@ onMounted(() => {
 
         <!-- 추가 정보 섹션 -->
         <div class="mb-8">
-          <h2 class="text-xl font-semibold mb-4">추가 정보</h2>
+          <h2 class="mb-4 text-xl font-semibold">추가 정보</h2>
           <div class="grid grid-cols-2 gap-4">
             <SignUpFormInput
               label="생년월일"
@@ -457,7 +459,7 @@ onMounted(() => {
               v-model="formData.address"
               :disabled="true"
             />
-            <div class="flex gap-4 mt-2 justify-center items-center">
+            <div class="flex items-center justify-center gap-4 mt-2">
               <SignUpFormInput
                 label="상세 주소"
                 type="text"
@@ -469,6 +471,60 @@ onMounted(() => {
                 class="flex-1"
               />
               <DaumAddress :setAddress="handleAddressChange" />
+            </div>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div class="col-span-1">
+                <SignUpFormInput
+                  label="연간 급여 (만원)"
+                  type="number"
+                  id="annual_salary"
+                  name="annual_salary"
+                  v-model="formData.annual_salary"
+                  :required="false"
+                  min="0"
+                  max="9999999999.99"
+                  step="0.01"
+                  @input="
+                    $event.target.value = $event.target.value
+                      .replace(/[^0-9.]/g, '')
+                      .slice(0, 12)
+                  "
+                  placeholder="만원 단위로 입력"
+                />
+                <p class="mt-1 text-sm text-right text-gray-600">
+                  {{
+                    formData.annual_salary
+                      ? `총 ${(formData.annual_salary * 10000).toLocaleString()}원`
+                      : ''
+                  }}
+                </p>
+              </div>
+              <div class="col-span-1">
+                <SignUpFormInput
+                  label="총 자산 (만원)"
+                  type="number"
+                  id="asset"
+                  name="asset"
+                  v-model="formData.asset"
+                  :required="false"
+                  min="0"
+                  max="9999999999999.99"
+                  step="0.01"
+                  @input="
+                    $event.target.value = $event.target.value
+                      .replace(/[^0-9.]/g, '')
+                      .slice(0, 15)
+                  "
+                  placeholder="만원 단위로 입력"
+                />
+                <p class="mt-1 text-sm text-right text-gray-600">
+                  {{
+                    formData.asset
+                      ? `총 ${(formData.asset * 10000).toLocaleString()}원`
+                      : ''
+                  }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
