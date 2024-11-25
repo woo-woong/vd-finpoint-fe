@@ -283,7 +283,10 @@ function formatToKoreanUnit(value) {
       <form @submit="handleSubmit" class="w-full max-w-2xl">
         <!-- 기본 정보 섹션 -->
         <div class="mb-3">
-          <h2 class="mb-4 text-xl font-semibold">기본 정보</h2>
+          <div class="flex items-center justify-between">
+            <h2 class="mb-4 text-xl font-semibold">기본 정보</h2>
+            <p class="mb-4 text-sm text-red-500">*은 필수 사항입니다.</p>
+          </div>
           <div class="grid grid-cols-2 gap-4">
             <SignUpFormInput
               label="아이디"
@@ -380,15 +383,19 @@ function formatToKoreanUnit(value) {
           <div class="grid grid-cols-2 gap-4">
             <!-- 이메일 입력 -->
             <div class="col-span-2">
-              <label class="block mb-2 text-sm font-medium text-gray-700"
-                >이메일</label
-              >
+              <div class="flex items-center gap-2">
+                <label class="block mb-2 text-sm font-medium text-gray-700"
+                  >이메일</label
+                >
+                <span class="text-red-500">*</span>
+              </div>
               <div class="flex items-center gap-2">
                 <input
                   type="text"
                   v-model="emailId"
                   class="flex-1 p-2 border rounded-md"
                   placeholder="이메일"
+                  required
                 />
                 <span class="text-gray-500">@</span>
                 <input
@@ -397,11 +404,13 @@ function formatToKoreanUnit(value) {
                   class="w-32 p-2 border rounded-md"
                   :disabled="selectedDomain !== '직접입력'"
                   placeholder="도메인"
+                  required
                 />
                 <select
                   v-model="selectedDomain"
                   @change="handleDomainChange"
                   class="w-40 p-2 border rounded-md"
+                  required
                 >
                   <option
                     v-for="domain in emailDomains"
@@ -419,7 +428,31 @@ function formatToKoreanUnit(value) {
         <!-- 추가 정보 섹션 -->
         <div class="mb-8">
           <h2 class="mb-4 text-xl font-semibold">추가 정보</h2>
-
+          <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg
+                  class="w-5 h-5 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-blue-700">
+                  아래 정보는 선택사항입니다. 입력하시면 고객님께 맞춤형 추천
+                  서비스를 제공해 드립니다.
+                </p>
+              </div>
+            </div>
+          </div>
           <SignUpFormInput
             label="생년월일"
             type="date"
@@ -428,6 +461,7 @@ function formatToKoreanUnit(value) {
             v-model="formData.birth_date"
             :max="today"
             class="col-span-1"
+            :required="false"
           />
           <div class="grid grid-cols-2 gap-4">
             <!-- 전화번호 입력 -->
@@ -485,6 +519,7 @@ function formatToKoreanUnit(value) {
               name="address"
               v-model="formData.address"
               :disabled="true"
+              :required="false"
             />
             <div class="flex items-center justify-center gap-4 mt-2">
               <SignUpFormInput

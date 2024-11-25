@@ -39,9 +39,12 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div class="mb-4">
-    <label :for="id" class="block mb-2 text-sm font-medium text-gray-700">
-      {{ label }}
-    </label>
+    <div class="flex items-center gap-2">
+      <label :for="id" class="block mb-2 text-sm font-medium text-gray-700">
+        {{ label }}
+      </label>
+      <span v-if="required" class="text-red-500">*</span>
+    </div>
     <input
       :type="type"
       :id="id"
