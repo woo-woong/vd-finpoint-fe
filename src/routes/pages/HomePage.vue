@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center min-h-screen">
+  <div class="flex flex-col items-center">
     <!-- 메인 배너 -->
     <section
       class="relative w-full py-20 mb-10 overflow-hidden text-center text-white bg-gradient-to-r from-blue-600 to-blue-400"
