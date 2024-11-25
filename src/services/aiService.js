@@ -35,6 +35,10 @@ export const aiService = {
         };
       }
 
+      if (error.response?.status === 403) {
+        throw new Error('로그인이 필요합니다.');
+      }
+
       // 기타 에러
       throw new Error('AI 질문 요청에 실패했습니다.');
     }
