@@ -12,7 +12,7 @@ const props = defineProps({
 
 const { fetchRecommendProduct } = aiService;
 const isLoading = ref(false);
-const isError = ref(null);
+const errorMessage = ref(null);
 const recommendation = ref(null);
 const { navigateToFinProductDetail } = useFinanceNavigation();
 
@@ -36,11 +36,18 @@ const handleRequestRecommendation = async () => {
     isLoading.value = true;
     const data = await fetchRecommendProduct(props.service);
     recommendation.value = data;
-    // 타이핑 효과 시작
     typeText(data.user_insights.general_advice);
   } catch (error) {
     console.error('AI 추천 요청 실패:', error);
-    isError.value = error;
+
+    if (error.name === 'TimeoutError') {
+      errorMessage.value = new Error(
+        '요청 시간이 초과되었습니다.\n 다시 시도해주세요.'
+      );
+      return;
+    }
+
+    errorMessage.value = error;
   } finally {
     isLoading.value = false;
   }
@@ -65,10 +72,10 @@ const handleProductDetail = (service, productCode) => {
     <!-- 로딩 상태 표시 -->
     <!-- 400 에러 발생 시 재시도 버튼 -->
     <div
-      v-if="isError"
+      v-if="errorMessage"
       class="p-6 text-center border border-red-100 rounded-lg bg-red-50"
     >
-      <p class="mb-4 text-red-600">데이터 요청에 실패했습니다.</p>
+      <p class="mb-4 text-red-600">{{ errorMessage }}</p>
       <button
         @click="handleRequestRecommendation"
         class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -108,6 +115,16 @@ const handleProductDetail = (service, productCode) => {
         >
           {{ displayText }}
         </p>
+
+        <!-- 400 에러일 경우 상담 버튼 표시 -->
+        <router-link
+          v-if="recommendation.recommendations.length === 0"
+          to="/find-nearest-bank"
+          class="block w-full px-4 py-2 mt-4 text-sm text-center text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+          @click="emit('close')"
+        >
+          가까운 지점 찾아보기
+        </router-link>
       </div>
 
       <div v-if="recommendation.recommendations.length > 0">
