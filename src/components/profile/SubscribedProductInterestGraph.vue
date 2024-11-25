@@ -166,6 +166,16 @@ const chartOptions = {
     class="w-full h-64"
   >
     <h2 class="mb-4 text-xl font-semibold">나의 가입 상품 금리 비교</h2>
+    <div class="p-4 mb-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <p class="text-sm text-blue-800 font-medium">
+        <span class="font-bold">⚠️ 안내사항</span>
+      </p>
+      <p class="mt-2 text-sm text-blue-700">
+        가입 상품 취소는 시스템 전반에 걸쳐 안전한 처리 시간이 필요합니다.<br />
+        취소 처리가 완료된 후, 페이지 새로고침을 통해 최신 데이터로 업데이트된
+        그래프를 확인하실 수 있습니다.
+      </p>
+    </div>
     <Bar
       v-if="props.options?.length"
       :data="chartData"

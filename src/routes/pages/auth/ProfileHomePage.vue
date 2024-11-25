@@ -45,7 +45,7 @@ onMounted(fetchProfile);
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-full min-h-screen pb-24 bg-gray-100">
+  <div class="flex flex-col items-center w-full min-h-screen pb-5 bg-gray-100">
     <!-- 헤더 -->
     <TabHeader
       title="내 프로필"
@@ -53,7 +53,7 @@ onMounted(fetchProfile);
     />
     <!-- 프로필 콘텐츠 -->
     <main
-      class="flex flex-col items-center w-full max-w-4xl px-6 py-10 mt-8 bg-white rounded-lg shadow-lg"
+      class="flex flex-col items-center w-full max-w-4xl px-6 py-8 mt-8 bg-white rounded-lg shadow-lg"
     >
       <!-- 프로필 정보 -->
       <div class="w-full mb-8">
@@ -83,7 +83,7 @@ onMounted(fetchProfile);
       </div>
 
       <!-- 가입 상품 목록 -->
-      <main class="flex flex-col items-center w-full max-w-4xl mb-10">
+      <main class="flex flex-col items-center w-full max-w-4xl mb-5">
         <div class="w-full">
           <SectionLoading
             v-if="isLoading"
@@ -96,7 +96,7 @@ onMounted(fetchProfile);
         </div>
       </main>
       <!-- 가입 상품 그래프 -->
-      <main class="flex flex-col items-center w-full max-w-4xl">
+      <main class="flex flex-col items-center w-full max-w-4xl h-[420px]">
         <div class="w-full">
           <SectionLoading
             v-if="isLoading"

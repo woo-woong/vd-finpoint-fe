@@ -264,7 +264,7 @@ const handleUnsubscribe = async (event, product) => {
             <!-- 삭제 버튼 -->
             <button
               v-if="isManagingAll"
-              class="absolute bottom-2 right-2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full"
+              class="absolute bottom-2 right-2 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
               @click="(event) => handleUnsubscribe(event, product)"
             >
               -
