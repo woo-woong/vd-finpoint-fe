@@ -122,18 +122,6 @@ const handleAddressChange = (value) => {
 const handleSubmit = async (e) => {
   if (e) e.preventDefault();
 
-  // 비밀번호 확인 로직 수정
-  if (props.mode === 'signup' && !passwordMatch.value) {
-    toast.error('비밀번호가 일치하지 않습니다.', {
-      style: {
-        background: '#fee2e2',
-        color: '#dc2626',
-        border: '1px solid #dc2626',
-      },
-    });
-    return;
-  }
-
   try {
     if (props.mode === 'signup') {
       await ky.post(`${import.meta.env.VITE_BACKEND_API_URL}signup/`, {
@@ -153,6 +141,8 @@ const handleSubmit = async (e) => {
         phone: formData.value.phone,
         address: formData.value.address,
         detail_address: formData.value.detail_address,
+        annual_salary: formData.value.annual_salary,
+        asset: formData.value.asset,
       };
 
       // 비밀번호 변경이 있는 경우
@@ -171,7 +161,15 @@ const handleSubmit = async (e) => {
         updatedData.new_password = newPassword.value;
       }
 
-      await profileService().editProfile(updatedData);
+      // 프로필 수정 API 호출
+      const response = await profileService().editProfile(updatedData);
+
+      // 스토어 업데이트
+      store.setUserData({
+        ...store.userData,
+        ...updatedData,
+      });
+
       toast.success('프로필이 수정되었습니다!', {
         style: {
           background: '#dcfce7',
