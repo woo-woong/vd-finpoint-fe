@@ -36,7 +36,6 @@ const fetchProducts = async () => {
     const data = await getAllFinProducts(props.path, props.searchParams);
     finProducts.value = data;
     isLoading.value = false;
-    console.log(data);
   } catch (err) {
     error.value = err;
     isLoading.value = false;

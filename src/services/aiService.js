@@ -13,7 +13,6 @@ export const aiService = {
         },
         timeout: 30000, // 30 seconds
       });
-      console.log(response);
       const data = await response.json();
       return data;
     } catch (error) {
