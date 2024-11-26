@@ -94,7 +94,7 @@ const goToNewPost = () => {
       :initial="{ opacity: 0, y: 20 }"
       :enter="{ opacity: 1, y: 0 }"
       :transition="{ duration: 100 }"
-      class="flex flex-col items-center w-full max-w-6xl px-4 py-10 mt-10 bg-white rounded-lg shadow-lg"
+      class="flex flex-col items-center w-full max-w-6xl px-4 py-10 my-5 bg-white rounded-lg shadow-lg"
     >
       <!-- 게시판 헤더 -->
       <div class="flex justify-between w-full mb-5">
@@ -111,7 +111,7 @@ const goToNewPost = () => {
       <!-- 검색 및 필터 영역 추가 -->
       <div class="flex justify-between w-full mb-6">
         <div class="relative flex items-center w-1/2">
-          <span class="absolute left-3 text-gray-400">
+          <span class="absolute text-gray-400 left-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-5 h-5"
@@ -129,17 +129,17 @@ const goToNewPost = () => {
             v-model="searchQuery"
             type="text"
             placeholder="게시글 제목을 입력하세요"
-            class="w-full pl-10 pr-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-colors"
+            class="w-full py-3 pl-10 pr-4 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
           />
         </div>
 
         <label
-          class="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100 hover:bg-blue-100 transition-colors cursor-pointer"
+          class="flex items-center gap-2 px-4 py-2 transition-colors border border-blue-100 cursor-pointer bg-blue-50 rounded-xl hover:bg-blue-100"
         >
           <input
             type="checkbox"
             v-model="showMyPosts"
-            class="w-5 h-5 rounded border-gray-300 text-blue-500 focus:ring-blue-200"
+            class="w-5 h-5 text-blue-500 border-gray-300 rounded focus:ring-blue-200"
           />
           <span class="text-sm font-medium text-blue-700"
             >내가 작성한 글만 보기</span
@@ -221,10 +221,10 @@ const goToNewPost = () => {
         </template>
         <div
           v-else
-          class="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-lg border border-gray-200"
+          class="flex flex-col items-center justify-center py-12 border border-gray-200 rounded-lg bg-gray-50"
         >
           <svg
-            class="w-16 h-16 text-gray-400 mb-4"
+            class="w-16 h-16 mb-4 text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -236,7 +236,7 @@ const goToNewPost = () => {
               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             />
           </svg>
-          <p class="text-lg font-medium text-gray-600 mb-2">
+          <p class="mb-2 text-lg font-medium text-gray-600">
             해당 검색에 대한 게시글이 없습니다
           </p>
         </div>
