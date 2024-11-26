@@ -59,7 +59,7 @@ onMounted(async () => {
       <!-- 상품 헤더 -->
       <div class="mb-2">
         <div class="flex items-center justify-between mb-2">
-          <h1 class="mb-2 text-2xl font-bold">{{ product?.fin_prdt_nm }}</h1>
+          <h1 class="text-2xl font-bold">{{ product?.fin_prdt_nm }}</h1>
           <FinanceSubScriptionBtn
             :initialIsSubscribed="initialIsSubscribed"
             :inititalWishlistId="product?.wishlist_id || null"
@@ -70,11 +70,11 @@ onMounted(async () => {
         </div>
         <div class="flex items-center justify-between">
           <div class="flex flex-col">
-            <p class="text-gray-600">{{ product?.kor_co_nm }}</p>
+            <p class="mb-2 text-gray-600">{{ product?.kor_co_nm }}</p>
             <a
               v-if="product?.kor_co_nm"
               @click="navigateToOfficialProductHomepage(product?.kor_co_nm)"
-              class="inline-flex items-center px-4 py-2 mt-3 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 transition-colors rounded-md cursor-pointer bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               target="_blank"
             >
               <svg
@@ -94,7 +94,7 @@ onMounted(async () => {
             </a>
           </div>
           <p
-            class="text-sm text-red-500 font-medium bg-red-50 p-3 rounded-md border border-red-200"
+            class="p-3 text-sm font-medium text-red-500 border border-red-200 rounded-md bg-red-50"
           >
             ⚠️ 주의: 가입 및 가입 취소는 진행 중 취소가 불가능합니다.<br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신중히 결정해주시기 바랍니다.
