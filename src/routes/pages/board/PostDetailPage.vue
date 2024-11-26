@@ -6,7 +6,6 @@ import { useDate } from '@/hooks/common/useDate';
 import Loading from '@/components/common/Loading.vue';
 import PostLikeButton from '@/components/board/PostLikeButton.vue';
 import FinanceRecommendCard from '@/components/finance/FinanceRecommendCard.vue';
-import { toast } from 'vue-sonner';
 import { useMaskedAuthor } from '@/hooks/common/useMaskedAuthor';
 
 const router = useRouter();
@@ -69,7 +68,7 @@ function goEdit() {
         <div class="flex items-center justify-between gap-4">
           <h2 class="text-2xl font-bold">{{ postData.title }}</h2>
           <span class="text-lg text-blue-600"
-            >좋아요 {{ postData.like_count }}개</span
+            >도움이 됐어요 {{ postData.like_count }}개</span
           >
         </div>
         <div class="flex items-center justify-between">

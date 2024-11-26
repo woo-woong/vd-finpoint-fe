@@ -50,42 +50,28 @@ const toggleLike = async () => {
   <button
     @click="toggleLike"
     :disabled="isLoading"
-    class="flex items-center space-x-2 transition-all duration-300"
+    class="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-300 border rounded-lg"
+    :class="[
+      initialLiked
+        ? 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100'
+        : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100',
+    ]"
   >
     <svg
-      v-if="initialLiked"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="red"
+      width="20"
+      height="20"
+      :fill="initialLiked ? 'currentColor' : 'none'"
+      :stroke="initialLiked ? 'none' : 'currentColor'"
       viewBox="0 0 24 24"
       class="transition-all duration-300"
     >
       <path
-        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
       />
     </svg>
-    <svg
-      v-else
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="gray"
-      viewBox="0 0 24 24"
-      class="transition-all duration-300"
-    >
-      <path
-        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-      />
-    </svg>
-    <span
-      :class="[
-        initialLiked ? 'text-red-500' : 'text-gray-500',
-        isLoading ? 'opacity-50' : '',
-      ]"
-    >
-      {{ initialLiked ? '좋아요 취소' : '좋아요' }}
+    <span class="font-medium">
+      {{ initialLiked ? '도움이 됐어요' : '도움이 됐나요?' }}
     </span>
   </button>
 </template>
