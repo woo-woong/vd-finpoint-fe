@@ -50,7 +50,7 @@ onMounted(fetchProfile);
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-full min-h-screen pb-5 bg-gray-100">
+  <div class="flex flex-col items-center w-full pb-5 bg-gray-100">
     <!-- 헤더 -->
     <TabHeader
       title="내 프로필"
@@ -98,13 +98,18 @@ onMounted(fetchProfile);
             v-else-if="subscribedProducts && subscribedProducts.length > 0"
             :subscribedProducts="subscribedProducts"
           />
-          <div v-else class="text-center py-8 text-gray-500">
+          <div v-else class="py-8 text-center text-gray-500">
             가입한 상품이 없거나 데이터를 불러오지 못했습니다.
           </div>
         </div>
       </main>
       <!-- 가입 상품 그래프 -->
-      <main class="flex flex-col items-center w-full max-w-4xl h-[420px]">
+      <main
+        class="flex flex-col items-center w-full max-w-4xl"
+        :class="{
+          'h-[420px]': subscribedProducts && subscribedProducts.length > 0,
+        }"
+      >
         <div class="w-full">
           <SectionLoading
             v-if="isLoading"
@@ -114,7 +119,7 @@ onMounted(fetchProfile);
             v-else-if="subscribedProducts && subscribedProducts.length > 0"
             :options="processedGraphData"
           />
-          <div v-else class="text-center py-8 text-gray-500">
+          <div v-else class="py-8 text-center text-gray-500">
             표시할 그래프 데이터가 없습니다.
           </div>
         </div>
