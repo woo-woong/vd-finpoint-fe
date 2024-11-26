@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import KakaoMap from '@/components/external/KakaoMap.vue';
 import exchangeRateCalculation from '@/components/exchange/exchangeRateCalculation.vue';
 import FinProductAdvisorBubble from '@/components/smartAssistant/FinProductAdvisorBubble.vue';
+import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';
 
 const isOpen = ref(false);
@@ -11,6 +12,9 @@ const tooltipRef = ref(null);
 const router = useRouter();
 const currentView = ref('buttons'); // 'buttons', 'map', 'converter'
 const selectedService = ref(null); // 'deposit' 또는 'savings'를 저장
+const userStore = useUserStore();
+
+const userName = userStore.userData.name;
 
 const tooltipStyle = computed(() => {
   if (!buttonRef.value) return {};
@@ -86,7 +90,7 @@ const goToExchangeRateCalculatorPage = () => {
 
 const assistantName = ref('낚시왕 핀피');
 const welcomeMessage = ref(
-  '🎣 안녕하세요! \n 오늘도 좋은 금융상품을 낚으러 오셨네요! \n 무엇을 도와드릴까요?'
+  `🎣 안녕하세요! \n ${userName}님, 오늘도 좋은 금융상품을 낚으러 오셨네요! \n 무엇을 도와드릴까요?`
 );
 </script>
 
