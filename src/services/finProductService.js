@@ -9,7 +9,10 @@ export const finProductService = () => {
   const getAllFinProducts = async (path, searchParams = {}) => {
     const API_URL = `${BACKEND_API_URL}finance/${path}`;
     try {
-      const response = await ky.get(API_URL, { searchParams });
+      const response = await ky.get(API_URL, {
+        searchParams,
+        credentials: 'include',
+      });
       const data = await response.json();
       return data;
     } catch (err) {
