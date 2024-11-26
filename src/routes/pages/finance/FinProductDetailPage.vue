@@ -50,7 +50,11 @@ onMounted(async () => {
 </script>
 <template>
   <div class="w-full p-6 mx-auto">
-    <Loading v-if="isLoading" />
+    <Loading
+      class="h-[800px]"
+      v-if="isLoading"
+      message="상품 상세 정보를 불러오는 중입니다..."
+    />
 
     <div v-else>
       <div class="flex justify-end w-full mb-4">

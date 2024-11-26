@@ -252,15 +252,20 @@ const handleSearch = () => {
         </button>
       </div>
 
-      <div
-        v-else
-        v-motion
-        :initial="{ opacity: 0, y: 20 }"
-        :enter="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 100 }"
-        class="overflow-x-auto"
-      >
-        <table class="w-full divide-y divide-gray-200 table-fixed">
+      <div v-else class="overflow-x-auto">
+        <!-- 데이터가 없을 경우 표시할 메시지 -->
+        <div
+          v-if="filteredProducts.length === 0"
+          class="flex flex-col items-center justify-center p-8"
+        >
+          <p class="text-lg text-gray-600">검색 결과가 없습니다.</p>
+          <p class="mt-2 text-sm text-gray-500">
+            검색어나 필터 조건을 변경해보세요.
+          </p>
+        </div>
+
+        <!-- 더이터가 있을 경우 테이블 표시 -->
+        <table v-else class="w-full divide-y divide-gray-200 table-fixed">
           <colgroup>
             <col class="w-[12%]" />
             <col class="w-[15%]" />
@@ -373,9 +378,11 @@ const handleSearch = () => {
         </table>
 
         <!-- 더보기 버튼 -->
-        <div class="flex justify-center p-4">
+        <div
+          v-if="filteredProducts.length > visibleCount"
+          class="flex justify-center p-4"
+        >
           <button
-            v-if="filteredProducts.length > visibleCount"
             @click="loadMoreProducts"
             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"
           >

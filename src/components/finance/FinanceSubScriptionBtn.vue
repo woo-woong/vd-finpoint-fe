@@ -169,7 +169,7 @@ const subscribe = async () => {
     <!-- 로딩 오버레이 -->
     <div
       v-if="isLoading"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+      class="fixed inset-0 flex items-center justify-center z-[100] bg-black/30 backdrop-blur-sm"
     >
       <div
         v-motion
@@ -186,7 +186,7 @@ const subscribe = async () => {
             :enter="{ opacity: 1, y: 0 }"
             :exit="{ opacity: 0, y: -20 }"
             :key="currentMessage"
-            class="text-center text-gray-700 font-medium"
+            class="font-medium text-center text-gray-700"
           >
             {{ currentMessage }}
           </p>
