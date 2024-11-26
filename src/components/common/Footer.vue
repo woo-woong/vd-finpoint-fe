@@ -2,21 +2,21 @@
 import { RouterLink } from 'vue-router';
 </script>
 <template>
-  <footer class="w-full bg-slate-900 text-gray-300 mt-5">
-    <div class="max-w-7xl mx-auto px-4 py-12">
+  <footer class="w-full text-gray-300 bg-slate-900">
+    <div class="px-4 py-12 mx-auto max-w-7xl">
       <!-- 메인 푸터 콘텐츠 -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- 회사 정보 -->
         <div>
-          <h3 class="text-white font-bold mb-4">FinPoint</h3>
+          <h3 class="mb-4 font-bold text-white">FinPoint</h3>
           <p class="text-sm">© 2024 FinPoint</p>
-          <p class="text-sm mt-2">All rights reserved.</p>
+          <p class="mt-2 text-sm">All rights reserved.</p>
         </div>
 
         <!-- 서비스 -->
         <div>
-          <h3 class="text-white font-bold mb-4">서비스</h3>
-          <ul class="text-sm space-y-2">
+          <h3 class="mb-4 font-bold text-white">서비스</h3>
+          <ul class="space-y-2 text-sm">
             <li>
               <router-link
                 to="/deposit"
@@ -38,8 +38,8 @@ import { RouterLink } from 'vue-router';
 
         <!-- 연락처 -->
         <div>
-          <h3 class="text-white font-bold mb-4">연락처</h3>
-          <ul class="text-sm space-y-2">
+          <h3 class="mb-4 font-bold text-white">연락처</h3>
+          <ul class="space-y-2 text-sm">
             <li>고객센터: 1588-0000</li>
             <li>평일 09:00 - 18:00</li>
             <li>이메일: support@finpoint.com</li>
@@ -48,7 +48,7 @@ import { RouterLink } from 'vue-router';
       </div>
 
       <!-- 하단 정보 -->
-      <div class="mt-8 pt-8 border-t border-gray-700 text-sm text-gray-400">
+      <div class="pt-8 mt-8 text-sm text-gray-400 border-t border-gray-700">
         <p>FinPoint | 대표: 싸피 | 사업자등록번호: 123-45-67890</p>
         <p class="mt-2">경북 구미시 3공단 3로 302 구미 캠퍼스 2반</p>
         <p class="mt-4">Developed by Team woo-woong</p>
