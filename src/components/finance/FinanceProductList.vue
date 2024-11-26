@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { finProductService } from '@/services/finProductService';
 import { useFinanceNavigation } from '@/hooks/navigator/useFinanceNavigation';
 import Loading from '../common/Loading.vue';
@@ -36,6 +36,7 @@ const fetchProducts = async () => {
     const data = await getAllFinProducts(props.path, props.searchParams);
     finProducts.value = data;
     isLoading.value = false;
+    console.log(data);
   } catch (err) {
     error.value = err;
     isLoading.value = false;
@@ -95,6 +96,28 @@ const toggleSort = (period) => {
   }
 };
 
+// 가입 상품 필터링을 위한 상태 추가
+const showWishedOnly = ref(false);
+
+// 컴포넌트가 마운트될 때마다 필터 상태 초기화
+onMounted(() => {
+  showWishedOnly.value = false;
+});
+
+// showWishedOnly가 변경될 때도 데이터를 다시 불러오도록 watch 추가
+watch(showWishedOnly, () => {
+  fetchProducts();
+});
+
+// 기존 watch와 함께 사용
+watch(
+  [() => props.path, () => props.searchParams],
+  () => {
+    fetchProducts();
+  },
+  { immediate: true }
+);
+
 // 필터링된 상품 목록
 const filteredProducts = computed(() => {
   if (!finProducts.value) return [];
@@ -107,19 +130,16 @@ const filteredProducts = computed(() => {
       const nameMatch = product.fin_prdt_nm
         .toLowerCase()
         .includes(appliedSearchQuery.value.toLowerCase());
-
-      let periodMatch = true;
-      if (selectedPeriod.value !== '전체기간') {
-        const period = selectedPeriod.value.replace('개월', '');
-        periodMatch = product.options?.some(
-          (opt) =>
-            opt.save_trm === period &&
-            opt.intr_rate != null &&
-            opt.intr_rate > 0
+      const periodMatch =
+        selectedPeriod.value === '전체기간' ||
+        product.options?.some(
+          (opt) => opt.save_trm === selectedPeriod.value.replace('개월', '')
         );
-      }
 
-      return bankMatch && nameMatch && periodMatch;
+      // 가입한 상품 필터링 추가
+      const wishedMatch = !showWishedOnly.value || product.is_wished;
+
+      return bankMatch && nameMatch && periodMatch && wishedMatch;
     })
     .sort((a, b) => {
       const rateA =
@@ -133,13 +153,6 @@ const filteredProducts = computed(() => {
 // 검색 실행
 const handleSearch = () => {
   appliedSearchQuery.value = searchQuery.value.trim();
-};
-
-// 엔터키 이벤트 처리 함수 추가
-const handleKeyPress = (event) => {
-  if (event.key === 'Enter') {
-    handleSearch();
-  }
 };
 </script>
 
@@ -206,6 +219,23 @@ const handleKeyPress = (event) => {
       </div>
     </div>
 
+    <!-- 가입 상품 필터링 -->
+    <div
+      class="flex items-center gap-2 px-4 py-3 mb-4 bg-white border border-gray-200 rounded-lg"
+    >
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" v-model="showWishedOnly" class="sr-only peer" />
+        <div
+          class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"
+        ></div>
+      </label>
+      <span class="text-sm font-medium text-gray-700">가입한 상품만 보기</span>
+      <div class="flex items-center ml-2">
+        <span class="text-xs text-gray-500">
+          내가 가입한 상품들만 모아볼 수 있어요
+        </span>
+      </div>
+    </div>
     <!-- 테이블 섹션 -->
     <div class="bg-white border border-gray-200 rounded-lg">
       <div v-if="isLoading" class="p-4">

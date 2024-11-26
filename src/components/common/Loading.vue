@@ -24,7 +24,7 @@ const props = defineProps({
 </style>
 
 <template>
-  <div class="flex items-center justify-center h-[calc(100vh-2rem)]">
+  <div class="flex items-center justify-center">
     <div v-motion-fade class="flex items-center justify-center space-x-2">
       <div
         class="w-8 h-8 border-4 border-blue-500 rounded-full border-t-transparent spinner"
