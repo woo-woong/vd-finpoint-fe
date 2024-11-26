@@ -22,6 +22,10 @@ const userStore = useUserStore();
 const searchQuery = ref('');
 const showMyPosts = ref(false);
 
+// 페이지네이션 관련 상태 추가
+const currentPage = ref(1);
+const postsPerPage = 20;
+
 // 검색과 필터링이 적용된 게시글 목록을 반환하는 computed 속성
 const filteredPosts = computed(() => {
   let filtered = [...Posts.value];
@@ -42,6 +46,23 @@ const filteredPosts = computed(() => {
 
   return filtered;
 });
+
+// 현재 페이지의 게시글만 반환하는 computed 속성 추가
+const paginatedPosts = computed(() => {
+  const startIndex = (currentPage.value - 1) * postsPerPage;
+  return filteredPosts.value.slice(startIndex, startIndex + postsPerPage);
+});
+
+// 총 페이지 수 계산
+const totalPages = computed(() => {
+  return Math.ceil(filteredPosts.value.length / postsPerPage);
+});
+
+// 페이지 변경 함수
+const changePage = (page) => {
+  currentPage.value = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
 const fetchPosts = async () => {
   try {
@@ -208,7 +229,7 @@ const goToNewPost = () => {
             </thead>
             <tbody>
               <PostList
-                v-for="post in filteredPosts"
+                v-for="post in paginatedPosts"
                 :key="post.id"
                 :id="post.id"
                 :title="post.title"
@@ -218,6 +239,23 @@ const goToNewPost = () => {
               />
             </tbody>
           </table>
+
+          <!-- 페이지네이션 UI 추가 -->
+          <div class="flex justify-center gap-2 mt-6">
+            <button
+              v-for="page in totalPages"
+              :key="page"
+              @click="changePage(page)"
+              :class="[
+                'px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200',
+                currentPage === page
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100',
+              ]"
+            >
+              {{ page }}
+            </button>
+          </div>
         </template>
         <div
           v-else
