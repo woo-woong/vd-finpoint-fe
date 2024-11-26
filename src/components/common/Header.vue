@@ -15,6 +15,33 @@ onMounted(() => {
 
 // 모바일 메뉴 상태 관리 추가
 const isMobileMenuOpen = ref(false);
+
+// ref 객체들을 개별적으로 생성
+const depositLottieRef = ref(null);
+const savingsLottieRef = ref(null);
+const boardLottieRef = ref(null);
+
+// 네비게이션 아이템 데이터를 반응형 변수로 정의
+const navigationItems = ref([
+  {
+    name: '정기예금',
+    route: '/deposit',
+    animation: depositAnimation,
+    lottieRef: depositLottieRef,
+  },
+  {
+    name: '적금',
+    route: '/savings',
+    animation: savingsAnimation,
+    lottieRef: savingsLottieRef,
+  },
+  {
+    name: '게시판',
+    route: '/board',
+    animation: boardAnimation,
+    lottieRef: boardLottieRef,
+  },
+]);
 </script>
 
 <template>
@@ -32,26 +59,7 @@ const isMobileMenuOpen = ref(false);
         <!-- 메인 네비게이션 -->
         <div class="flex-1 hidden mx-4 md:flex md:items-center">
           <div
-            v-for="(item, index) in [
-              {
-                name: '정기예금',
-                route: '/deposit',
-                animation: depositAnimation,
-                ref: 'depositLottie',
-              },
-              {
-                name: '적금',
-                route: '/savings',
-                animation: savingsAnimation,
-                ref: 'savingsLottie',
-              },
-              {
-                name: '게시판',
-                route: '/board',
-                animation: boardAnimation,
-                ref: 'boardLottie',
-              },
-            ]"
+            v-for="(item, index) in navigationItems"
             :key="index"
             class="flex items-center px-3 py-2 transition-all rounded-lg group hover:bg-blue-50"
           >
@@ -61,15 +69,15 @@ const isMobileMenuOpen = ref(false);
               :width="32"
               :loop="true"
               :autoplay="false"
-              @mouseenter="$refs[item.ref]?.play()"
-              @mouseleave="$refs[item.ref]?.stop()"
-              :ref="item.ref"
+              @mouseenter="item.lottieRef?.value?.play()"
+              @mouseleave="item.lottieRef?.value?.stop()"
+              :ref="item.lottieRef"
               class="mr-2"
             />
             <RouterLink
               :to="item.route"
               class="font-medium transition-colors hover:text-blue-500"
-              @mouseenter="$refs[item.ref]?.play()"
+              @mouseenter="item.lottieRef?.value?.play()"
             >
               {{ item.name }}
             </RouterLink>
@@ -168,26 +176,7 @@ const isMobileMenuOpen = ref(false);
         <div class="px-2 pt-2 pb-3 space-y-1">
           <!-- 네비게이션 메뉴 -->
           <RouterLink
-            v-for="(item, index) in [
-              {
-                name: '정기예금',
-                route: '/deposit',
-                animation: depositAnimation,
-                ref: 'mobileDepositLottie',
-              },
-              {
-                name: '적금',
-                route: '/savings',
-                animation: savingsAnimation,
-                ref: 'mobileSavingsLottie',
-              },
-              {
-                name: '게시판',
-                route: '/board',
-                animation: boardAnimation,
-                ref: 'mobileBoardLottie',
-              },
-            ]"
+            v-for="(item, index) in navigationItems"
             :key="index"
             :to="item.route"
             class="flex justify-center px-3 py-2 rounded-md hover:bg-blue-50"
@@ -200,7 +189,7 @@ const isMobileMenuOpen = ref(false);
                 :width="24"
                 :loop="true"
                 :autoplay="false"
-                :ref="item.ref"
+                :ref="item.lottieRef"
                 class="mr-2"
               />
               <div class="block font-medium text-gray-700 hover:text-blue-500">

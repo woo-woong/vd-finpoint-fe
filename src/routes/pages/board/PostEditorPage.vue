@@ -136,7 +136,7 @@ const handleSubmit = async () => {
         },
       });
     }
-    router.push(`/board/${route.params.id}`);
+    router.push(`/board/`);
   } catch (error) {
     toast.error('게시글 처리 중 오류가 발생했습니다.', {
       style: {
