@@ -167,6 +167,15 @@ const goBack = () => {
         </div>
         <PostTitle v-model="formData.title" :disabled="isLoading" />
 
+        <div class="p-4 mb-6 text-center rounded-lg bg-blue-50">
+          <p class="text-lg font-medium text-gray-700">
+            다른 사람들에게 추천하고 싶은 상품을 선택해주세요! 🎯
+          </p>
+          <p class="mt-1 text-sm text-gray-500">
+            상품을 검색하여 더 쉽게 찾아보세요.
+          </p>
+        </div>
+
         <ProductSelection
           v-model:type="formData.type"
           v-model:product-code="formData.product_code"

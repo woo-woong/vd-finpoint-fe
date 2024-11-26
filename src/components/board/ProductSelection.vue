@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import { finProductService } from '@/services/finProductService';
 import FinanceCard from '@/components/finance/FinanceCard.vue';
 
@@ -20,6 +20,7 @@ const products = ref([]);
 const isLoading = ref(props.initialLoading);
 const showProductList = ref(false);
 const showTypeList = ref(false);
+const searchQuery = ref('');
 
 const productTypes = [
   { value: 'deposit', label: '예금' },
@@ -60,8 +61,7 @@ const fetchProducts = async () => {
 
     initializeSelectedProduct();
   } catch (error) {
-    console.error('상품 목록 조회 실패:', error);
-    alert('상품 목록을 불러오는데 실패했습니다.');
+    throw error;
   } finally {
     isLoading.value = false;
   }
@@ -87,6 +87,14 @@ watch(selectedType, (newType) => {
 
 onMounted(() => {
   fetchProducts();
+});
+
+const filteredProducts = computed(() => {
+  if (!searchQuery.value) return products.value;
+  const query = searchQuery.value.toLowerCase();
+  return products.value.filter((product) =>
+    product.name.toLowerCase().includes(query)
+  );
 });
 </script>
 
@@ -143,12 +151,22 @@ onMounted(() => {
           v-if="showProductList"
           class="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded-lg shadow-lg max-h-60"
         >
+          <div class="sticky top-0 p-2 bg-white border-b">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="상품명 검색..."
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              @click.stop
+            />
+          </div>
+
           <div v-if="isLoading" class="p-4 text-center text-gray-500">
             로딩중...
           </div>
           <button
             v-else
-            v-for="product in products"
+            v-for="product in filteredProducts"
             :key="product.code"
             @click="selectProduct(product)"
             class="w-full px-4 py-2 text-left hover:bg-gray-100"
